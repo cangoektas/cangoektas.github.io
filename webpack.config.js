@@ -1,11 +1,12 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const babelConfig = require("./babel.config.json");
 
 module.exports = {
   entry: "./src/index.ts",
   devtool: false,
   output: {
-    filename: "bundle.js",
+    filename: "app.js",
     path: path.resolve(__dirname, "dist"),
   },
   module: {
@@ -22,4 +23,5 @@ module.exports = {
       },
     ],
   },
+  plugins: [new HtmlWebpackPlugin()],
 };
