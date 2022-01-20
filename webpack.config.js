@@ -25,6 +25,7 @@ module.exports = {
       {
         test: /\.m?js$/,
         include: path.resolve(__dirname, "node_modules"),
+        exclude: /core-js/,
         use: {
           loader: "babel-loader",
           options: {
