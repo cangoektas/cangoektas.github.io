@@ -1,4 +1,9 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
+import {
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLString,
+  execute,
+} from "graphql";
 import FooQuery from "./FooQuery.graphql";
 
 const pre = document.createElement("pre");
@@ -17,8 +22,8 @@ try {
     }),
   });
 
-  (window as any).schema = schema;
-  pre.innerHTML = JSON.stringify(FooQuery, null, 2);
+  const result = execute({ schema, document: FooQuery });
+  pre.innerHTML = JSON.stringify(result, null, 2);
 } catch (error) {
   console.log(error);
 }
