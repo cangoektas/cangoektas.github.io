@@ -14,11 +14,21 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        exclude: /node_modules/,
+        exclude: path.resolve(__dirname, "node_modules"),
         use: {
           loader: "babel-loader",
           options: {
             ...babelConfig,
+          },
+        },
+      },
+      {
+        test: /\.m?js$/,
+        include: path.resolve(__dirname, "node_modules"),
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [require.resolve("@babel/preset-env")],
           },
         },
       },
