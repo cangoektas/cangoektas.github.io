@@ -4,3 +4,4 @@ import "core-js/stable/set";
 import "core-js/modules/es.object.values";
 import "core-js/modules/es.object.entries";
 import "core-js/es/string/starts-with";
+import "core-js/es/array/find";
