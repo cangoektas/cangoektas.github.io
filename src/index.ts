@@ -27,5 +27,3 @@ try {
 } catch (error) {
   console.log(error);
 }
-
-// pre.innerHTML = "Hello, world!";

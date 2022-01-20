@@ -37,6 +37,20 @@ module.exports = path.Set;
 
 /***/ }),
 
+/***/ "./node_modules/core-js/es/string/starts-with.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/core-js/es/string/starts-with.js ***!
+  \*******************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+__webpack_require__(/*! ../../modules/es.string.starts-with */ "./node_modules/core-js/modules/es.string.starts-with.js");
+var entryUnbind = __webpack_require__(/*! ../../internals/entry-unbind */ "./node_modules/core-js/internals/entry-unbind.js");
+
+module.exports = entryUnbind('String', 'startsWith');
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/es/symbol/index.js":
 /*!*************************************************!*\
   !*** ./node_modules/core-js/es/symbol/index.js ***!
@@ -792,6 +806,31 @@ module.exports = function (target, source) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/correct-is-regexp-logic.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/core-js/internals/correct-is-regexp-logic.js ***!
+  \*******************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var MATCH = wellKnownSymbol('match');
+
+module.exports = function (METHOD_NAME) {
+  var regexp = /./;
+  try {
+    '/./'[METHOD_NAME](regexp);
+  } catch (e) {
+    try {
+      regexp[MATCH] = false;
+      return '/./'[METHOD_NAME](regexp);
+    } catch (f) { /* empty */ }
+  } return false;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/correct-prototype-getter.js":
 /*!********************************************************************!*\
   !*** ./node_modules/core-js/internals/correct-prototype-getter.js ***!
@@ -1150,6 +1189,24 @@ if (v8) {
 }
 
 module.exports = version && +version;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/entry-unbind.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js/internals/entry-unbind.js ***!
+  \********************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var bind = __webpack_require__(/*! ../internals/function-bind-context */ "./node_modules/core-js/internals/function-bind-context.js");
+
+var call = Function.call;
+
+module.exports = function (CONSTRUCTOR, METHOD, length) {
+  return bind(call, global[CONSTRUCTOR].prototype[METHOD], length);
+};
 
 
 /***/ }),
@@ -1752,6 +1809,28 @@ module.exports = false;
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/is-regexp.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js/internals/is-regexp.js ***!
+  \*****************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var MATCH = wellKnownSymbol('match');
+
+// `IsRegExp` abstract operation
+// https://tc39.github.io/ecma262/#sec-isregexp
+module.exports = function (it) {
+  var isRegExp;
+  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classof(it) == 'RegExp');
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/iterate.js":
 /*!***************************************************!*\
   !*** ./node_modules/core-js/internals/iterate.js ***!
@@ -2022,6 +2101,23 @@ var PromiseCapability = function (C) {
 // 25.4.1.5 NewPromiseCapability(C)
 module.exports.f = function (C) {
   return new PromiseCapability(C);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/not-a-regexp.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js/internals/not-a-regexp.js ***!
+  \********************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var isRegExp = __webpack_require__(/*! ../internals/is-regexp */ "./node_modules/core-js/internals/is-regexp.js");
+
+module.exports = function (it) {
+  if (isRegExp(it)) {
+    throw TypeError("The method doesn't accept regular expressions");
+  } return it;
 };
 
 
@@ -3881,6 +3977,49 @@ defineIterator(String, 'String', function (iterated) {
   point = charAt(string, index);
   state.index += point.length;
   return { value: point, done: false };
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.string.starts-with.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js/modules/es.string.starts-with.js ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var getOwnPropertyDescriptor = (__webpack_require__(/*! ../internals/object-get-own-property-descriptor */ "./node_modules/core-js/internals/object-get-own-property-descriptor.js").f);
+var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules/core-js/internals/to-length.js");
+var notARegExp = __webpack_require__(/*! ../internals/not-a-regexp */ "./node_modules/core-js/internals/not-a-regexp.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
+var correctIsRegExpLogic = __webpack_require__(/*! ../internals/correct-is-regexp-logic */ "./node_modules/core-js/internals/correct-is-regexp-logic.js");
+var IS_PURE = __webpack_require__(/*! ../internals/is-pure */ "./node_modules/core-js/internals/is-pure.js");
+
+var nativeStartsWith = ''.startsWith;
+var min = Math.min;
+
+var CORRECT_IS_REGEXP_LOGIC = correctIsRegExpLogic('startsWith');
+// https://github.com/zloirock/core-js/pull/702
+var MDN_POLYFILL_BUG = !IS_PURE && !CORRECT_IS_REGEXP_LOGIC && !!function () {
+  var descriptor = getOwnPropertyDescriptor(String.prototype, 'startsWith');
+  return descriptor && !descriptor.writable;
+}();
+
+// `String.prototype.startsWith` method
+// https://tc39.github.io/ecma262/#sec-string.prototype.startswith
+$({ target: 'String', proto: true, forced: !MDN_POLYFILL_BUG && !CORRECT_IS_REGEXP_LOGIC }, {
+  startsWith: function startsWith(searchString /* , position = 0 */) {
+    var that = String(requireObjectCoercible(this));
+    notARegExp(searchString);
+    var index = toLength(min(arguments.length > 1 ? arguments[1] : undefined, that.length));
+    var search = String(searchString);
+    return nativeStartsWith
+      ? nativeStartsWith.call(that, search, index)
+      : that.slice(index, index + search.length) === search;
+  }
 });
 
 
@@ -13438,6 +13577,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_values__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var core_js_modules_es_object_entries__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.object.entries */ "./node_modules/core-js/modules/es.object.entries.js");
 /* harmony import */ var core_js_modules_es_object_entries__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_entries__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_es_string_starts_with__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/es/string/starts-with */ "./node_modules/core-js/es/string/starts-with.js");
+/* harmony import */ var core_js_es_string_starts_with__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_es_string_starts_with__WEBPACK_IMPORTED_MODULE_5__);
+
 
 
 
@@ -13483,7 +13625,7 @@ try {
   pre.innerHTML = JSON.stringify(result, null, 2);
 } catch (error) {
   console.log(error);
-} // pre.innerHTML = "Hello, world!";
+}
 }();
 /******/ })()
 ;
