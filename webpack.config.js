@@ -6,8 +6,9 @@ module.exports = {
   entry: "./src/index.ts",
   devtool: false,
   output: {
-    filename: "app.js",
-    path: path.resolve(__dirname),
+    filename: "app.[contenthash].js",
+    path: path.resolve(__dirname, "docs"),
+    clean: true,
   },
   module: {
     rules: [
