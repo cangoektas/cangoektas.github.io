@@ -1,25 +1,19 @@
-import {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString,
-  execute,
-} from "graphql";
+import { execute } from "graphql";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import schemaDocument from "./schema.graphql";
 import FooQuery from "./FooQuery.graphql";
 
 const pre = document.createElement("pre");
 document.body.appendChild(pre);
 
 try {
-  const schema = new GraphQLSchema({
-    query: new GraphQLObjectType({
-      name: "Query",
-      fields: {
-        foo: {
-          type: GraphQLString,
-          resolve: () => "bar",
-        },
+  const schema = makeExecutableSchema({
+    typeDefs: schemaDocument,
+    resolvers: {
+      Query: {
+        foo: () => "baz",
       },
-    }),
+    },
   });
 
   const result = execute({ schema, document: FooQuery });
