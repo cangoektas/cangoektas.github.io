@@ -10,3 +10,4 @@ import "core-js/stable/map";
 // @graphql-tools/schema
 import "core-js/es/array/fill";
 import "core-js/es/array/includes";
+import "core-js/es/array/flat-map";
