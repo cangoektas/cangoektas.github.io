@@ -33,6 +33,10 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.(graphql|gql)$/,
+        loader: "graphql-tag/loader",
+      },
     ],
   },
   plugins: [new HtmlWebpackPlugin()],

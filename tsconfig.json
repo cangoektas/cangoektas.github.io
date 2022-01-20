@@ -1,3 +1,4 @@
 {
-  "compilerOptions": {}
+  "compilerOptions": {},
+  "files": ["./typings/globals.d.ts"]
 }
