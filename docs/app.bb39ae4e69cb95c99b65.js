@@ -5773,7 +5773,7 @@ function executeFieldsSerially(exeContext, parentType, sourceValue, path, fields
 function executeFields(exeContext, parentType, sourceValue, path, fields) {
   var results = Object.create(null);
   var containsPromise = false;
-
+console.log('fields', fields)
   var _iterator2 = _createForOfIteratorHelper(fields.entries()),
       _step2;
 
