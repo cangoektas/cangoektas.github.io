@@ -29,6 +29,20 @@ module.exports = entryUnbind('Array', 'find');
 
 /***/ }),
 
+/***/ "./node_modules/core-js/es/array/includes.js":
+/*!***************************************************!*\
+  !*** ./node_modules/core-js/es/array/includes.js ***!
+  \***************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+__webpack_require__(/*! ../../modules/es.array.includes */ "./node_modules/core-js/modules/es.array.includes.js");
+var entryUnbind = __webpack_require__(/*! ../../internals/entry-unbind */ "./node_modules/core-js/internals/entry-unbind.js");
+
+module.exports = entryUnbind('Array', 'includes');
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/es/map/index.js":
 /*!**********************************************!*\
   !*** ./node_modules/core-js/es/map/index.js ***!
@@ -3440,6 +3454,35 @@ $({ target: 'Array', proto: true, forced: SKIPS_HOLES || !USES_TO_LENGTH }, {
 
 // https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
 addToUnscopables(FIND);
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.array.includes.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.includes.js ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $includes = (__webpack_require__(/*! ../internals/array-includes */ "./node_modules/core-js/internals/array-includes.js").includes);
+var addToUnscopables = __webpack_require__(/*! ../internals/add-to-unscopables */ "./node_modules/core-js/internals/add-to-unscopables.js");
+var arrayMethodUsesToLength = __webpack_require__(/*! ../internals/array-method-uses-to-length */ "./node_modules/core-js/internals/array-method-uses-to-length.js");
+
+var USES_TO_LENGTH = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
+
+// `Array.prototype.includes` method
+// https://tc39.github.io/ecma262/#sec-array.prototype.includes
+$({ target: 'Array', proto: true, forced: !USES_TO_LENGTH }, {
+  includes: function includes(el /* , fromIndex = 0 */) {
+    return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+addToUnscopables('includes');
 
 
 /***/ }),
@@ -30873,6 +30916,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_stable_map__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_stable_map__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var core_js_es_array_fill__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! core-js/es/array/fill */ "./node_modules/core-js/es/array/fill.js");
 /* harmony import */ var core_js_es_array_fill__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_es_array_fill__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var core_js_es_array_includes__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! core-js/es/array/includes */ "./node_modules/core-js/es/array/includes.js");
+/* harmony import */ var core_js_es_array_includes__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_es_array_includes__WEBPACK_IMPORTED_MODULE_9__);
 
  // graphql
 
@@ -30882,6 +30927,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
  // @graphql-tools/schema
+
 
 
 }();
