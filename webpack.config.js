@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const babelConfig = require("./babel.config.json");
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: ["./src/polyfill.ts", "./src/index.ts"],
   devtool: false,
   output: {
     filename: "app.[contenthash].js",
