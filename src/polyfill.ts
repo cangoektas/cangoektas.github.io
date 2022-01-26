@@ -11,8 +11,3 @@ import "core-js/stable/map";
 import "core-js/es/array/fill";
 import "core-js/es/array/includes";
 import "core-js/es/array/flat-map";
-import globalThisPolyfill from "core-js/internals/global";
-if (typeof globalThis != "object") {
-  // @ts-ignore
-  window.globalThis = globalThisPolyfill;
-}
