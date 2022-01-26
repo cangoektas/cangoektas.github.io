@@ -31027,6 +31027,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_es_array_flat_map__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_es_array_flat_map__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var core_js_internals_global__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! core-js/internals/global */ "./node_modules/core-js/internals/global.js");
 /* harmony import */ var core_js_internals_global__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_internals_global__WEBPACK_IMPORTED_MODULE_11__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 
  // graphql
 
@@ -31041,6 +31043,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+if ((typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) != "object") {
+  // @ts-ignore
+  window.globalThis = (core_js_internals_global__WEBPACK_IMPORTED_MODULE_11___default());
+}
 }();
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 !function() {
