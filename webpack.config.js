@@ -6,7 +6,7 @@ module.exports = {
   entry: ["./src/polyfill.ts", "./src/index.ts"],
   devtool: false,
   output: {
-    filename: "app.[contenthash].js",
+    filename: "app.js",
     path: path.resolve(__dirname, "docs"),
     clean: true,
   },
@@ -29,7 +29,17 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [require.resolve("@babel/preset-env")],
+            babelrc: false,
+            presets: [
+              [
+                require.resolve("@babel/preset-env"),
+                {
+                  // modules: false,
+                  // loose: true,
+                  // useBuiltIns: false,
+                },
+              ],
+            ],
           },
         },
       },

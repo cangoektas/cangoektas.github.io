@@ -1,1 +1,6 @@
+chrome >= 40
+edge >= 12
+firefox >= 41
 ie >= 11
+opera >= 27
+safari >= 8
