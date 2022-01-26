@@ -34,9 +34,9 @@ module.exports = {
               [
                 require.resolve("@babel/preset-env"),
                 {
-                  // modules: false,
-                  // loose: true,
-                  // useBuiltIns: false,
+                  modules: false,
+                  loose: true,
+                  useBuiltIns: false,
                 },
               ],
             ],
