@@ -12765,50 +12765,236 @@ function fixSchemaAst(schema, options) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "GraphQLError": function() { return /* binding */ GraphQLError; },
-/* harmony export */   "printError": function() { return /* binding */ printError; },
-/* harmony export */   "formatError": function() { return /* binding */ formatError; }
+/* harmony export */   "printError": function() { return /* binding */ printError; }
 /* harmony export */ });
 /* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
+/* harmony import */ var _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../polyfills/symbols.mjs */ "./node_modules/graphql/polyfills/symbols.mjs");
 /* harmony import */ var _language_location_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../language/location.mjs */ "./node_modules/graphql/language/location.mjs");
-/* harmony import */ var _language_printLocation_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../language/printLocation.mjs */ "./node_modules/graphql/language/printLocation.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+/* harmony import */ var _language_printLocation_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../language/printLocation.mjs */ "./node_modules/graphql/language/printLocation.mjs");
+function _typeof(obj) {
+  "@babel/helpers - typeof";
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+  return _typeof(obj);
+}
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+  return keys;
+}
 
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
 
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
 
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+  return target;
+}
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
 
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+  return obj;
+}
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _wrapNativeSuper(Class) {
+  var _cache = typeof Map === "function" ? new Map() : undefined;
+
+  _wrapNativeSuper = function _wrapNativeSuper(Class) {
+    if (Class === null || !_isNativeFunction(Class)) return Class;
+
+    if (typeof Class !== "function") {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+
+    if (typeof _cache !== "undefined") {
+      if (_cache.has(Class)) return _cache.get(Class);
+
+      _cache.set(Class, Wrapper);
+    }
+
+    function Wrapper() {
+      return _construct(Class, arguments, _getPrototypeOf(this).constructor);
+    }
+
+    Wrapper.prototype = Object.create(Class.prototype, {
+      constructor: {
+        value: Wrapper,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    return _setPrototypeOf(Wrapper, Class);
+  };
+
+  return _wrapNativeSuper(Class);
+}
+
+function _construct(Parent, args, Class) {
+  if (_isNativeReflectConstruct()) {
+    _construct = Reflect.construct;
+  } else {
+    _construct = function _construct(Parent, args, Class) {
+      var a = [null];
+      a.push.apply(a, args);
+      var Constructor = Function.bind.apply(Parent, a);
+      var instance = new Constructor();
+      if (Class) _setPrototypeOf(instance, Class.prototype);
+      return instance;
+    };
+  }
+
+  return _construct.apply(null, arguments);
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _isNativeFunction(fn) {
+  return Function.toString.call(fn).indexOf("[native code]") !== -1;
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
 
 
 
 
-/**
- * Custom extensions
- *
- * @remarks
- * Use a unique identifier name for your extension, for example the name of
- * your library or project. Do not use a shortened identifier as this increases
- * the risk of conflicts. We recommend you add at most one extension field,
- * an object which can contain all the values you need.
- */
 
 /**
  * A GraphQLError describes an Error found during the parse, validate, or
@@ -12817,11 +13003,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  * GraphQL document and/or execution result that correspond to the Error.
  */
 
-var GraphQLError = /*#__PURE__*/function (_Error, _Symbol$toStringTag) {
-  _inheritsLoose(GraphQLError, _Error);
+var GraphQLError = /*#__PURE__*/function (_Error) {
+  _inherits(GraphQLError, _Error);
 
+  var _super = _createSuper(GraphQLError);
   /**
-   * An array of `{ line, column }` locations within the source GraphQL document
+   * An array of { line, column } locations within the source GraphQL document
    * which correspond to this error.
    *
    * Errors during validation often contain multiple locations, for example to
@@ -12861,40 +13048,67 @@ var GraphQLError = /*#__PURE__*/function (_Error, _Symbol$toStringTag) {
   /**
    * Extension fields to add to the formatted error.
    */
+
+
   function GraphQLError(message, nodes, source, positions, path, originalError, extensions) {
+    var _nodeLocations, _nodeLocations2, _nodeLocations3;
+
     var _this;
 
-    var _this$nodes, _nodeLocations$, _ref;
+    _classCallCheck(this, GraphQLError);
 
-    _this = _Error.call(this, message) || this;
+    _this = _super.call(this, message);
     _this.name = 'GraphQLError';
-    _this.path = path !== null && path !== void 0 ? path : undefined;
     _this.originalError = originalError !== null && originalError !== void 0 ? originalError : undefined; // Compute list of blame nodes.
 
     _this.nodes = undefinedIfEmpty(Array.isArray(nodes) ? nodes : nodes ? [nodes] : undefined);
-    var nodeLocations = undefinedIfEmpty((_this$nodes = _this.nodes) === null || _this$nodes === void 0 ? void 0 : _this$nodes.map(function (node) {
-      return node.loc;
-    }).filter(function (loc) {
-      return loc != null;
-    })); // Compute locations in the source for the given nodes/positions.
+    var nodeLocations = [];
 
-    _this.source = source !== null && source !== void 0 ? source : nodeLocations === null || nodeLocations === void 0 ? void 0 : (_nodeLocations$ = nodeLocations[0]) === null || _nodeLocations$ === void 0 ? void 0 : _nodeLocations$.source;
-    _this.positions = positions !== null && positions !== void 0 ? positions : nodeLocations === null || nodeLocations === void 0 ? void 0 : nodeLocations.map(function (loc) {
+    for (var _i2 = 0, _ref3 = (_this$nodes = _this.nodes) !== null && _this$nodes !== void 0 ? _this$nodes : []; _i2 < _ref3.length; _i2++) {
+      var _this$nodes;
+
+      var _ref4 = _ref3[_i2];
+      var loc = _ref4.loc;
+
+      if (loc != null) {
+        nodeLocations.push(loc);
+      }
+    }
+
+    nodeLocations = undefinedIfEmpty(nodeLocations); // Compute locations in the source for the given nodes/positions.
+
+    _this.source = source !== null && source !== void 0 ? source : (_nodeLocations = nodeLocations) === null || _nodeLocations === void 0 ? void 0 : _nodeLocations[0].source;
+    _this.positions = positions !== null && positions !== void 0 ? positions : (_nodeLocations2 = nodeLocations) === null || _nodeLocations2 === void 0 ? void 0 : _nodeLocations2.map(function (loc) {
       return loc.start;
     });
     _this.locations = positions && source ? positions.map(function (pos) {
       return (0,_language_location_mjs__WEBPACK_IMPORTED_MODULE_0__.getLocation)(source, pos);
-    }) : nodeLocations === null || nodeLocations === void 0 ? void 0 : nodeLocations.map(function (loc) {
+    }) : (_nodeLocations3 = nodeLocations) === null || _nodeLocations3 === void 0 ? void 0 : _nodeLocations3.map(function (loc) {
       return (0,_language_location_mjs__WEBPACK_IMPORTED_MODULE_0__.getLocation)(loc.source, loc.start);
     });
-    var originalExtensions = (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_1__.isObjectLike)(originalError === null || originalError === void 0 ? void 0 : originalError.extensions) ? originalError === null || originalError === void 0 ? void 0 : originalError.extensions : undefined;
-    _this.extensions = (_ref = extensions !== null && extensions !== void 0 ? extensions : originalExtensions) !== null && _ref !== void 0 ? _ref : Object.create(null); // Only properties prescribed by the spec should be enumerable.
-    // Keep the rest as non-enumerable.
+    _this.path = path !== null && path !== void 0 ? path : undefined;
+    var originalExtensions = originalError === null || originalError === void 0 ? void 0 : originalError.extensions;
+
+    if (extensions == null && (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(originalExtensions)) {
+      _this.extensions = _objectSpread({}, originalExtensions);
+    } else {
+      _this.extensions = extensions !== null && extensions !== void 0 ? extensions : {};
+    } // By being enumerable, JSON.stringify will include bellow properties in the resulting output.
+    // This ensures that the simplest possible GraphQL service adheres to the spec.
+
 
     Object.defineProperties(_assertThisInitialized(_this), {
       message: {
-        writable: true,
         enumerable: true
+      },
+      locations: {
+        enumerable: _this.locations != null
+      },
+      path: {
+        enumerable: _this.path != null
+      },
+      extensions: {
+        enumerable: _this.extensions != null && Object.keys(_this.extensions).length > 0
       },
       name: {
         enumerable: false
@@ -12913,16 +13127,17 @@ var GraphQLError = /*#__PURE__*/function (_Error, _Symbol$toStringTag) {
       }
     }); // Include (non-enumerable) stack trace.
 
-    /* c8 ignore start */
-    // FIXME: https://github.com/graphql/graphql-js/issues/2317
-
     if (originalError !== null && originalError !== void 0 && originalError.stack) {
       Object.defineProperty(_assertThisInitialized(_this), 'stack', {
         value: originalError.stack,
         writable: true,
         configurable: true
       });
-    } else if (Error.captureStackTrace) {
+      return _possibleConstructorReturn(_this);
+    } // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2317')
+
+
+    if (Error.captureStackTrace) {
       Error.captureStackTrace(_assertThisInitialized(_this), GraphQLError);
     } else {
       Object.defineProperty(_assertThisInitialized(_this), 'stack', {
@@ -12931,92 +13146,55 @@ var GraphQLError = /*#__PURE__*/function (_Error, _Symbol$toStringTag) {
         configurable: true
       });
     }
-    /* c8 ignore stop */
-
 
     return _this;
   }
 
-  var _proto = GraphQLError.prototype;
-
-  _proto.toString = function toString() {
-    var output = this.message;
-
-    if (this.nodes) {
-      for (var _iterator = _createForOfIteratorHelperLoose(this.nodes), _step; !(_step = _iterator()).done;) {
-        var node = _step.value;
-
-        if (node.loc) {
-          output += '\n\n' + (0,_language_printLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.printLocation)(node.loc);
-        }
-      }
-    } else if (this.source && this.locations) {
-      for (var _iterator2 = _createForOfIteratorHelperLoose(this.locations), _step2; !(_step2 = _iterator2()).done;) {
-        var location = _step2.value;
-        output += '\n\n' + (0,_language_printLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.printSourceLocation)(this.source, location);
-      }
-    }
-
-    return output;
-  };
-
-  _proto.toJSON = function toJSON() {
-    var formattedError = {
-      message: this.message
-    };
-
-    if (this.locations != null) {
-      formattedError.locations = this.locations;
-    }
-
-    if (this.path != null) {
-      formattedError.path = this.path;
-    }
-
-    if (this.extensions != null && Object.keys(this.extensions).length > 0) {
-      formattedError.extensions = this.extensions;
-    }
-
-    return formattedError;
-  };
-
   _createClass(GraphQLError, [{
-    key: _Symbol$toStringTag,
+    key: "toString",
+    value: function toString() {
+      return printError(this);
+    } // FIXME: workaround to not break chai comparisons, should be remove in v16
+    // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+
+  }, {
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG,
     get: function get() {
-      return 'GraphQLError';
+      return 'Object';
     }
   }]);
 
   return GraphQLError;
-}( /*#__PURE__*/_wrapNativeSuper(Error), Symbol.toStringTag);
+}( /*#__PURE__*/_wrapNativeSuper(Error));
 
 function undefinedIfEmpty(array) {
   return array === undefined || array.length === 0 ? undefined : array;
 }
 /**
- * See: https://spec.graphql.org/draft/#sec-Errors
- */
-
-/**
  * Prints a GraphQLError to a string, representing useful location information
  * about the error's position in the source.
- *
- * @deprecated Please use `error.toString` instead. Will be removed in v17
  */
 
 
 function printError(error) {
-  return error.toString();
-}
-/**
- * Given a GraphQLError, format it according to the rules described by the
- * Response Format, Errors section of the GraphQL Specification.
- *
- * @deprecated Please use `error.toString` instead. Will be removed in v17
- */
+  var output = error.message;
 
-function formatError(error) {
-  return error.toJSON();
+  if (error.nodes) {
+    for (var _i4 = 0, _error$nodes2 = error.nodes; _i4 < _error$nodes2.length; _i4++) {
+      var node = _error$nodes2[_i4];
+
+      if (node.loc) {
+        output += '\n\n' + (0,_language_printLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.printLocation)(node.loc);
+      }
+    }
+  } else if (error.source && error.locations) {
+    for (var _i6 = 0, _error$locations2 = error.locations; _i6 < _error$locations2.length; _i6++) {
+      var location = _error$locations2[_i6];
+      output += '\n\n' + (0,_language_printLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.printSourceLocation)(error.source, location);
+    }
+  }
+
+  return output;
 }
 
 /***/ }),
@@ -13032,7 +13210,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "locatedError": function() { return /* binding */ locatedError; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_toError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/toError.mjs */ "./node_modules/graphql/jsutils/toError.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
 /* harmony import */ var _GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 
 
@@ -13043,19 +13221,16 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 function locatedError(rawOriginalError, nodes, path) {
-  var _nodes;
+  var _nodes; // Sometimes a non-error is thrown, wrap it as an Error instance to ensure a consistent Error interface.
 
-  var originalError = (0,_jsutils_toError_mjs__WEBPACK_IMPORTED_MODULE_0__.toError)(rawOriginalError); // Note: this uses a brand-check to support GraphQL errors originating from other contexts.
 
-  if (isLocatedGraphQLError(originalError)) {
+  var originalError = rawOriginalError instanceof Error ? rawOriginalError : new Error('Unexpected error value: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(rawOriginalError)); // Note: this uses a brand-check to support GraphQL errors originating from other contexts.
+
+  if (Array.isArray(originalError.path)) {
     return originalError;
   }
 
   return new _GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError(originalError.message, (_nodes = originalError.nodes) !== null && _nodes !== void 0 ? _nodes : nodes, originalError.source, originalError.positions, path, originalError);
-}
-
-function isLocatedGraphQLError(error) {
-  return Array.isArray(error.path);
 }
 
 /***/ }),
@@ -13079,186 +13254,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 function syntaxError(source, position, description) {
-  return new _GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Syntax Error: " + description, undefined, source, [position]);
-}
-
-/***/ }),
-
-/***/ "./node_modules/graphql/execution/collectFields.mjs":
-/*!**********************************************************!*\
-  !*** ./node_modules/graphql/execution/collectFields.mjs ***!
-  \**********************************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "collectFields": function() { return /* binding */ collectFields; },
-/* harmony export */   "collectSubfields": function() { return /* binding */ collectSubfields; }
-/* harmony export */ });
-/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
-/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-/* harmony import */ var _utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utilities/typeFromAST.mjs */ "./node_modules/graphql/utilities/typeFromAST.mjs");
-/* harmony import */ var _values_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./values.mjs */ "./node_modules/graphql/execution/values.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
-
-
-
-
-/**
- * Given a selectionSet, collects all of the fields and returns them.
- *
- * CollectFields requires the "runtime type" of an object. For a field that
- * returns an Interface or Union type, the "runtime type" will be the actual
- * object type returned by that field.
- *
- * @internal
- */
-
-function collectFields(schema, fragments, variableValues, runtimeType, selectionSet) {
-  var fields = new Map();
-  collectFieldsImpl(schema, fragments, variableValues, runtimeType, selectionSet, fields, new Set());
-  return fields;
-}
-/**
- * Given an array of field nodes, collects all of the subfields of the passed
- * in fields, and returns them at the end.
- *
- * CollectSubFields requires the "return type" of an object. For a field that
- * returns an Interface or Union type, the "return type" will be the actual
- * object type returned by that field.
- *
- * @internal
- */
-
-function collectSubfields(schema, fragments, variableValues, returnType, fieldNodes) {
-  var subFieldNodes = new Map();
-  var visitedFragmentNames = new Set();
-
-  for (var _iterator = _createForOfIteratorHelperLoose(fieldNodes), _step; !(_step = _iterator()).done;) {
-    var node = _step.value;
-
-    if (node.selectionSet) {
-      collectFieldsImpl(schema, fragments, variableValues, returnType, node.selectionSet, subFieldNodes, visitedFragmentNames);
-    }
-  }
-
-  return subFieldNodes;
-}
-
-function collectFieldsImpl(schema, fragments, variableValues, runtimeType, selectionSet, fields, visitedFragmentNames) {
-  for (var _iterator2 = _createForOfIteratorHelperLoose(selectionSet.selections), _step2; !(_step2 = _iterator2()).done;) {
-    var selection = _step2.value;
-
-    switch (selection.kind) {
-      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.FIELD:
-        {
-          if (!shouldIncludeNode(variableValues, selection)) {
-            continue;
-          }
-
-          var name = getFieldEntryKey(selection);
-          var fieldList = fields.get(name);
-
-          if (fieldList !== undefined) {
-            fieldList.push(selection);
-          } else {
-            fields.set(name, [selection]);
-          }
-
-          break;
-        }
-
-      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.INLINE_FRAGMENT:
-        {
-          if (!shouldIncludeNode(variableValues, selection) || !doesFragmentConditionMatch(schema, selection, runtimeType)) {
-            continue;
-          }
-
-          collectFieldsImpl(schema, fragments, variableValues, runtimeType, selection.selectionSet, fields, visitedFragmentNames);
-          break;
-        }
-
-      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.FRAGMENT_SPREAD:
-        {
-          var fragName = selection.name.value;
-
-          if (visitedFragmentNames.has(fragName) || !shouldIncludeNode(variableValues, selection)) {
-            continue;
-          }
-
-          visitedFragmentNames.add(fragName);
-          var fragment = fragments[fragName];
-
-          if (!fragment || !doesFragmentConditionMatch(schema, fragment, runtimeType)) {
-            continue;
-          }
-
-          collectFieldsImpl(schema, fragments, variableValues, runtimeType, fragment.selectionSet, fields, visitedFragmentNames);
-          break;
-        }
-    }
-  }
-}
-/**
- * Determines if a field should be included based on the `@include` and `@skip`
- * directives, where `@skip` has higher precedence than `@include`.
- */
-
-
-function shouldIncludeNode(variableValues, node) {
-  var skip = (0,_values_mjs__WEBPACK_IMPORTED_MODULE_1__.getDirectiveValues)(_type_directives_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLSkipDirective, node, variableValues);
-
-  if ((skip === null || skip === void 0 ? void 0 : skip.if) === true) {
-    return false;
-  }
-
-  var include = (0,_values_mjs__WEBPACK_IMPORTED_MODULE_1__.getDirectiveValues)(_type_directives_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLIncludeDirective, node, variableValues);
-
-  if ((include === null || include === void 0 ? void 0 : include.if) === false) {
-    return false;
-  }
-
-  return true;
-}
-/**
- * Determines if a fragment is applicable to the given type.
- */
-
-
-function doesFragmentConditionMatch(schema, fragment, type) {
-  var typeConditionNode = fragment.typeCondition;
-
-  if (!typeConditionNode) {
-    return true;
-  }
-
-  var conditionalType = (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_3__.typeFromAST)(schema, typeConditionNode);
-
-  if (conditionalType === type) {
-    return true;
-  }
-
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_4__.isAbstractType)(conditionalType)) {
-    return schema.isSubType(conditionalType, type);
-  }
-
-  return false;
-}
-/**
- * Implements the logic to compute the key of a given field's entry
- */
-
-
-function getFieldEntryKey(node) {
-  return node.alias ? node.alias.value : node.name.value;
+  return new _GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Syntax Error: ".concat(description), undefined, source, [position]);
 }
 
 /***/ }),
@@ -13276,35 +13272,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "executeSync": function() { return /* binding */ executeSync; },
 /* harmony export */   "assertValidExecutionArguments": function() { return /* binding */ assertValidExecutionArguments; },
 /* harmony export */   "buildExecutionContext": function() { return /* binding */ buildExecutionContext; },
+/* harmony export */   "collectFields": function() { return /* binding */ collectFields; },
 /* harmony export */   "buildResolveInfo": function() { return /* binding */ buildResolveInfo; },
 /* harmony export */   "defaultTypeResolver": function() { return /* binding */ defaultTypeResolver; },
 /* harmony export */   "defaultFieldResolver": function() { return /* binding */ defaultFieldResolver; },
 /* harmony export */   "getFieldDef": function() { return /* binding */ getFieldDef; }
 /* harmony export */ });
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_memoize3_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/memoize3.mjs */ "./node_modules/graphql/jsutils/memoize3.mjs");
+/* harmony import */ var _jsutils_memoize3_mjs__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../jsutils/memoize3.mjs */ "./node_modules/graphql/jsutils/memoize3.mjs");
 /* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
-/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
-/* harmony import */ var _jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/isPromise.mjs */ "./node_modules/graphql/jsutils/isPromise.mjs");
-/* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
-/* harmony import */ var _jsutils_promiseReduce_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../jsutils/promiseReduce.mjs */ "./node_modules/graphql/jsutils/promiseReduce.mjs");
-/* harmony import */ var _jsutils_promiseForObject_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../jsutils/promiseForObject.mjs */ "./node_modules/graphql/jsutils/promiseForObject.mjs");
-/* harmony import */ var _jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../jsutils/Path.mjs */ "./node_modules/graphql/jsutils/Path.mjs");
-/* harmony import */ var _jsutils_isIterableObject_mjs__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../jsutils/isIterableObject.mjs */ "./node_modules/graphql/jsutils/isIterableObject.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-/* harmony import */ var _error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../error/locatedError.mjs */ "./node_modules/graphql/error/locatedError.mjs");
-/* harmony import */ var _language_ast_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../language/ast.mjs */ "./node_modules/graphql/language/ast.mjs");
-/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _type_validate_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../type/validate.mjs */ "./node_modules/graphql/type/validate.mjs");
-/* harmony import */ var _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../type/introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
-/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-/* harmony import */ var _values_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./values.mjs */ "./node_modules/graphql/execution/values.mjs");
-/* harmony import */ var _collectFields_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./collectFields.mjs */ "./node_modules/graphql/execution/collectFields.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
+/* harmony import */ var _jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/isPromise.mjs */ "./node_modules/graphql/jsutils/isPromise.mjs");
+/* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
+/* harmony import */ var _jsutils_safeArrayFrom_mjs__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../jsutils/safeArrayFrom.mjs */ "./node_modules/graphql/jsutils/safeArrayFrom.mjs");
+/* harmony import */ var _jsutils_promiseReduce_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/promiseReduce.mjs */ "./node_modules/graphql/jsutils/promiseReduce.mjs");
+/* harmony import */ var _jsutils_promiseForObject_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../jsutils/promiseForObject.mjs */ "./node_modules/graphql/jsutils/promiseForObject.mjs");
+/* harmony import */ var _jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../jsutils/Path.mjs */ "./node_modules/graphql/jsutils/Path.mjs");
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
+/* harmony import */ var _error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../error/locatedError.mjs */ "./node_modules/graphql/error/locatedError.mjs");
+/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
+/* harmony import */ var _type_validate_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../type/validate.mjs */ "./node_modules/graphql/type/validate.mjs");
+/* harmony import */ var _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../type/introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
+/* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
+/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+/* harmony import */ var _utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../utilities/typeFromAST.mjs */ "./node_modules/graphql/utilities/typeFromAST.mjs");
+/* harmony import */ var _utilities_getOperationRootType_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utilities/getOperationRootType.mjs */ "./node_modules/graphql/utilities/getOperationRootType.mjs");
+/* harmony import */ var _values_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./values.mjs */ "./node_modules/graphql/execution/values.mjs");
 
 
 
@@ -13325,15 +13318,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
-/**
- * A memoized collection of relevant subfields with regard to the return
- * type. Memoizing ensures the subfields are not repeatedly calculated, which
- * saves overhead when resolving lists of values.
- */
-
-var collectSubfields = (0,_jsutils_memoize3_mjs__WEBPACK_IMPORTED_MODULE_0__.memoize3)(function (exeContext, returnType, fieldNodes) {
-  return (0,_collectFields_mjs__WEBPACK_IMPORTED_MODULE_1__.collectSubfields)(exeContext.schema, exeContext.fragments, exeContext.variableValues, returnType, fieldNodes);
-});
 /**
  * Terminology
  *
@@ -13349,9 +13333,9 @@ var collectSubfields = (0,_jsutils_memoize3_mjs__WEBPACK_IMPORTED_MODULE_0__.mem
  *
  * "Selections" are the definitions that can appear legally and at
  * single level of the query. These include:
- * 1) field references e.g `a`
- * 2) fragment "spreads" e.g. `...c`
- * 3) inline fragment "spreads" e.g. `...on Type { a }`
+ * 1) field references e.g "a"
+ * 2) fragment "spreads" e.g. "...c"
+ * 3) inline fragment "spreads" e.g. "...on Type { a }"
  */
 
 /**
@@ -13361,31 +13345,52 @@ var collectSubfields = (0,_jsutils_memoize3_mjs__WEBPACK_IMPORTED_MODULE_0__.mem
  * and the fragments defined in the query document
  */
 
+function execute(argsOrSchema, document, rootValue, contextValue, variableValues, operationName, fieldResolver, typeResolver) {
+  /* eslint-enable no-redeclare */
+  // Extract arguments from object args if provided.
+  return arguments.length === 1 ? executeImpl(argsOrSchema) : executeImpl({
+    schema: argsOrSchema,
+    document: document,
+    rootValue: rootValue,
+    contextValue: contextValue,
+    variableValues: variableValues,
+    operationName: operationName,
+    fieldResolver: fieldResolver,
+    typeResolver: typeResolver
+  });
+}
 /**
- * Implements the "Executing requests" section of the GraphQL specification.
- *
- * Returns either a synchronous ExecutionResult (if all encountered resolvers
- * are synchronous), or a Promise of an ExecutionResult that will eventually be
- * resolved and never rejected.
- *
- * If the arguments to this function do not result in a legal execution context,
- * a GraphQLError will be thrown immediately explaining the invalid input.
+ * Also implements the "Evaluating requests" section of the GraphQL specification.
+ * However, it guarantees to complete synchronously (or throw an error) assuming
+ * that all field resolvers are also synchronous.
  */
 
-function execute(args) {
-  // Temporary for v15 to v16 migration. Remove in v17
-  arguments.length < 2 || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, 'graphql@16 dropped long-deprecated support for positional arguments, please pass an object instead.');
+function executeSync(args) {
+  var result = executeImpl(args); // Assert that the execution was synchronous.
+
+  if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(result)) {
+    throw new Error('GraphQL execution failed to complete synchronously.');
+  }
+
+  return result;
+}
+
+function executeImpl(args) {
   var schema = args.schema,
       document = args.document,
+      rootValue = args.rootValue,
+      contextValue = args.contextValue,
       variableValues = args.variableValues,
-      rootValue = args.rootValue; // If arguments are missing or incorrect, throw an error.
+      operationName = args.operationName,
+      fieldResolver = args.fieldResolver,
+      typeResolver = args.typeResolver; // If arguments are missing or incorrect, throw an error.
 
   assertValidExecutionArguments(schema, document, variableValues); // If a valid execution context cannot be created due to incorrect arguments,
   // a "Response" with only errors is returned.
 
-  var exeContext = buildExecutionContext(args); // Return early errors if execution context failed.
+  var exeContext = buildExecutionContext(schema, document, rootValue, contextValue, variableValues, operationName, fieldResolver, typeResolver); // Return early errors if execution context failed.
 
-  if (!('schema' in exeContext)) {
+  if (Array.isArray(exeContext)) {
     return {
       errors: exeContext
     };
@@ -13396,56 +13401,28 @@ function execute(args) {
   // field and its descendants will be omitted, and sibling fields will still
   // be executed. An execution which encounters errors will still result in a
   // resolved Promise.
-  //
-  // Errors from sub-fields of a NonNull type may propagate to the top level,
-  // at which point we still log the error and null the parent field, which
-  // in this case is the entire response.
 
 
-  try {
-    var operation = exeContext.operation;
-    var result = executeOperation(exeContext, operation, rootValue);
-
-    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(result)) {
-      return result.then(function (data) {
-        return buildResponse(data, exeContext.errors);
-      }, function (error) {
-        exeContext.errors.push(error);
-        return buildResponse(null, exeContext.errors);
-      });
-    }
-
-    return buildResponse(result, exeContext.errors);
-  } catch (error) {
-    exeContext.errors.push(error);
-    return buildResponse(null, exeContext.errors);
-  }
+  var data = executeOperation(exeContext, exeContext.operation, rootValue);
+  return buildResponse(exeContext, data);
 }
 /**
- * Also implements the "Executing requests" section of the GraphQL specification.
- * However, it guarantees to complete synchronously (or throw an error) assuming
- * that all field resolvers are also synchronous.
- */
-
-function executeSync(args) {
-  var result = execute(args); // Assert that the execution was synchronous.
-
-  if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(result)) {
-    throw new Error('GraphQL execution failed to complete synchronously.');
-  }
-
-  return result;
-}
-/**
- * Given a completed execution context and data, build the `{ errors, data }`
+ * Given a completed execution context and data, build the { errors, data }
  * response defined by the "Response" section of the GraphQL specification.
  */
 
-function buildResponse(data, errors) {
-  return errors.length === 0 ? {
+
+function buildResponse(exeContext, data) {
+  if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(data)) {
+    return data.then(function (resolved) {
+      return buildResponse(exeContext, resolved);
+    });
+  }
+
+  return exeContext.errors.length === 0 ? {
     data: data
   } : {
-    errors: errors,
+    errors: exeContext.errors,
     data: data
   };
 }
@@ -13458,11 +13435,11 @@ function buildResponse(data, errors) {
 
 
 function assertValidExecutionArguments(schema, document, rawVariableValues) {
-  document || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, 'Must provide document.'); // If the schema used for execution is invalid, throw an error.
+  document || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(0, 'Must provide document.'); // If the schema used for execution is invalid, throw an error.
 
-  (0,_type_validate_mjs__WEBPACK_IMPORTED_MODULE_4__.assertValidSchema)(schema); // Variables, if provided, must be an object.
+  (0,_type_validate_mjs__WEBPACK_IMPORTED_MODULE_2__.assertValidSchema)(schema); // Variables, if provided, must be an object.
 
-  rawVariableValues == null || (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__.isObjectLike)(rawVariableValues) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, 'Variables must be provided as an Object where each property is a variable value. Perhaps look to see if an unparsed JSON string was provided.');
+  rawVariableValues == null || (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(rawVariableValues) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(0, 'Variables must be provided as an Object where each property is a variable value. Perhaps look to see if an unparsed JSON string was provided.');
 }
 /**
  * Constructs a ExecutionContext object from the arguments passed to
@@ -13473,29 +13450,20 @@ function assertValidExecutionArguments(schema, document, rawVariableValues) {
  * @internal
  */
 
-function buildExecutionContext(args) {
+function buildExecutionContext(schema, document, rootValue, contextValue, rawVariableValues, operationName, fieldResolver, typeResolver) {
   var _definition$name, _operation$variableDe;
 
-  var schema = args.schema,
-      document = args.document,
-      rootValue = args.rootValue,
-      contextValue = args.contextValue,
-      rawVariableValues = args.variableValues,
-      operationName = args.operationName,
-      fieldResolver = args.fieldResolver,
-      typeResolver = args.typeResolver,
-      subscribeFieldResolver = args.subscribeFieldResolver;
   var operation;
   var fragments = Object.create(null);
 
-  for (var _iterator = _createForOfIteratorHelperLoose(document.definitions), _step; !(_step = _iterator()).done;) {
-    var definition = _step.value;
+  for (var _i2 = 0, _document$definitions2 = document.definitions; _i2 < _document$definitions2.length; _i2++) {
+    var definition = _document$definitions2[_i2];
 
     switch (definition.kind) {
-      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_6__.Kind.OPERATION_DEFINITION:
+      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.OPERATION_DEFINITION:
         if (operationName == null) {
           if (operation !== undefined) {
-            return [new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError('Must provide operation name if query contains multiple operations.')];
+            return [new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError('Must provide operation name if query contains multiple operations.')];
           }
 
           operation = definition;
@@ -13505,28 +13473,23 @@ function buildExecutionContext(args) {
 
         break;
 
-      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_6__.Kind.FRAGMENT_DEFINITION:
+      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.FRAGMENT_DEFINITION:
         fragments[definition.name.value] = definition;
         break;
-
-      default: // ignore non-executable definitions
-
     }
   }
 
   if (!operation) {
     if (operationName != null) {
-      return [new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Unknown operation named \"" + operationName + "\".")];
+      return [new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError("Unknown operation named \"".concat(operationName, "\"."))];
     }
 
-    return [new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError('Must provide an operation.')];
-  } // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-  /* c8 ignore next */
+    return [new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError('Must provide an operation.')];
+  } // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
 
   var variableDefinitions = (_operation$variableDe = operation.variableDefinitions) !== null && _operation$variableDe !== void 0 ? _operation$variableDe : [];
-  var coercedVariableValues = (0,_values_mjs__WEBPACK_IMPORTED_MODULE_8__.getVariableValues)(schema, variableDefinitions, rawVariableValues !== null && rawVariableValues !== void 0 ? rawVariableValues : {}, {
+  var coercedVariableValues = (0,_values_mjs__WEBPACK_IMPORTED_MODULE_6__.getVariableValues)(schema, variableDefinitions, rawVariableValues !== null && rawVariableValues !== void 0 ? rawVariableValues : {}, {
     maxErrors: 50
   });
 
@@ -13543,55 +13506,53 @@ function buildExecutionContext(args) {
     variableValues: coercedVariableValues.coerced,
     fieldResolver: fieldResolver !== null && fieldResolver !== void 0 ? fieldResolver : defaultFieldResolver,
     typeResolver: typeResolver !== null && typeResolver !== void 0 ? typeResolver : defaultTypeResolver,
-    subscribeFieldResolver: subscribeFieldResolver !== null && subscribeFieldResolver !== void 0 ? subscribeFieldResolver : defaultFieldResolver,
     errors: []
   };
 }
 /**
- * Implements the "Executing operations" section of the spec.
+ * Implements the "Evaluating operations" section of the spec.
  */
 
 function executeOperation(exeContext, operation, rootValue) {
-  var rootType = exeContext.schema.getRootType(operation.operation);
+  var type = (0,_utilities_getOperationRootType_mjs__WEBPACK_IMPORTED_MODULE_7__.getOperationRootType)(exeContext.schema, operation);
+  var fields = collectFields(exeContext, type, operation.selectionSet, Object.create(null), Object.create(null));
+  var path = undefined; // Errors from sub-fields of a NonNull type may propagate to the top level,
+  // at which point we still log the error and null the parent field, which
+  // in this case is the entire response.
 
-  if (rootType == null) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Schema is not configured to execute " + operation.operation + " operation.", operation);
-  }
+  try {
+    var result = operation.operation === 'mutation' ? executeFieldsSerially(exeContext, type, rootValue, path, fields) : executeFields(exeContext, type, rootValue, path, fields);
 
-  var rootFields = (0,_collectFields_mjs__WEBPACK_IMPORTED_MODULE_1__.collectFields)(exeContext.schema, exeContext.fragments, exeContext.variableValues, rootType, operation.selectionSet);
-  var path = undefined;
+    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(result)) {
+      return result.then(undefined, function (error) {
+        exeContext.errors.push(error);
+        return Promise.resolve(null);
+      });
+    }
 
-  switch (operation.operation) {
-    case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_9__.OperationTypeNode.QUERY:
-      return executeFields(exeContext, rootType, rootValue, path, rootFields);
-
-    case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_9__.OperationTypeNode.MUTATION:
-      return executeFieldsSerially(exeContext, rootType, rootValue, path, rootFields);
-
-    case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_9__.OperationTypeNode.SUBSCRIPTION:
-      // TODO: deprecate `subscribe` and move all logic here
-      // Temporary solution until we finish merging execute and subscribe together
-      return executeFields(exeContext, rootType, rootValue, path, rootFields);
+    return result;
+  } catch (error) {
+    exeContext.errors.push(error);
+    return null;
   }
 }
 /**
- * Implements the "Executing selection sets" section of the spec
- * for fields that must be executed serially.
+ * Implements the "Evaluating selection sets" section of the spec
+ * for "write" mode.
  */
 
 
 function executeFieldsSerially(exeContext, parentType, sourceValue, path, fields) {
-  return (0,_jsutils_promiseReduce_mjs__WEBPACK_IMPORTED_MODULE_10__.promiseReduce)(fields.entries(), function (results, _ref) {
-    var responseName = _ref[0],
-        fieldNodes = _ref[1];
-    var fieldPath = (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_11__.addPath)(path, responseName, parentType.name);
-    var result = executeField(exeContext, parentType, sourceValue, fieldNodes, fieldPath);
+  return (0,_jsutils_promiseReduce_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(Object.keys(fields), function (results, responseName) {
+    var fieldNodes = fields[responseName];
+    var fieldPath = (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_9__.addPath)(path, responseName, parentType.name);
+    var result = resolveField(exeContext, parentType, sourceValue, fieldNodes, fieldPath);
 
     if (result === undefined) {
       return results;
     }
 
-    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(result)) {
+    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(result)) {
       return result.then(function (resolvedResult) {
         results[responseName] = resolvedResult;
         return results;
@@ -13603,8 +13564,8 @@ function executeFieldsSerially(exeContext, parentType, sourceValue, path, fields
   }, Object.create(null));
 }
 /**
- * Implements the "Executing selection sets" section of the spec
- * for fields that may be executed in parallel.
+ * Implements the "Evaluating selection sets" section of the spec
+ * for "read" mode.
  */
 
 
@@ -13612,17 +13573,16 @@ function executeFields(exeContext, parentType, sourceValue, path, fields) {
   var results = Object.create(null);
   var containsPromise = false;
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(fields.entries()), _step2; !(_step2 = _iterator2()).done;) {
-    var _step2$value = _step2.value,
-        responseName = _step2$value[0],
-        fieldNodes = _step2$value[1];
-    var fieldPath = (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_11__.addPath)(path, responseName, parentType.name);
-    var result = executeField(exeContext, parentType, sourceValue, fieldNodes, fieldPath);
+  for (var _i4 = 0, _Object$keys2 = Object.keys(fields); _i4 < _Object$keys2.length; _i4++) {
+    var responseName = _Object$keys2[_i4];
+    var fieldNodes = fields[responseName];
+    var fieldPath = (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_9__.addPath)(path, responseName, parentType.name);
+    var result = resolveField(exeContext, parentType, sourceValue, fieldNodes, fieldPath);
 
     if (result !== undefined) {
       results[responseName] = result;
 
-      if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(result)) {
+      if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(result)) {
         containsPromise = true;
       }
     }
@@ -13636,20 +13596,140 @@ function executeFields(exeContext, parentType, sourceValue, path, fields) {
   // same map, but with any promises replaced with the values they resolved to.
 
 
-  return (0,_jsutils_promiseForObject_mjs__WEBPACK_IMPORTED_MODULE_12__.promiseForObject)(results);
+  return (0,_jsutils_promiseForObject_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(results);
 }
 /**
- * Implements the "Executing fields" section of the spec
- * In particular, this function figures out the value that the field returns by
- * calling its resolve function, then calls completeValue to complete promises,
- * serialize scalars, or execute the sub-selection-set for objects.
+ * Given a selectionSet, adds all of the fields in that selection to
+ * the passed in map of fields, and returns it at the end.
+ *
+ * CollectFields requires the "runtime type" of an object. For a field which
+ * returns an Interface or Union type, the "runtime type" will be the actual
+ * Object type returned by that field.
+ *
+ * @internal
  */
 
 
-function executeField(exeContext, parentType, source, fieldNodes, path) {
+function collectFields(exeContext, runtimeType, selectionSet, fields, visitedFragmentNames) {
+  for (var _i6 = 0, _selectionSet$selecti2 = selectionSet.selections; _i6 < _selectionSet$selecti2.length; _i6++) {
+    var selection = _selectionSet$selecti2[_i6];
+
+    switch (selection.kind) {
+      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.FIELD:
+        {
+          if (!shouldIncludeNode(exeContext, selection)) {
+            continue;
+          }
+
+          var name = getFieldEntryKey(selection);
+
+          if (!fields[name]) {
+            fields[name] = [];
+          }
+
+          fields[name].push(selection);
+          break;
+        }
+
+      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INLINE_FRAGMENT:
+        {
+          if (!shouldIncludeNode(exeContext, selection) || !doesFragmentConditionMatch(exeContext, selection, runtimeType)) {
+            continue;
+          }
+
+          collectFields(exeContext, runtimeType, selection.selectionSet, fields, visitedFragmentNames);
+          break;
+        }
+
+      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.FRAGMENT_SPREAD:
+        {
+          var fragName = selection.name.value;
+
+          if (visitedFragmentNames[fragName] || !shouldIncludeNode(exeContext, selection)) {
+            continue;
+          }
+
+          visitedFragmentNames[fragName] = true;
+          var fragment = exeContext.fragments[fragName];
+
+          if (!fragment || !doesFragmentConditionMatch(exeContext, fragment, runtimeType)) {
+            continue;
+          }
+
+          collectFields(exeContext, runtimeType, fragment.selectionSet, fields, visitedFragmentNames);
+          break;
+        }
+    }
+  }
+
+  return fields;
+}
+/**
+ * Determines if a field should be included based on the @include and @skip
+ * directives, where @skip has higher precedence than @include.
+ */
+
+function shouldIncludeNode(exeContext, node) {
+  var skip = (0,_values_mjs__WEBPACK_IMPORTED_MODULE_6__.getDirectiveValues)(_type_directives_mjs__WEBPACK_IMPORTED_MODULE_11__.GraphQLSkipDirective, node, exeContext.variableValues);
+
+  if ((skip === null || skip === void 0 ? void 0 : skip.if) === true) {
+    return false;
+  }
+
+  var include = (0,_values_mjs__WEBPACK_IMPORTED_MODULE_6__.getDirectiveValues)(_type_directives_mjs__WEBPACK_IMPORTED_MODULE_11__.GraphQLIncludeDirective, node, exeContext.variableValues);
+
+  if ((include === null || include === void 0 ? void 0 : include.if) === false) {
+    return false;
+  }
+
+  return true;
+}
+/**
+ * Determines if a fragment is applicable to the given type.
+ */
+
+
+function doesFragmentConditionMatch(exeContext, fragment, type) {
+  var typeConditionNode = fragment.typeCondition;
+
+  if (!typeConditionNode) {
+    return true;
+  }
+
+  var conditionalType = (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_12__.typeFromAST)(exeContext.schema, typeConditionNode);
+
+  if (conditionalType === type) {
+    return true;
+  }
+
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isAbstractType)(conditionalType)) {
+    return exeContext.schema.isSubType(conditionalType, type);
+  }
+
+  return false;
+}
+/**
+ * Implements the logic to compute the key of a given field's entry
+ */
+
+
+function getFieldEntryKey(node) {
+  return node.alias ? node.alias.value : node.name.value;
+}
+/**
+ * Resolves the field on the given source object. In particular, this
+ * figures out the value that the field returns by calling its resolve function,
+ * then calls completeValue to complete promises, serialize scalars, or execute
+ * the sub-selection-set for objects.
+ */
+
+
+function resolveField(exeContext, parentType, source, fieldNodes, path) {
   var _fieldDef$resolve;
 
-  var fieldDef = getFieldDef(exeContext.schema, parentType, fieldNodes[0]);
+  var fieldNode = fieldNodes[0];
+  var fieldName = fieldNode.name.value;
+  var fieldDef = getFieldDef(exeContext.schema, parentType, fieldName);
 
   if (!fieldDef) {
     return;
@@ -13663,15 +13743,15 @@ function executeField(exeContext, parentType, source, fieldNodes, path) {
     // Build a JS object of arguments from the field.arguments AST, using the
     // variables scope to fulfill any variable references.
     // TODO: find a way to memoize, in case this field is within a List type.
-    var args = (0,_values_mjs__WEBPACK_IMPORTED_MODULE_8__.getArgumentValues)(fieldDef, fieldNodes[0], exeContext.variableValues); // The resolve function's optional third argument is a context value that
+    var args = (0,_values_mjs__WEBPACK_IMPORTED_MODULE_6__.getArgumentValues)(fieldDef, fieldNodes[0], exeContext.variableValues); // The resolve function's optional third argument is a context value that
     // is provided to every resolve function within an execution. It is commonly
     // used to represent an authenticated user, or request-specific caches.
 
-    var contextValue = exeContext.contextValue;
-    var result = resolveFn(source, args, contextValue, info);
+    var _contextValue = exeContext.contextValue;
+    var result = resolveFn(source, args, _contextValue, info);
     var completed;
 
-    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(result)) {
+    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(result)) {
       completed = result.then(function (resolved) {
         return completeValue(exeContext, returnType, fieldNodes, info, path, resolved);
       });
@@ -13679,18 +13759,18 @@ function executeField(exeContext, parentType, source, fieldNodes, path) {
       completed = completeValue(exeContext, returnType, fieldNodes, info, path, result);
     }
 
-    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(completed)) {
+    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(completed)) {
       // Note: we don't rely on a `catch` method, but we do expect "thenable"
       // to take a second callback for the error case.
       return completed.then(undefined, function (rawError) {
-        var error = (0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_13__.locatedError)(rawError, fieldNodes, (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_11__.pathToArray)(path));
+        var error = (0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_14__.locatedError)(rawError, fieldNodes, (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_9__.pathToArray)(path));
         return handleFieldError(error, returnType, exeContext);
       });
     }
 
     return completed;
   } catch (rawError) {
-    var error = (0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_13__.locatedError)(rawError, fieldNodes, (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_11__.pathToArray)(path));
+    var error = (0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_14__.locatedError)(rawError, fieldNodes, (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_9__.pathToArray)(path));
     return handleFieldError(error, returnType, exeContext);
   }
 }
@@ -13719,7 +13799,7 @@ function buildResolveInfo(exeContext, fieldDef, fieldNodes, parentType, path) {
 function handleFieldError(error, returnType, exeContext) {
   // If the field type is non-nullable, then it is resolved without any
   // protection from errors, however it still properly locates the error.
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__.isNonNullType)(returnType)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isNonNullType)(returnType)) {
     throw error;
   } // Otherwise, error protection is applied, logging the error and resolving
   // a null value for this field if one is encountered.
@@ -13730,7 +13810,7 @@ function handleFieldError(error, returnType, exeContext) {
 }
 /**
  * Implements the instructions for completeValue as defined in the
- * "Value Completion" section of the spec.
+ * "Field entries" section of the spec.
  *
  * If the field type is Non-Null, then this recursively completes the value
  * for the inner type. It throws a field error if that completion returns null,
@@ -13747,7 +13827,7 @@ function handleFieldError(error, returnType, exeContext) {
  * and then complete based on that type
  *
  * Otherwise, the field type expects a sub-selection set, and will complete the
- * value by executing all sub-selections.
+ * value by evaluating all sub-selections.
  */
 
 
@@ -13759,11 +13839,11 @@ function completeValue(exeContext, returnType, fieldNodes, info, path, result) {
   // if result is null.
 
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__.isNonNullType)(returnType)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isNonNullType)(returnType)) {
     var completed = completeValue(exeContext, returnType.ofType, fieldNodes, info, path, result);
 
     if (completed === null) {
-      throw new Error("Cannot return null for non-nullable field " + info.parentType.name + "." + info.fieldName + ".");
+      throw new Error("Cannot return null for non-nullable field ".concat(info.parentType.name, ".").concat(info.fieldName, "."));
     }
 
     return completed;
@@ -13775,31 +13855,30 @@ function completeValue(exeContext, returnType, fieldNodes, info, path, result) {
   } // If field type is List, complete each item in the list with the inner type
 
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__.isListType)(returnType)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isListType)(returnType)) {
     return completeListValue(exeContext, returnType, fieldNodes, info, path, result);
   } // If field type is a leaf type, Scalar or Enum, serialize to a valid value,
   // returning null if serialization is not possible.
 
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__.isLeafType)(returnType)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isLeafType)(returnType)) {
     return completeLeafValue(returnType, result);
   } // If field type is an abstract type, Interface or Union, determine the
   // runtime Object type and complete for that type.
 
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__.isAbstractType)(returnType)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isAbstractType)(returnType)) {
     return completeAbstractValue(exeContext, returnType, fieldNodes, info, path, result);
   } // If field type is Object, execute and complete all sub-selections.
+  // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2618')
 
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__.isObjectType)(returnType)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isObjectType)(returnType)) {
     return completeObjectValue(exeContext, returnType, fieldNodes, info, path, result);
-  }
-  /* c8 ignore next 6 */
-  // Not reachable, all possible output types have been considered.
+  } // istanbul ignore next (Not reachable. All possible output types have been considered)
 
 
-   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_15__.invariant)(false, 'Cannot complete value of unexpected output type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__.inspect)(returnType));
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_15__["default"])(0, 'Cannot complete value of unexpected output type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__["default"])(returnType));
 }
 /**
  * Complete a list value by completing each item in the list with the
@@ -13808,23 +13887,19 @@ function completeValue(exeContext, returnType, fieldNodes, info, path, result) {
 
 
 function completeListValue(exeContext, returnType, fieldNodes, info, path, result) {
-  if (!(0,_jsutils_isIterableObject_mjs__WEBPACK_IMPORTED_MODULE_17__.isIterableObject)(result)) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Expected Iterable, but did not find one for field \"" + info.parentType.name + "." + info.fieldName + "\".");
-  } // This is specified as a simple map, however we're optimizing the path
+  // This is specified as a simple map, however we're optimizing the path
   // where the list contains no Promises by avoiding creating another Promise.
-
-
   var itemType = returnType.ofType;
   var containsPromise = false;
-  var completedResults = Array.from(result, function (item, index) {
+  var completedResults = (0,_jsutils_safeArrayFrom_mjs__WEBPACK_IMPORTED_MODULE_17__["default"])(result, function (item, index) {
     // No need to modify the info object containing the path,
     // since from here on it is not ever accessed by resolver functions.
-    var itemPath = (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_11__.addPath)(path, index, undefined);
+    var itemPath = (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_9__.addPath)(path, index, undefined);
 
     try {
       var completedItem;
 
-      if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(item)) {
+      if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(item)) {
         completedItem = item.then(function (resolved) {
           return completeValue(exeContext, itemType, fieldNodes, info, itemPath, resolved);
         });
@@ -13832,22 +13907,27 @@ function completeListValue(exeContext, returnType, fieldNodes, info, path, resul
         completedItem = completeValue(exeContext, itemType, fieldNodes, info, itemPath, item);
       }
 
-      if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(completedItem)) {
+      if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(completedItem)) {
         containsPromise = true; // Note: we don't rely on a `catch` method, but we do expect "thenable"
         // to take a second callback for the error case.
 
         return completedItem.then(undefined, function (rawError) {
-          var error = (0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_13__.locatedError)(rawError, fieldNodes, (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_11__.pathToArray)(itemPath));
+          var error = (0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_14__.locatedError)(rawError, fieldNodes, (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_9__.pathToArray)(itemPath));
           return handleFieldError(error, itemType, exeContext);
         });
       }
 
       return completedItem;
     } catch (rawError) {
-      var error = (0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_13__.locatedError)(rawError, fieldNodes, (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_11__.pathToArray)(itemPath));
+      var error = (0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_14__.locatedError)(rawError, fieldNodes, (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_9__.pathToArray)(itemPath));
       return handleFieldError(error, itemType, exeContext);
     }
   });
+
+  if (completedResults == null) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError("Expected Iterable, but did not find one for field \"".concat(info.parentType.name, ".").concat(info.fieldName, "\"."));
+  }
+
   return containsPromise ? Promise.all(completedResults) : completedResults;
 }
 /**
@@ -13859,8 +13939,8 @@ function completeListValue(exeContext, returnType, fieldNodes, info, path, resul
 function completeLeafValue(returnType, result) {
   var serializedResult = returnType.serialize(result);
 
-  if (serializedResult == null) {
-    throw new Error("Expected `" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__.inspect)(returnType) + ".serialize(" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__.inspect)(result) + ")` to " + ("return non-nullable value, returned: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__.inspect)(serializedResult)));
+  if (serializedResult === undefined) {
+    throw new Error("Expected a value of type \"".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__["default"])(returnType), "\" but ") + "received: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__["default"])(result)));
   }
 
   return serializedResult;
@@ -13878,7 +13958,7 @@ function completeAbstractValue(exeContext, returnType, fieldNodes, info, path, r
   var contextValue = exeContext.contextValue;
   var runtimeType = resolveTypeFn(result, contextValue, info, returnType);
 
-  if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(runtimeType)) {
+  if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(runtimeType)) {
     return runtimeType.then(function (resolvedRuntimeType) {
       return completeObjectValue(exeContext, ensureValidRuntimeType(resolvedRuntimeType, exeContext, returnType, fieldNodes, info, result), fieldNodes, info, path, result);
     });
@@ -13887,33 +13967,30 @@ function completeAbstractValue(exeContext, returnType, fieldNodes, info, path, r
   return completeObjectValue(exeContext, ensureValidRuntimeType(runtimeType, exeContext, returnType, fieldNodes, info, result), fieldNodes, info, path, result);
 }
 
-function ensureValidRuntimeType(runtimeTypeName, exeContext, returnType, fieldNodes, info, result) {
-  if (runtimeTypeName == null) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Abstract type \"" + returnType.name + "\" must resolve to an Object type at runtime for field \"" + info.parentType.name + "." + info.fieldName + "\". Either the \"" + returnType.name + "\" type should provide a \"resolveType\" function or each possible type should provide an \"isTypeOf\" function.", fieldNodes);
-  } // releases before 16.0.0 supported returning `GraphQLObjectType` from `resolveType`
-  // TODO: remove in 17.0.0 release
+function ensureValidRuntimeType(runtimeTypeOrName, exeContext, returnType, fieldNodes, info, result) {
+  if (runtimeTypeOrName == null) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError("Abstract type \"".concat(returnType.name, "\" must resolve to an Object type at runtime for field \"").concat(info.parentType.name, ".").concat(info.fieldName, "\". Either the \"").concat(returnType.name, "\" type should provide a \"resolveType\" function or each possible type should provide an \"isTypeOf\" function."), fieldNodes);
+  } // FIXME: temporary workaround until support for passing object types would be removed in v16.0.0
 
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__.isObjectType)(runtimeTypeName)) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError('Support for returning GraphQLObjectType from resolveType was removed in graphql-js@16.0.0 please return type name instead.');
-  }
+  var runtimeTypeName = (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isNamedType)(runtimeTypeOrName) ? runtimeTypeOrName.name : runtimeTypeOrName;
 
   if (typeof runtimeTypeName !== 'string') {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Abstract type \"" + returnType.name + "\" must resolve to an Object type at runtime for field \"" + info.parentType.name + "." + info.fieldName + "\" with " + ("value " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__.inspect)(result) + ", received \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__.inspect)(runtimeTypeName) + "\"."));
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError("Abstract type \"".concat(returnType.name, "\" must resolve to an Object type at runtime for field \"").concat(info.parentType.name, ".").concat(info.fieldName, "\" with ") + "value ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__["default"])(result), ", received \"").concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__["default"])(runtimeTypeOrName), "\"."));
   }
 
   var runtimeType = exeContext.schema.getType(runtimeTypeName);
 
   if (runtimeType == null) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Abstract type \"" + returnType.name + "\" was resolved to a type \"" + runtimeTypeName + "\" that does not exist inside the schema.", fieldNodes);
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError("Abstract type \"".concat(returnType.name, "\" was resolve to a type \"").concat(runtimeTypeName, "\" that does not exist inside schema."), fieldNodes);
   }
 
-  if (!(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_14__.isObjectType)(runtimeType)) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Abstract type \"" + returnType.name + "\" was resolved to a non-object type \"" + runtimeTypeName + "\".", fieldNodes);
+  if (!(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_13__.isObjectType)(runtimeType)) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError("Abstract type \"".concat(returnType.name, "\" was resolve to a non-object type \"").concat(runtimeTypeName, "\"."), fieldNodes);
   }
 
   if (!exeContext.schema.isSubType(returnType, runtimeType)) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Runtime Object type \"" + runtimeType.name + "\" is not a possible type for \"" + returnType.name + "\".", fieldNodes);
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError("Runtime Object type \"".concat(runtimeType.name, "\" is not a possible type for \"").concat(returnType.name, "\"."), fieldNodes);
   }
 
   return runtimeType;
@@ -13924,21 +14001,19 @@ function ensureValidRuntimeType(runtimeTypeName, exeContext, returnType, fieldNo
 
 
 function completeObjectValue(exeContext, returnType, fieldNodes, info, path, result) {
-  // Collect sub-fields to execute to complete this value.
-  var subFieldNodes = collectSubfields(exeContext, returnType, fieldNodes); // If there is an isTypeOf predicate function, call it with the
+  // If there is an isTypeOf predicate function, call it with the
   // current result. If isTypeOf returns false, then raise an error rather
   // than continuing execution.
-
   if (returnType.isTypeOf) {
     var isTypeOf = returnType.isTypeOf(result, exeContext.contextValue, info);
 
-    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(isTypeOf)) {
+    if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(isTypeOf)) {
       return isTypeOf.then(function (resolvedIsTypeOf) {
         if (!resolvedIsTypeOf) {
           throw invalidReturnTypeError(returnType, result, fieldNodes);
         }
 
-        return executeFields(exeContext, returnType, result, path, subFieldNodes);
+        return collectAndExecuteSubfields(exeContext, returnType, fieldNodes, path, result);
       });
     }
 
@@ -13947,11 +14022,40 @@ function completeObjectValue(exeContext, returnType, fieldNodes, info, path, res
     }
   }
 
-  return executeFields(exeContext, returnType, result, path, subFieldNodes);
+  return collectAndExecuteSubfields(exeContext, returnType, fieldNodes, path, result);
 }
 
 function invalidReturnTypeError(returnType, result, fieldNodes) {
-  return new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLError("Expected value of type \"" + returnType.name + "\" but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__.inspect)(result) + ".", fieldNodes);
+  return new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError("Expected value of type \"".concat(returnType.name, "\" but got: ").concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_16__["default"])(result), "."), fieldNodes);
+}
+
+function collectAndExecuteSubfields(exeContext, returnType, fieldNodes, path, result) {
+  // Collect sub-fields to execute to complete this value.
+  var subFieldNodes = collectSubfields(exeContext, returnType, fieldNodes);
+  return executeFields(exeContext, returnType, result, path, subFieldNodes);
+}
+/**
+ * A memoized collection of relevant subfields with regard to the return
+ * type. Memoizing ensures the subfields are not repeatedly calculated, which
+ * saves overhead when resolving lists of values.
+ */
+
+
+var collectSubfields = (0,_jsutils_memoize3_mjs__WEBPACK_IMPORTED_MODULE_18__["default"])(_collectSubfields);
+
+function _collectSubfields(exeContext, returnType, fieldNodes) {
+  var subFieldNodes = Object.create(null);
+  var visitedFragmentNames = Object.create(null);
+
+  for (var _i8 = 0; _i8 < fieldNodes.length; _i8++) {
+    var node = fieldNodes[_i8];
+
+    if (node.selectionSet) {
+      subFieldNodes = collectFields(exeContext, returnType, node.selectionSet, subFieldNodes, visitedFragmentNames);
+    }
+  }
+
+  return subFieldNodes;
 }
 /**
  * If a resolveType function is not given, then a default resolve behavior is
@@ -13967,7 +14071,7 @@ function invalidReturnTypeError(returnType, result, fieldNodes) {
 
 var defaultTypeResolver = function defaultTypeResolver(value, contextValue, info, abstractType) {
   // First, look for `__typename`.
-  if ((0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__.isObjectLike)(value) && typeof value.__typename === 'string') {
+  if ((0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(value) && typeof value.__typename === 'string') {
     return value.__typename;
   } // Otherwise, test each possible type.
 
@@ -13981,7 +14085,7 @@ var defaultTypeResolver = function defaultTypeResolver(value, contextValue, info
     if (type.isTypeOf) {
       var isTypeOfResult = type.isTypeOf(value, contextValue, info);
 
-      if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_3__.isPromise)(isTypeOfResult)) {
+      if ((0,_jsutils_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(isTypeOfResult)) {
         promisedIsTypeOfResults[i] = isTypeOfResult;
       } else if (isTypeOfResult) {
         return type.name;
@@ -13991,9 +14095,9 @@ var defaultTypeResolver = function defaultTypeResolver(value, contextValue, info
 
   if (promisedIsTypeOfResults.length) {
     return Promise.all(promisedIsTypeOfResults).then(function (isTypeOfResults) {
-      for (var _i = 0; _i < isTypeOfResults.length; _i++) {
-        if (isTypeOfResults[_i]) {
-          return possibleTypes[_i].name;
+      for (var _i9 = 0; _i9 < isTypeOfResults.length; _i9++) {
+        if (isTypeOfResults[_i9]) {
+          return possibleTypes[_i9].name;
         }
       }
     });
@@ -14008,7 +14112,7 @@ var defaultTypeResolver = function defaultTypeResolver(value, contextValue, info
 
 var defaultFieldResolver = function defaultFieldResolver(source, args, contextValue, info) {
   // ensure source is a value for which property access is acceptable.
-  if ((0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__.isObjectLike)(source) || typeof source === 'function') {
+  if ((0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(source) || typeof source === 'function') {
     var property = source[info.fieldName];
 
     if (typeof property === 'function') {
@@ -14030,15 +14134,13 @@ var defaultFieldResolver = function defaultFieldResolver(source, args, contextVa
  * @internal
  */
 
-function getFieldDef(schema, parentType, fieldNode) {
-  var fieldName = fieldNode.name.value;
-
-  if (fieldName === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_18__.SchemaMetaFieldDef.name && schema.getQueryType() === parentType) {
-    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_18__.SchemaMetaFieldDef;
-  } else if (fieldName === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_18__.TypeMetaFieldDef.name && schema.getQueryType() === parentType) {
-    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_18__.TypeMetaFieldDef;
-  } else if (fieldName === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_18__.TypeNameMetaFieldDef.name) {
-    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_18__.TypeNameMetaFieldDef;
+function getFieldDef(schema, parentType, fieldName) {
+  if (fieldName === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_19__.SchemaMetaFieldDef.name && schema.getQueryType() === parentType) {
+    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_19__.SchemaMetaFieldDef;
+  } else if (fieldName === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_19__.TypeMetaFieldDef.name && schema.getQueryType() === parentType) {
+    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_19__.TypeMetaFieldDef;
+  } else if (fieldName === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_19__.TypeNameMetaFieldDef.name) {
+    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_19__.TypeNameMetaFieldDef;
   }
 
   return parentType.getFields()[fieldName];
@@ -14059,6 +14161,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getArgumentValues": function() { return /* binding */ getArgumentValues; },
 /* harmony export */   "getDirectiveValues": function() { return /* binding */ getDirectiveValues; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../polyfills/find.mjs */ "./node_modules/graphql/polyfills/find.mjs");
 /* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
 /* harmony import */ var _jsutils_printPathArray_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../jsutils/printPathArray.mjs */ "./node_modules/graphql/jsutils/printPathArray.mjs");
@@ -14069,11 +14172,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/typeFromAST.mjs */ "./node_modules/graphql/utilities/typeFromAST.mjs");
 /* harmony import */ var _utilities_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/valueFromAST.mjs */ "./node_modules/graphql/utilities/valueFromAST.mjs");
 /* harmony import */ var _utilities_coerceInputValue_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/coerceInputValue.mjs */ "./node_modules/graphql/utilities/coerceInputValue.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -14127,8 +14225,8 @@ function getVariableValues(schema, varDefNodes, inputs, options) {
 function coerceVariableValues(schema, varDefNodes, inputs, onError) {
   var coercedValues = {};
 
-  var _loop = function _loop() {
-    var varDefNode = _step.value;
+  var _loop = function _loop(_i2) {
+    var varDefNode = varDefNodes[_i2];
     var varName = varDefNode.variable.name.value;
     var varType = (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_1__.typeFromAST)(schema, varDefNode.type);
 
@@ -14136,7 +14234,7 @@ function coerceVariableValues(schema, varDefNodes, inputs, onError) {
       // Must use input types for variables. This should be caught during
       // validation, however is checked again here for safety.
       var varTypeStr = (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_3__.print)(varDefNode.type);
-      onError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Variable \"$" + varName + "\" expected value of type \"" + varTypeStr + "\" which cannot be used as an input type.", varDefNode.type));
+      onError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Variable \"$".concat(varName, "\" expected value of type \"").concat(varTypeStr, "\" which cannot be used as an input type."), varDefNode.type));
       return "continue";
     }
 
@@ -14144,9 +14242,9 @@ function coerceVariableValues(schema, varDefNodes, inputs, onError) {
       if (varDefNode.defaultValue) {
         coercedValues[varName] = (0,_utilities_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_4__.valueFromAST)(varDefNode.defaultValue, varType);
       } else if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(varType)) {
-        var _varTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(varType);
+        var _varTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(varType);
 
-        onError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Variable \"$" + varName + "\" of required type \"" + _varTypeStr + "\" was not provided.", varDefNode));
+        onError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Variable \"$".concat(varName, "\" of required type \"").concat(_varTypeStr, "\" was not provided."), varDefNode));
       }
 
       return "continue";
@@ -14155,25 +14253,25 @@ function coerceVariableValues(schema, varDefNodes, inputs, onError) {
     var value = inputs[varName];
 
     if (value === null && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(varType)) {
-      var _varTypeStr2 = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(varType);
+      var _varTypeStr2 = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(varType);
 
-      onError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Variable \"$" + varName + "\" of non-null type \"" + _varTypeStr2 + "\" must not be null.", varDefNode));
+      onError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Variable \"$".concat(varName, "\" of non-null type \"").concat(_varTypeStr2, "\" must not be null."), varDefNode));
       return "continue";
     }
 
     coercedValues[varName] = (0,_utilities_coerceInputValue_mjs__WEBPACK_IMPORTED_MODULE_6__.coerceInputValue)(value, varType, function (path, invalidValue, error) {
-      var prefix = "Variable \"$" + varName + "\" got invalid value " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(invalidValue);
+      var prefix = "Variable \"$".concat(varName, "\" got invalid value ") + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(invalidValue);
 
       if (path.length > 0) {
-        prefix += " at \"" + varName + (0,_jsutils_printPathArray_mjs__WEBPACK_IMPORTED_MODULE_7__.printPathArray)(path) + "\"";
+        prefix += " at \"".concat(varName).concat((0,_jsutils_printPathArray_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(path), "\"");
       }
 
       onError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError(prefix + '; ' + error.message, varDefNode, undefined, undefined, undefined, error.originalError));
     });
   };
 
-  for (var _iterator = _createForOfIteratorHelperLoose(varDefNodes), _step; !(_step = _iterator()).done;) {
-    var _ret = _loop();
+  for (var _i2 = 0; _i2 < varDefNodes.length; _i2++) {
+    var _ret = _loop(_i2);
 
     if (_ret === "continue") continue;
   }
@@ -14195,17 +14293,15 @@ function coerceVariableValues(schema, varDefNodes, inputs, onError) {
 function getArgumentValues(def, node, variableValues) {
   var _node$arguments;
 
-  var coercedValues = {}; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-  /* c8 ignore next */
+  var coercedValues = {}; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
   var argumentNodes = (_node$arguments = node.arguments) !== null && _node$arguments !== void 0 ? _node$arguments : [];
-  var argNodeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_8__.keyMap)(argumentNodes, function (arg) {
+  var argNodeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(argumentNodes, function (arg) {
     return arg.name.value;
   });
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(def.args), _step2; !(_step2 = _iterator2()).done;) {
-    var argDef = _step2.value;
+  for (var _i4 = 0, _def$args2 = def.args; _i4 < _def$args2.length; _i4++) {
+    var argDef = _def$args2[_i4];
     var name = argDef.name;
     var argType = argDef.type;
     var argumentNode = argNodeMap[name];
@@ -14214,7 +14310,7 @@ function getArgumentValues(def, node, variableValues) {
       if (argDef.defaultValue !== undefined) {
         coercedValues[name] = argDef.defaultValue;
       } else if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(argType)) {
-        throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Argument \"" + name + "\" of required type \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(argType) + "\" " + 'was not provided.', node);
+        throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Argument \"".concat(name, "\" of required type \"").concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(argType), "\" ") + 'was not provided.', node);
       }
 
       continue;
@@ -14230,7 +14326,7 @@ function getArgumentValues(def, node, variableValues) {
         if (argDef.defaultValue !== undefined) {
           coercedValues[name] = argDef.defaultValue;
         } else if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(argType)) {
-          throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Argument \"" + name + "\" of required type \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(argType) + "\" " + ("was provided the variable \"$" + variableName + "\" which was not provided a runtime value."), valueNode);
+          throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Argument \"".concat(name, "\" of required type \"").concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(argType), "\" ") + "was provided the variable \"$".concat(variableName, "\" which was not provided a runtime value."), valueNode);
         }
 
         continue;
@@ -14240,7 +14336,7 @@ function getArgumentValues(def, node, variableValues) {
     }
 
     if (isNull && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(argType)) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Argument \"" + name + "\" of non-null type \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(argType) + "\" " + 'must not be null.', valueNode);
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Argument \"".concat(name, "\" of non-null type \"").concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(argType), "\" ") + 'must not be null.', valueNode);
     }
 
     var coercedValue = (0,_utilities_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_4__.valueFromAST)(valueNode, argType, variableValues);
@@ -14249,7 +14345,7 @@ function getArgumentValues(def, node, variableValues) {
       // Note: ValuesOfCorrectTypeRule validation should catch this before
       // execution. This is a runtime check to ensure execution does not
       // continue with an invalid argument value.
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Argument \"" + name + "\" has invalid value " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_3__.print)(valueNode) + ".", valueNode);
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Argument \"".concat(name, "\" has invalid value ").concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_3__.print)(valueNode), "."), valueNode);
     }
 
     coercedValues[name] = coercedValue;
@@ -14270,9 +14366,7 @@ function getArgumentValues(def, node, variableValues) {
  */
 
 function getDirectiveValues(directiveDef, node, variableValues) {
-  var _node$directives;
-
-  var directiveNode = (_node$directives = node.directives) === null || _node$directives === void 0 ? void 0 : _node$directives.find(function (directive) {
+  var directiveNode = node.directives && (0,_polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(node.directives, function (directive) {
     return directive.name.value === directiveDef.name;
   });
 
@@ -14327,6 +14421,37 @@ function pathToArray(path) {
 
 /***/ }),
 
+/***/ "./node_modules/graphql/jsutils/defineInspect.mjs":
+/*!********************************************************!*\
+  !*** ./node_modules/graphql/jsutils/defineInspect.mjs ***!
+  \********************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ defineInspect; }
+/* harmony export */ });
+/* harmony import */ var _invariant_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
+/* harmony import */ var _nodejsCustomInspectSymbol_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nodejsCustomInspectSymbol.mjs */ "./node_modules/graphql/jsutils/nodejsCustomInspectSymbol.mjs");
+
+
+/**
+ * The `defineInspect()` function defines `inspect()` prototype method as alias of `toJSON`
+ */
+
+function defineInspect(classObject) {
+  var fn = classObject.prototype.toJSON;
+  typeof fn === 'function' || (0,_invariant_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(0);
+  classObject.prototype.inspect = fn; // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2317')
+
+  if (_nodejsCustomInspectSymbol_mjs__WEBPACK_IMPORTED_MODULE_1__["default"]) {
+    classObject.prototype[_nodejsCustomInspectSymbol_mjs__WEBPACK_IMPORTED_MODULE_1__["default"]] = fn;
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/graphql/jsutils/devAssert.mjs":
 /*!****************************************************!*\
   !*** ./node_modules/graphql/jsutils/devAssert.mjs ***!
@@ -14336,10 +14461,10 @@ function pathToArray(path) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "devAssert": function() { return /* binding */ devAssert; }
+/* harmony export */   "default": function() { return /* binding */ devAssert; }
 /* harmony export */ });
 function devAssert(condition, message) {
-  var booleanCondition = Boolean(condition);
+  var booleanCondition = Boolean(condition); // istanbul ignore else (See transformation done in './resources/inlineInvariant.js')
 
   if (!booleanCondition) {
     throw new Error(message);
@@ -14357,15 +14482,16 @@ function devAssert(condition, message) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "didYouMean": function() { return /* binding */ didYouMean; }
+/* harmony export */   "default": function() { return /* binding */ didYouMean; }
 /* harmony export */ });
 var MAX_SUGGESTIONS = 5;
 /**
  * Given [ A, B, C ] return ' Did you mean A, B, or C?'.
  */
+// eslint-disable-next-line no-redeclare
 
 function didYouMean(firstArg, secondArg) {
-  var _ref = secondArg ? [firstArg, secondArg] : [undefined, firstArg],
+  var _ref = typeof firstArg === 'string' ? [firstArg, secondArg] : [undefined, firstArg],
       subMessage = _ref[0],
       suggestionsArg = _ref[1];
 
@@ -14376,7 +14502,7 @@ function didYouMean(firstArg, secondArg) {
   }
 
   var suggestions = suggestionsArg.map(function (x) {
-    return "\"" + x + "\"";
+    return "\"".concat(x, "\"");
   });
 
   switch (suggestions.length) {
@@ -14397,46 +14523,6 @@ function didYouMean(firstArg, secondArg) {
 
 /***/ }),
 
-/***/ "./node_modules/graphql/jsutils/groupBy.mjs":
-/*!**************************************************!*\
-  !*** ./node_modules/graphql/jsutils/groupBy.mjs ***!
-  \**************************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "groupBy": function() { return /* binding */ groupBy; }
-/* harmony export */ });
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-/**
- * Groups array items into a Map, given a function to produce grouping key.
- */
-function groupBy(list, keyFn) {
-  var result = new Map();
-
-  for (var _iterator = _createForOfIteratorHelperLoose(list), _step; !(_step = _iterator()).done;) {
-    var item = _step.value;
-    var key = keyFn(item);
-    var group = result.get(key);
-
-    if (group === undefined) {
-      result.set(key, [item]);
-    } else {
-      group.push(item);
-    }
-  }
-
-  return result;
-}
-
-/***/ }),
-
 /***/ "./node_modules/graphql/jsutils/identityFunc.mjs":
 /*!*******************************************************!*\
   !*** ./node_modules/graphql/jsutils/identityFunc.mjs ***!
@@ -14446,7 +14532,7 @@ function groupBy(list, keyFn) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "identityFunc": function() { return /* binding */ identityFunc; }
+/* harmony export */   "default": function() { return /* binding */ identityFunc; }
 /* harmony export */ });
 /**
  * Returns the first argument it receives.
@@ -14466,8 +14552,28 @@ function identityFunc(x) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "inspect": function() { return /* binding */ inspect; }
+/* harmony export */   "default": function() { return /* binding */ inspect; }
 /* harmony export */ });
+/* harmony import */ var _nodejsCustomInspectSymbol_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./nodejsCustomInspectSymbol.mjs */ "./node_modules/graphql/jsutils/nodejsCustomInspectSymbol.mjs");
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+/* eslint-disable flowtype/no-weak-types */
+
+
+
 var MAX_ARRAY_LENGTH = 10;
 var MAX_RECURSIVE_DEPTH = 2;
 /**
@@ -14479,14 +14585,18 @@ function inspect(value) {
 }
 
 function formatValue(value, seenValues) {
-  switch (typeof value) {
+  switch (_typeof(value)) {
     case 'string':
       return JSON.stringify(value);
 
     case 'function':
-      return value.name ? "[function " + value.name + "]" : '[function]';
+      return value.name ? "[function ".concat(value.name, "]") : '[function]';
 
     case 'object':
+      if (value === null) {
+        return 'null';
+      }
+
       return formatObjectValue(value, seenValues);
 
     default:
@@ -14495,21 +14605,18 @@ function formatValue(value, seenValues) {
 }
 
 function formatObjectValue(value, previouslySeenValues) {
-  if (value === null) {
-    return 'null';
-  }
-
-  if (previouslySeenValues.includes(value)) {
+  if (previouslySeenValues.indexOf(value) !== -1) {
     return '[Circular]';
   }
 
   var seenValues = [].concat(previouslySeenValues, [value]);
+  var customInspectFn = getCustomFn(value);
 
-  if (isJSONable(value)) {
-    var jsonValue = value.toJSON(); // check for infinite recursion
+  if (customInspectFn !== undefined) {
+    var customValue = customInspectFn.call(value); // check for infinite recursion
 
-    if (jsonValue !== value) {
-      return typeof jsonValue === 'string' ? jsonValue : formatValue(jsonValue, seenValues);
+    if (customValue !== value) {
+      return typeof customValue === 'string' ? customValue : formatValue(customValue, seenValues);
     }
   } else if (Array.isArray(value)) {
     return formatArray(value, seenValues);
@@ -14518,14 +14625,10 @@ function formatObjectValue(value, previouslySeenValues) {
   return formatObject(value, seenValues);
 }
 
-function isJSONable(value) {
-  return typeof value.toJSON === 'function';
-}
-
 function formatObject(object, seenValues) {
-  var entries = Object.entries(object);
+  var keys = Object.keys(object);
 
-  if (entries.length === 0) {
+  if (keys.length === 0) {
     return '{}';
   }
 
@@ -14533,10 +14636,9 @@ function formatObject(object, seenValues) {
     return '[' + getObjectTag(object) + ']';
   }
 
-  var properties = entries.map(function (_ref) {
-    var key = _ref[0],
-        value = _ref[1];
-    return key + ': ' + formatValue(value, seenValues);
+  var properties = keys.map(function (key) {
+    var value = formatValue(object[key], seenValues);
+    return key + ': ' + value;
   });
   return '{ ' + properties.join(', ') + ' }';
 }
@@ -14561,10 +14663,22 @@ function formatArray(array, seenValues) {
   if (remaining === 1) {
     items.push('... 1 more item');
   } else if (remaining > 1) {
-    items.push("... " + remaining + " more items");
+    items.push("... ".concat(remaining, " more items"));
   }
 
   return '[' + items.join(', ') + ']';
+}
+
+function getCustomFn(object) {
+  var customInspectFn = object[String(_nodejsCustomInspectSymbol_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])];
+
+  if (typeof customInspectFn === 'function') {
+    return customInspectFn;
+  }
+
+  if (typeof object.inspect === 'function') {
+    return object.inspect;
+  }
 }
 
 function getObjectTag(object) {
@@ -14591,43 +14705,54 @@ function getObjectTag(object) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "instanceOf": function() { return /* binding */ instanceOf; }
-/* harmony export */ });
 /* harmony import */ var _inspect_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
 
 /**
  * A replacement for instanceof which includes an error warning when multi-realm
  * constructors are detected.
- * See: https://expressjs.com/en/advanced/best-practice-performance.html#set-node_env-to-production
- * See: https://webpack.js.org/guides/production/
  */
+// See: https://expressjs.com/en/advanced/best-practice-performance.html#set-node_env-to-production
+// See: https://webpack.js.org/guides/production/
 
-var instanceOf =
-/* c8 ignore next 5 */
-// FIXME: https://github.com/graphql/graphql-js/issues/2317
- false ? 0 : function instanceOf(value, constructor) {
+/* harmony default export */ __webpack_exports__["default"] = ( false ? // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2317')
+// eslint-disable-next-line no-shadow
+0 : // eslint-disable-next-line no-shadow
+function instanceOf(value, constructor) {
   if (value instanceof constructor) {
     return true;
   }
 
-  if (typeof value === 'object' && value !== null) {
-    var _value$constructor; // Prefer Symbol.toStringTag since it is immune to minification.
-
+  if (_typeof(value) === 'object' && value !== null) {
+    var _value$constructor;
 
     var className = constructor.prototype[Symbol.toStringTag];
     var valueClassName = // We still need to support constructor's name to detect conflicts with older versions of this library.
-    Symbol.toStringTag in value // @ts-expect-error TS bug see, https://github.com/microsoft/TypeScript/issues/38009
-    ? value[Symbol.toStringTag] : (_value$constructor = value.constructor) === null || _value$constructor === void 0 ? void 0 : _value$constructor.name;
+    Symbol.toStringTag in value ? value[Symbol.toStringTag] : (_value$constructor = value.constructor) === null || _value$constructor === void 0 ? void 0 : _value$constructor.name;
 
     if (className === valueClassName) {
-      var stringifiedValue = (0,_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(value);
-      throw new Error("Cannot use " + className + " \"" + stringifiedValue + "\" from another module or realm.\n\nEnsure that there is only one instance of \"graphql\" in the node_modules\ndirectory. If different versions of \"graphql\" are the dependencies of other\nrelied on modules, use \"resolutions\" to ensure only one version is installed.\n\nhttps://yarnpkg.com/en/docs/selective-version-resolutions\n\nDuplicate \"graphql\" modules cannot be used at the same time since different\nversions may have different capabilities and behavior. The data from one\nversion used in the function from another could produce confusing and\nspurious results.");
+      var stringifiedValue = (0,_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(value);
+      throw new Error("Cannot use ".concat(className, " \"").concat(stringifiedValue, "\" from another module or realm.\n\nEnsure that there is only one instance of \"graphql\" in the node_modules\ndirectory. If different versions of \"graphql\" are the dependencies of other\nrelied on modules, use \"resolutions\" to ensure only one version is installed.\n\nhttps://yarnpkg.com/en/docs/selective-version-resolutions\n\nDuplicate \"graphql\" modules cannot be used at the same time since different\nversions may have different capabilities and behavior. The data from one\nversion used in the function from another could produce confusing and\nspurious results."));
     }
   }
 
   return false;
-};
+});
 
 /***/ }),
 
@@ -14640,48 +14765,14 @@ var instanceOf =
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "invariant": function() { return /* binding */ invariant; }
+/* harmony export */   "default": function() { return /* binding */ invariant; }
 /* harmony export */ });
 function invariant(condition, message) {
-  var booleanCondition = Boolean(condition);
+  var booleanCondition = Boolean(condition); // istanbul ignore else (See transformation done in './resources/inlineInvariant.js')
 
   if (!booleanCondition) {
     throw new Error(message != null ? message : 'Unexpected invariant triggered.');
   }
-}
-
-/***/ }),
-
-/***/ "./node_modules/graphql/jsutils/isIterableObject.mjs":
-/*!***********************************************************!*\
-  !*** ./node_modules/graphql/jsutils/isIterableObject.mjs ***!
-  \***********************************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isIterableObject": function() { return /* binding */ isIterableObject; }
-/* harmony export */ });
-/**
- * Returns true if the provided object is an Object (i.e. not a string literal)
- * and implements the Iterator protocol.
- *
- * This may be used in place of [Array.isArray()][isArray] to determine if
- * an object should be iterated-over e.g. Array, Map, Set, Int8Array,
- * TypedArray, etc. but excludes string literals.
- *
- * @example
- * ```ts
- * isIterableObject([ 1, 2, 3 ]) // true
- * isIterableObject(new Map()) // true
- * isIterableObject('ABC') // false
- * isIterableObject({ key: 'value' }) // false
- * isIterableObject({ length: 1, 0: 'Alpha' }) // false
- * ```
- */
-function isIterableObject(maybeIterable) {
-  return typeof maybeIterable === 'object' && typeof (maybeIterable === null || maybeIterable === void 0 ? void 0 : maybeIterable[Symbol.iterator]) === 'function';
 }
 
 /***/ }),
@@ -14695,14 +14786,31 @@ function isIterableObject(maybeIterable) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isObjectLike": function() { return /* binding */ isObjectLike; }
+/* harmony export */   "default": function() { return /* binding */ isObjectLike; }
 /* harmony export */ });
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
 /**
  * Return true if `value` is object-like. A value is object-like if it's not
  * `null` and has a `typeof` result of "object".
  */
+
+
 function isObjectLike(value) {
-  return typeof value == 'object' && value !== null;
+  return _typeof(value) == 'object' && value !== null;
 }
 
 /***/ }),
@@ -14716,12 +14824,13 @@ function isObjectLike(value) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isPromise": function() { return /* binding */ isPromise; }
+/* harmony export */   "default": function() { return /* binding */ isPromise; }
 /* harmony export */ });
 /**
  * Returns true if the value acts like a Promise, i.e. has a "then" function,
  * otherwise returns false.
  */
+// eslint-disable-next-line no-redeclare
 function isPromise(value) {
   return typeof (value === null || value === void 0 ? void 0 : value.then) === 'function';
 }
@@ -14737,50 +14846,36 @@ function isPromise(value) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "keyMap": function() { return /* binding */ keyMap; }
+/* harmony export */   "default": function() { return /* binding */ keyMap; }
 /* harmony export */ });
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 /**
  * Creates a keyed JS object from an array, given a function to produce the keys
  * for each value in the array.
  *
  * This provides a convenient lookup for the array items if the key function
  * produces unique results.
- * ```ts
- * const phoneBook = [
- *   { name: 'Jon', num: '555-1234' },
- *   { name: 'Jenny', num: '867-5309' }
- * ]
  *
- * const entriesByName = keyMap(
- *   phoneBook,
- *   entry => entry.name
- * )
+ *     const phoneBook = [
+ *       { name: 'Jon', num: '555-1234' },
+ *       { name: 'Jenny', num: '867-5309' }
+ *     ]
  *
- * // {
- * //   Jon: { name: 'Jon', num: '555-1234' },
- * //   Jenny: { name: 'Jenny', num: '867-5309' }
- * // }
+ *     // { Jon: { name: 'Jon', num: '555-1234' },
+ *     //   Jenny: { name: 'Jenny', num: '867-5309' } }
+ *     const entriesByName = keyMap(
+ *       phoneBook,
+ *       entry => entry.name
+ *     )
  *
- * const jennyEntry = entriesByName['Jenny']
+ *     // { name: 'Jenny', num: '857-6309' }
+ *     const jennyEntry = entriesByName['Jenny']
  *
- * // { name: 'Jenny', num: '857-6309' }
- * ```
  */
 function keyMap(list, keyFn) {
-  var result = Object.create(null);
-
-  for (var _iterator = _createForOfIteratorHelperLoose(list), _step; !(_step = _iterator()).done;) {
-    var item = _step.value;
-    result[keyFn(item)] = item;
-  }
-
-  return result;
+  return list.reduce(function (map, item) {
+    map[keyFn(item)] = item;
+    return map;
+  }, Object.create(null));
 }
 
 /***/ }),
@@ -14794,40 +14889,30 @@ function keyMap(list, keyFn) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "keyValMap": function() { return /* binding */ keyValMap; }
+/* harmony export */   "default": function() { return /* binding */ keyValMap; }
 /* harmony export */ });
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 /**
  * Creates a keyed JS object from an array, given a function to produce the keys
  * and a function to produce the values from each item in the array.
- * ```ts
- * const phoneBook = [
- *   { name: 'Jon', num: '555-1234' },
- *   { name: 'Jenny', num: '867-5309' }
- * ]
  *
- * // { Jon: '555-1234', Jenny: '867-5309' }
- * const phonesByName = keyValMap(
- *   phoneBook,
- *   entry => entry.name,
- *   entry => entry.num
- * )
- * ```
+ *     const phoneBook = [
+ *       { name: 'Jon', num: '555-1234' },
+ *       { name: 'Jenny', num: '867-5309' }
+ *     ]
+ *
+ *     // { Jon: '555-1234', Jenny: '867-5309' }
+ *     const phonesByName = keyValMap(
+ *       phoneBook,
+ *       entry => entry.name,
+ *       entry => entry.num
+ *     )
+ *
  */
 function keyValMap(list, keyFn, valFn) {
-  var result = Object.create(null);
-
-  for (var _iterator = _createForOfIteratorHelperLoose(list), _step; !(_step = _iterator()).done;) {
-    var item = _step.value;
-    result[keyFn(item)] = valFn(item);
-  }
-
-  return result;
+  return list.reduce(function (map, item) {
+    map[keyFn(item)] = valFn(item);
+    return map;
+  }, Object.create(null));
 }
 
 /***/ }),
@@ -14841,18 +14926,23 @@ function keyValMap(list, keyFn, valFn) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "mapValue": function() { return /* binding */ mapValue; }
+/* harmony export */   "default": function() { return /* binding */ mapValue; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../polyfills/objectEntries.mjs */ "./node_modules/graphql/polyfills/objectEntries.mjs");
+
 /**
  * Creates an object map with the same keys as `map` and values generated by
  * running each value of `map` thru `fn`.
  */
+
 function mapValue(map, fn) {
   var result = Object.create(null);
 
-  for (var _i = 0, _Object$keys = Object.keys(map); _i < _Object$keys.length; _i++) {
-    var key = _Object$keys[_i];
-    result[key] = fn(map[key], key);
+  for (var _i2 = 0, _objectEntries2 = (0,_polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(map); _i2 < _objectEntries2.length; _i2++) {
+    var _ref2 = _objectEntries2[_i2];
+    var _key = _ref2[0];
+    var _value = _ref2[1];
+    result[_key] = fn(_value, _key);
   }
 
   return result;
@@ -14869,7 +14959,7 @@ function mapValue(map, fn) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "memoize3": function() { return /* binding */ memoize3; }
+/* harmony export */   "default": function() { return /* binding */ memoize3; }
 /* harmony export */ });
 /**
  * Memoizes the provided three-argument function.
@@ -14877,32 +14967,36 @@ __webpack_require__.r(__webpack_exports__);
 function memoize3(fn) {
   var cache0;
   return function memoized(a1, a2, a3) {
-    if (cache0 === undefined) {
+    if (!cache0) {
       cache0 = new WeakMap();
     }
 
     var cache1 = cache0.get(a1);
+    var cache2;
 
-    if (cache1 === undefined) {
+    if (cache1) {
+      cache2 = cache1.get(a2);
+
+      if (cache2) {
+        var cachedValue = cache2.get(a3);
+
+        if (cachedValue !== undefined) {
+          return cachedValue;
+        }
+      }
+    } else {
       cache1 = new WeakMap();
       cache0.set(a1, cache1);
     }
 
-    var cache2 = cache1.get(a2);
-
-    if (cache2 === undefined) {
+    if (!cache2) {
       cache2 = new WeakMap();
       cache1.set(a2, cache2);
     }
 
-    var fnResult = cache2.get(a3);
-
-    if (fnResult === undefined) {
-      fnResult = fn(a1, a2, a3);
-      cache2.set(a3, fnResult);
-    }
-
-    return fnResult;
+    var newValue = fn(a1, a2, a3);
+    cache2.set(a3, newValue);
+    return newValue;
   };
 }
 
@@ -14917,7 +15011,7 @@ function memoize3(fn) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "naturalCompare": function() { return /* binding */ naturalCompare; }
+/* harmony export */   "default": function() { return /* binding */ naturalCompare; }
 /* harmony export */ });
 /**
  * Returns a number indicating whether a reference string comes before, or after,
@@ -14927,28 +15021,28 @@ __webpack_require__.r(__webpack_exports__);
  *
  */
 function naturalCompare(aStr, bStr) {
-  var aIndex = 0;
-  var bIndex = 0;
+  var aIdx = 0;
+  var bIdx = 0;
 
-  while (aIndex < aStr.length && bIndex < bStr.length) {
-    var aChar = aStr.charCodeAt(aIndex);
-    var bChar = bStr.charCodeAt(bIndex);
+  while (aIdx < aStr.length && bIdx < bStr.length) {
+    var aChar = aStr.charCodeAt(aIdx);
+    var bChar = bStr.charCodeAt(bIdx);
 
     if (isDigit(aChar) && isDigit(bChar)) {
       var aNum = 0;
 
       do {
-        ++aIndex;
+        ++aIdx;
         aNum = aNum * 10 + aChar - DIGIT_0;
-        aChar = aStr.charCodeAt(aIndex);
+        aChar = aStr.charCodeAt(aIdx);
       } while (isDigit(aChar) && aNum > 0);
 
       var bNum = 0;
 
       do {
-        ++bIndex;
+        ++bIdx;
         bNum = bNum * 10 + bChar - DIGIT_0;
-        bChar = bStr.charCodeAt(bIndex);
+        bChar = bStr.charCodeAt(bIdx);
       } while (isDigit(bChar) && bNum > 0);
 
       if (aNum < bNum) {
@@ -14967,8 +15061,8 @@ function naturalCompare(aStr, bStr) {
         return 1;
       }
 
-      ++aIndex;
-      ++bIndex;
+      ++aIdx;
+      ++bIdx;
     }
   }
 
@@ -14983,6 +15077,20 @@ function isDigit(code) {
 
 /***/ }),
 
+/***/ "./node_modules/graphql/jsutils/nodejsCustomInspectSymbol.mjs":
+/*!********************************************************************!*\
+  !*** ./node_modules/graphql/jsutils/nodejsCustomInspectSymbol.mjs ***!
+  \********************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2317')
+var nodejsCustomInspectSymbol = typeof Symbol === 'function' && typeof Symbol.for === 'function' ? Symbol.for('nodejs.util.inspect.custom') : undefined;
+/* harmony default export */ __webpack_exports__["default"] = (nodejsCustomInspectSymbol);
+
+/***/ }),
+
 /***/ "./node_modules/graphql/jsutils/printPathArray.mjs":
 /*!*********************************************************!*\
   !*** ./node_modules/graphql/jsutils/printPathArray.mjs ***!
@@ -14992,7 +15100,7 @@ function isDigit(code) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "printPathArray": function() { return /* binding */ printPathArray; }
+/* harmony export */   "default": function() { return /* binding */ printPathArray; }
 /* harmony export */ });
 /**
  * Build a string describing the path.
@@ -15014,14 +15122,8 @@ function printPathArray(path) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "promiseForObject": function() { return /* binding */ promiseForObject; }
+/* harmony export */   "default": function() { return /* binding */ promiseForObject; }
 /* harmony export */ });
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 /**
  * This function transforms a JS object `ObjMap<Promise<T>>` into
  * a `Promise<ObjMap<T>>`
@@ -15030,17 +15132,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * `Promise.all` so it will work with any implementation of ES6 promises.
  */
 function promiseForObject(object) {
-  return Promise.all(Object.values(object)).then(function (resolvedValues) {
-    var resolvedObject = Object.create(null);
-
-    for (var _iterator = _createForOfIteratorHelperLoose(Object.keys(object).entries()), _step; !(_step = _iterator()).done;) {
-      var _step$value = _step.value,
-          i = _step$value[0],
-          key = _step$value[1];
-      resolvedObject[key] = resolvedValues[i];
-    }
-
-    return resolvedObject;
+  var keys = Object.keys(object);
+  var valuesAndPromises = keys.map(function (name) {
+    return object[name];
+  });
+  return Promise.all(valuesAndPromises).then(function (values) {
+    return values.reduce(function (resolvedObject, value, i) {
+      resolvedObject[keys[i]] = value;
+      return resolvedObject;
+    }, Object.create(null));
   });
 }
 
@@ -15055,15 +15155,9 @@ function promiseForObject(object) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "promiseReduce": function() { return /* binding */ promiseReduce; }
+/* harmony export */   "default": function() { return /* binding */ promiseReduce; }
 /* harmony export */ });
 /* harmony import */ var _isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./isPromise.mjs */ "./node_modules/graphql/jsutils/isPromise.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 /**
  * Similar to Array.prototype.reduce(), however the reducing callback may return
@@ -15073,21 +15167,107 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * return a Promise.
  */
 
-function promiseReduce(values, callbackFn, initialValue) {
-  var accumulator = initialValue;
+function promiseReduce(values, callback, initialValue) {
+  return values.reduce(function (previous, value) {
+    return (0,_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(previous) ? previous.then(function (resolved) {
+      return callback(resolved, value);
+    }) : callback(previous, value);
+  }, initialValue);
+}
 
-  var _loop = function _loop() {
-    var value = _step.value;
-    accumulator = (0,_isPromise_mjs__WEBPACK_IMPORTED_MODULE_0__.isPromise)(accumulator) ? accumulator.then(function (resolved) {
-      return callbackFn(resolved, value);
-    }) : callbackFn(accumulator, value);
-  };
+/***/ }),
 
-  for (var _iterator = _createForOfIteratorHelperLoose(values), _step; !(_step = _iterator()).done;) {
-    _loop();
+/***/ "./node_modules/graphql/jsutils/safeArrayFrom.mjs":
+/*!********************************************************!*\
+  !*** ./node_modules/graphql/jsutils/safeArrayFrom.mjs ***!
+  \********************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ safeArrayFrom; }
+/* harmony export */ });
+/* harmony import */ var _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../polyfills/symbols.mjs */ "./node_modules/graphql/polyfills/symbols.mjs");
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
   }
 
-  return accumulator;
+  return _typeof(obj);
+}
+
+
+/**
+ * Safer version of `Array.from` that return `null` if value isn't convertible to array.
+ * Also protects against Array-like objects without items.
+ *
+ * @example
+ *
+ * safeArrayFrom([ 1, 2, 3 ]) // [1, 2, 3]
+ * safeArrayFrom('ABC') // null
+ * safeArrayFrom({ length: 1 }) // null
+ * safeArrayFrom({ length: 1, 0: 'Alpha' }) // ['Alpha']
+ * safeArrayFrom({ key: 'value' }) // null
+ * safeArrayFrom(new Map()) // []
+ *
+ */
+
+function safeArrayFrom(collection) {
+  var mapFn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (item) {
+    return item;
+  };
+
+  if (collection == null || _typeof(collection) !== 'object') {
+    return null;
+  }
+
+  if (Array.isArray(collection)) {
+    return collection.map(mapFn);
+  } // Is Iterable?
+
+
+  var iteratorMethod = collection[_polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_0__.SYMBOL_ITERATOR];
+
+  if (typeof iteratorMethod === 'function') {
+    // $FlowFixMe[incompatible-use]
+    var iterator = iteratorMethod.call(collection);
+    var result = [];
+    var step;
+
+    for (var i = 0; !(step = iterator.next()).done; ++i) {
+      result.push(mapFn(step.value, i));
+    }
+
+    return result;
+  } // Is Array like?
+
+
+  var length = collection.length;
+
+  if (typeof length === 'number' && length >= 0 && length % 1 === 0) {
+    var _result = [];
+
+    for (var _i = 0; _i < length; ++_i) {
+      if (!Object.prototype.hasOwnProperty.call(collection, _i)) {
+        return null;
+      }
+
+      _result.push(mapFn(collection[String(_i)], _i));
+    }
+
+    return _result;
+  }
+
+  return null;
 }
 
 /***/ }),
@@ -15101,15 +15281,9 @@ function promiseReduce(values, callbackFn, initialValue) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "suggestionList": function() { return /* binding */ suggestionList; }
+/* harmony export */   "default": function() { return /* binding */ suggestionList; }
 /* harmony export */ });
 /* harmony import */ var _naturalCompare_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./naturalCompare.mjs */ "./node_modules/graphql/jsutils/naturalCompare.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 /**
  * Given an invalid input string and a list of valid options, returns a filtered
@@ -15121,8 +15295,8 @@ function suggestionList(input, options) {
   var lexicalDistance = new LexicalDistance(input);
   var threshold = Math.floor(input.length * 0.4) + 1;
 
-  for (var _iterator = _createForOfIteratorHelperLoose(options), _step; !(_step = _iterator()).done;) {
-    var option = _step.value;
+  for (var _i2 = 0; _i2 < options.length; _i2++) {
+    var option = options[_i2];
     var distance = lexicalDistance.measure(option, threshold);
 
     if (distance !== undefined) {
@@ -15132,7 +15306,7 @@ function suggestionList(input, options) {
 
   return Object.keys(optionsByDistance).sort(function (a, b) {
     var distanceDiff = optionsByDistance[a] - optionsByDistance[b];
-    return distanceDiff !== 0 ? distanceDiff : (0,_naturalCompare_mjs__WEBPACK_IMPORTED_MODULE_0__.naturalCompare)(a, b);
+    return distanceDiff !== 0 ? distanceDiff : (0,_naturalCompare_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(a, b);
   });
 }
 /**
@@ -15244,58 +15418,6 @@ function stringToArray(str) {
 
 /***/ }),
 
-/***/ "./node_modules/graphql/jsutils/toError.mjs":
-/*!**************************************************!*\
-  !*** ./node_modules/graphql/jsutils/toError.mjs ***!
-  \**************************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "toError": function() { return /* binding */ toError; }
-/* harmony export */ });
-/* harmony import */ var _inspect_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
-
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-/**
- * Sometimes a non-error is thrown, wrap it as an Error instance to ensure a consistent Error interface.
- */
-
-function toError(thrownValue) {
-  return thrownValue instanceof Error ? thrownValue : new NonErrorThrown(thrownValue);
-}
-
-var NonErrorThrown = /*#__PURE__*/function (_Error) {
-  _inheritsLoose(NonErrorThrown, _Error);
-
-  function NonErrorThrown(thrownValue) {
-    var _this;
-
-    _this = _Error.call(this, 'Unexpected error value: ' + (0,_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(thrownValue)) || this;
-    _this.name = 'NonErrorThrown';
-    _this.thrownValue = thrownValue;
-    return _this;
-  }
-
-  return NonErrorThrown;
-}( /*#__PURE__*/_wrapNativeSuper(Error));
-
-/***/ }),
-
 /***/ "./node_modules/graphql/jsutils/toObjMap.mjs":
 /*!***************************************************!*\
   !*** ./node_modules/graphql/jsutils/toObjMap.mjs ***!
@@ -15305,23 +15427,22 @@ var NonErrorThrown = /*#__PURE__*/function (_Error) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "toObjMap": function() { return /* binding */ toObjMap; }
+/* harmony export */   "default": function() { return /* binding */ toObjMap; }
 /* harmony export */ });
-function toObjMap(obj) {
-  if (obj == null) {
-    return Object.create(null);
-  }
+/* harmony import */ var _polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../polyfills/objectEntries.mjs */ "./node_modules/graphql/polyfills/objectEntries.mjs");
 
+function toObjMap(obj) {
+  /* eslint-enable no-redeclare */
   if (Object.getPrototypeOf(obj) === null) {
     return obj;
   }
 
   var map = Object.create(null);
 
-  for (var _i = 0, _Object$entries = Object.entries(obj); _i < _Object$entries.length; _i++) {
-    var _Object$entries$_i = _Object$entries[_i],
-        key = _Object$entries$_i[0],
-        value = _Object$entries$_i[1];
+  for (var _i2 = 0, _objectEntries2 = (0,_polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(obj); _i2 < _objectEntries2.length; _i2++) {
+    var _ref2 = _objectEntries2[_i2];
+    var key = _ref2[0];
+    var value = _ref2[1];
     map[key] = value;
   }
 
@@ -15341,19 +15462,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Location": function() { return /* binding */ Location; },
 /* harmony export */   "Token": function() { return /* binding */ Token; },
-/* harmony export */   "QueryDocumentKeys": function() { return /* binding */ QueryDocumentKeys; },
-/* harmony export */   "isNode": function() { return /* binding */ isNode; },
-/* harmony export */   "OperationTypeNode": function() { return /* binding */ OperationTypeNode; }
+/* harmony export */   "isNode": function() { return /* binding */ isNode; }
 /* harmony export */ });
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+/* harmony import */ var _jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/defineInspect.mjs */ "./node_modules/graphql/jsutils/defineInspect.mjs");
 
 /**
  * Contains a range of UTF-8 character offsets and token references that
  * identify the region of the source from which the AST derived.
  */
-var Location = /*#__PURE__*/function (_Symbol$toStringTag) {
+
+var Location = /*#__PURE__*/function () {
   /**
    * The character offset at which this Node begins.
    */
@@ -15390,21 +15508,16 @@ var Location = /*#__PURE__*/function (_Symbol$toStringTag) {
     };
   };
 
-  _createClass(Location, [{
-    key: _Symbol$toStringTag,
-    get: function get() {
-      return 'Location';
-    }
-  }]);
-
   return Location;
-}(Symbol.toStringTag);
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
+
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(Location);
 /**
  * Represents a range of characters represented by a lexical token
  * within a Source.
  */
 
-var Token = /*#__PURE__*/function (_Symbol$toStringTag2) {
+var Token = /*#__PURE__*/function () {
   /**
    * The kind of Token.
    */
@@ -15427,9 +15540,6 @@ var Token = /*#__PURE__*/function (_Symbol$toStringTag2) {
 
   /**
    * For non-punctuation tokens, represents the interpreted value of the token.
-   *
-   * Note: is undefined for punctuation tokens, but typed as string for
-   * convenience in the parser.
    */
 
   /**
@@ -15437,15 +15547,14 @@ var Token = /*#__PURE__*/function (_Symbol$toStringTag2) {
    * including ignored tokens. <SOF> is always the first node and <EOF>
    * the last.
    */
-  function Token(kind, start, end, line, column, value) {
+  function Token(kind, start, end, line, column, prev, value) {
     this.kind = kind;
     this.start = start;
     this.end = end;
     this.line = line;
-    this.column = column; // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-
+    this.column = column;
     this.value = value;
-    this.prev = null;
+    this.prev = prev;
     this.next = null;
   }
 
@@ -15460,87 +15569,20 @@ var Token = /*#__PURE__*/function (_Symbol$toStringTag2) {
     };
   };
 
-  _createClass(Token, [{
-    key: _Symbol$toStringTag2,
-    get: function get() {
-      return 'Token';
-    }
-  }]);
-
   return Token;
-}(Symbol.toStringTag);
-/**
- * The list of all possible AST node types.
- */
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
 
-/**
- * @internal
- */
-
-var QueryDocumentKeys = {
-  Name: [],
-  Document: ['definitions'],
-  OperationDefinition: ['name', 'variableDefinitions', 'directives', 'selectionSet'],
-  VariableDefinition: ['variable', 'type', 'defaultValue', 'directives'],
-  Variable: ['name'],
-  SelectionSet: ['selections'],
-  Field: ['alias', 'name', 'arguments', 'directives', 'selectionSet'],
-  Argument: ['name', 'value'],
-  FragmentSpread: ['name', 'directives'],
-  InlineFragment: ['typeCondition', 'directives', 'selectionSet'],
-  FragmentDefinition: ['name', // Note: fragment variable definitions are deprecated and will removed in v17.0.0
-  'variableDefinitions', 'typeCondition', 'directives', 'selectionSet'],
-  IntValue: [],
-  FloatValue: [],
-  StringValue: [],
-  BooleanValue: [],
-  NullValue: [],
-  EnumValue: [],
-  ListValue: ['values'],
-  ObjectValue: ['fields'],
-  ObjectField: ['name', 'value'],
-  Directive: ['name', 'arguments'],
-  NamedType: ['name'],
-  ListType: ['type'],
-  NonNullType: ['type'],
-  SchemaDefinition: ['description', 'directives', 'operationTypes'],
-  OperationTypeDefinition: ['type'],
-  ScalarTypeDefinition: ['description', 'name', 'directives'],
-  ObjectTypeDefinition: ['description', 'name', 'interfaces', 'directives', 'fields'],
-  FieldDefinition: ['description', 'name', 'arguments', 'type', 'directives'],
-  InputValueDefinition: ['description', 'name', 'type', 'defaultValue', 'directives'],
-  InterfaceTypeDefinition: ['description', 'name', 'interfaces', 'directives', 'fields'],
-  UnionTypeDefinition: ['description', 'name', 'directives', 'types'],
-  EnumTypeDefinition: ['description', 'name', 'directives', 'values'],
-  EnumValueDefinition: ['description', 'name', 'directives'],
-  InputObjectTypeDefinition: ['description', 'name', 'directives', 'fields'],
-  DirectiveDefinition: ['description', 'name', 'arguments', 'locations'],
-  SchemaExtension: ['directives', 'operationTypes'],
-  ScalarTypeExtension: ['name', 'directives'],
-  ObjectTypeExtension: ['name', 'interfaces', 'directives', 'fields'],
-  InterfaceTypeExtension: ['name', 'interfaces', 'directives', 'fields'],
-  UnionTypeExtension: ['name', 'directives', 'types'],
-  EnumTypeExtension: ['name', 'directives', 'values'],
-  InputObjectTypeExtension: ['name', 'directives', 'fields']
-};
-var kindValues = new Set(Object.keys(QueryDocumentKeys));
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(Token);
 /**
  * @internal
  */
 
 function isNode(maybeNode) {
-  var maybeKind = maybeNode === null || maybeNode === void 0 ? void 0 : maybeNode.kind;
-  return typeof maybeKind === 'string' && kindValues.has(maybeKind);
+  return maybeNode != null && typeof maybeNode.kind === 'string';
 }
-/** Name */
-
-var OperationTypeNode;
-
-(function (OperationTypeNode) {
-  OperationTypeNode['QUERY'] = 'query';
-  OperationTypeNode['MUTATION'] = 'mutation';
-  OperationTypeNode['SUBSCRIPTION'] = 'subscription';
-})(OperationTypeNode || (OperationTypeNode = {}));
+/**
+ * The list of all possible AST node types.
+ */
 
 /***/ }),
 
@@ -15553,12 +15595,10 @@ var OperationTypeNode;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "dedentBlockStringLines": function() { return /* binding */ dedentBlockStringLines; },
-/* harmony export */   "isPrintableAsBlockString": function() { return /* binding */ isPrintableAsBlockString; },
+/* harmony export */   "dedentBlockStringValue": function() { return /* binding */ dedentBlockStringValue; },
+/* harmony export */   "getBlockStringIndentation": function() { return /* binding */ getBlockStringIndentation; },
 /* harmony export */   "printBlockString": function() { return /* binding */ printBlockString; }
 /* harmony export */ });
-/* harmony import */ var _characterClasses_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./characterClasses.mjs */ "./node_modules/graphql/language/characterClasses.mjs");
-
 /**
  * Produces the value of a block string from its parsed raw value, similar to
  * CoffeeScript's block string, Python's docstring trim or Ruby's strip_heredoc.
@@ -15567,119 +15607,91 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @internal
  */
+function dedentBlockStringValue(rawString) {
+  // Expand a block string's raw value into independent lines.
+  var lines = rawString.split(/\r\n|[\n\r]/g); // Remove common indentation from all lines but first.
 
-function dedentBlockStringLines(lines) {
-  var _firstNonEmptyLine2;
+  var commonIndent = getBlockStringIndentation(rawString);
 
-  var commonIndent = Number.MAX_SAFE_INTEGER;
-  var firstNonEmptyLine = null;
-  var lastNonEmptyLine = -1;
-
-  for (var i = 0; i < lines.length; ++i) {
-    var _firstNonEmptyLine;
-
-    var line = lines[i];
-    var indent = leadingWhitespace(line);
-
-    if (indent === line.length) {
-      continue; // skip empty lines
+  if (commonIndent !== 0) {
+    for (var i = 1; i < lines.length; i++) {
+      lines[i] = lines[i].slice(commonIndent);
     }
+  } // Remove leading and trailing blank lines.
 
-    firstNonEmptyLine = (_firstNonEmptyLine = firstNonEmptyLine) !== null && _firstNonEmptyLine !== void 0 ? _firstNonEmptyLine : i;
-    lastNonEmptyLine = i;
 
-    if (i !== 0 && indent < commonIndent) {
-      commonIndent = indent;
-    }
+  var startLine = 0;
+
+  while (startLine < lines.length && isBlank(lines[startLine])) {
+    ++startLine;
   }
 
-  return lines // Remove common indentation from all lines but first.
-  .map(function (line, i) {
-    return i === 0 ? line : line.slice(commonIndent);
-  }) // Remove leading and trailing blank lines.
-  .slice((_firstNonEmptyLine2 = firstNonEmptyLine) !== null && _firstNonEmptyLine2 !== void 0 ? _firstNonEmptyLine2 : 0, lastNonEmptyLine + 1);
+  var endLine = lines.length;
+
+  while (endLine > startLine && isBlank(lines[endLine - 1])) {
+    --endLine;
+  } // Return a string of the lines joined with U+000A.
+
+
+  return lines.slice(startLine, endLine).join('\n');
 }
 
-function leadingWhitespace(str) {
-  var i = 0;
-
-  while (i < str.length && (0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_0__.isWhiteSpace)(str.charCodeAt(i))) {
-    ++i;
+function isBlank(str) {
+  for (var i = 0; i < str.length; ++i) {
+    if (str[i] !== ' ' && str[i] !== '\t') {
+      return false;
+    }
   }
 
-  return i;
+  return true;
 }
 /**
  * @internal
  */
 
 
-function isPrintableAsBlockString(value) {
-  if (value === '') {
-    return true; // empty string is printable
-  }
+function getBlockStringIndentation(value) {
+  var _commonIndent;
 
+  var isFirstLine = true;
   var isEmptyLine = true;
-  var hasIndent = false;
-  var hasCommonIndent = true;
-  var seenNonEmptyLine = false;
+  var indent = 0;
+  var commonIndent = null;
 
   for (var i = 0; i < value.length; ++i) {
-    switch (value.codePointAt(i)) {
-      case 0x0000:
-      case 0x0001:
-      case 0x0002:
-      case 0x0003:
-      case 0x0004:
-      case 0x0005:
-      case 0x0006:
-      case 0x0007:
-      case 0x0008:
-      case 0x000b:
-      case 0x000c:
-      case 0x000e:
-      case 0x000f:
-        return false;
-      // Has non-printable characters
-
-      case 0x000d:
+    switch (value.charCodeAt(i)) {
+      case 13:
         //  \r
-        return false;
-      // Has \r or \r\n which will be replaced as \n
+        if (value.charCodeAt(i + 1) === 10) {
+          ++i; // skip \r\n as one symbol
+        }
+
+      // falls through
 
       case 10:
         //  \n
-        if (isEmptyLine && !seenNonEmptyLine) {
-          return false; // Has leading new line
-        }
-
-        seenNonEmptyLine = true;
+        isFirstLine = false;
         isEmptyLine = true;
-        hasIndent = false;
+        indent = 0;
         break;
 
       case 9: //   \t
 
       case 32:
         //  <space>
-        hasIndent || (hasIndent = isEmptyLine);
+        ++indent;
         break;
 
       default:
-        hasCommonIndent && (hasCommonIndent = hasIndent);
+        if (isEmptyLine && !isFirstLine && (commonIndent === null || indent < commonIndent)) {
+          commonIndent = indent;
+        }
+
         isEmptyLine = false;
     }
   }
 
-  if (isEmptyLine) {
-    return false; // Has trailing empty lines
-  }
-
-  if (hasCommonIndent && seenNonEmptyLine) {
-    return false; // Has internal indent
-  }
-
-  return true;
+  return (_commonIndent = commonIndent) !== null && _commonIndent !== void 0 ? _commonIndent : 0;
 }
 /**
  * Print a block string in the indented block form by adding a leading and
@@ -15689,119 +15701,27 @@ function isPrintableAsBlockString(value) {
  * @internal
  */
 
-function printBlockString(value, options) {
-  var escapedValue = value.replace(/"""/g, '\\"""'); // Expand a block string's raw value into independent lines.
-
-  var lines = escapedValue.split(/\r\n|[\n\r]/g);
-  var isSingleLine = lines.length === 1; // If common indentation is found we can fix some of those cases by adding leading new line
-
-  var forceLeadingNewLine = lines.length > 1 && lines.slice(1).every(function (line) {
-    return line.length === 0 || (0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_0__.isWhiteSpace)(line.charCodeAt(0));
-  }); // Trailing triple quotes just looks confusing but doesn't force trailing new line
-
-  var hasTrailingTripleQuotes = escapedValue.endsWith('\\"""'); // Trailing quote (single or double) or slash forces trailing new line
-
-  var hasTrailingQuote = value.endsWith('"') && !hasTrailingTripleQuotes;
-  var hasTrailingSlash = value.endsWith('\\');
-  var forceTrailingNewline = hasTrailingQuote || hasTrailingSlash;
-  var printAsMultipleLines = !(options !== null && options !== void 0 && options.minimize) && ( // add leading and trailing new lines only if it improves readability
-  !isSingleLine || value.length > 70 || forceTrailingNewline || forceLeadingNewLine || hasTrailingTripleQuotes);
+function printBlockString(value) {
+  var indentation = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var preferMultipleLines = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  var isSingleLine = value.indexOf('\n') === -1;
+  var hasLeadingSpace = value[0] === ' ' || value[0] === '\t';
+  var hasTrailingQuote = value[value.length - 1] === '"';
+  var hasTrailingSlash = value[value.length - 1] === '\\';
+  var printAsMultipleLines = !isSingleLine || hasTrailingQuote || hasTrailingSlash || preferMultipleLines;
   var result = ''; // Format a multi-line block quote to account for leading space.
 
-  var skipLeadingNewLine = isSingleLine && (0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_0__.isWhiteSpace)(value.charCodeAt(0));
+  if (printAsMultipleLines && !(isSingleLine && hasLeadingSpace)) {
+    result += '\n' + indentation;
+  }
 
-  if (printAsMultipleLines && !skipLeadingNewLine || forceLeadingNewLine) {
+  result += indentation ? value.replace(/\n/g, '\n' + indentation) : value;
+
+  if (printAsMultipleLines) {
     result += '\n';
   }
 
-  result += escapedValue;
-
-  if (printAsMultipleLines || forceTrailingNewline) {
-    result += '\n';
-  }
-
-  return '"""' + result + '"""';
-}
-
-/***/ }),
-
-/***/ "./node_modules/graphql/language/characterClasses.mjs":
-/*!************************************************************!*\
-  !*** ./node_modules/graphql/language/characterClasses.mjs ***!
-  \************************************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isWhiteSpace": function() { return /* binding */ isWhiteSpace; },
-/* harmony export */   "isDigit": function() { return /* binding */ isDigit; },
-/* harmony export */   "isLetter": function() { return /* binding */ isLetter; },
-/* harmony export */   "isNameStart": function() { return /* binding */ isNameStart; },
-/* harmony export */   "isNameContinue": function() { return /* binding */ isNameContinue; }
-/* harmony export */ });
-/**
- * ```
- * WhiteSpace ::
- *   - "Horizontal Tab (U+0009)"
- *   - "Space (U+0020)"
- * ```
- * @internal
- */
-function isWhiteSpace(code) {
-  return code === 0x0009 || code === 0x0020;
-}
-/**
- * ```
- * Digit :: one of
- *   - `0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
- * ```
- * @internal
- */
-
-function isDigit(code) {
-  return code >= 0x0030 && code <= 0x0039;
-}
-/**
- * ```
- * Letter :: one of
- *   - `A` `B` `C` `D` `E` `F` `G` `H` `I` `J` `K` `L` `M`
- *   - `N` `O` `P` `Q` `R` `S` `T` `U` `V` `W` `X` `Y` `Z`
- *   - `a` `b` `c` `d` `e` `f` `g` `h` `i` `j` `k` `l` `m`
- *   - `n` `o` `p` `q` `r` `s` `t` `u` `v` `w` `x` `y` `z`
- * ```
- * @internal
- */
-
-function isLetter(code) {
-  return code >= 0x0061 && code <= 0x007a || // A-Z
-  code >= 0x0041 && code <= 0x005a // a-z
-  ;
-}
-/**
- * ```
- * NameStart ::
- *   - Letter
- *   - `_`
- * ```
- * @internal
- */
-
-function isNameStart(code) {
-  return isLetter(code) || code === 0x005f;
-}
-/**
- * ```
- * NameContinue ::
- *   - Letter
- *   - Digit
- *   - `_`
- * ```
- * @internal
- */
-
-function isNameContinue(code) {
-  return isLetter(code) || isDigit(code) || code === 0x005f;
+  return '"""' + result.replace(/"""/g, '\\"""') + '"""';
 }
 
 /***/ }),
@@ -15820,34 +15740,32 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * The set of allowed directive location values.
  */
-var DirectiveLocation;
+var DirectiveLocation = Object.freeze({
+  // Request Definitions
+  QUERY: 'QUERY',
+  MUTATION: 'MUTATION',
+  SUBSCRIPTION: 'SUBSCRIPTION',
+  FIELD: 'FIELD',
+  FRAGMENT_DEFINITION: 'FRAGMENT_DEFINITION',
+  FRAGMENT_SPREAD: 'FRAGMENT_SPREAD',
+  INLINE_FRAGMENT: 'INLINE_FRAGMENT',
+  VARIABLE_DEFINITION: 'VARIABLE_DEFINITION',
+  // Type System Definitions
+  SCHEMA: 'SCHEMA',
+  SCALAR: 'SCALAR',
+  OBJECT: 'OBJECT',
+  FIELD_DEFINITION: 'FIELD_DEFINITION',
+  ARGUMENT_DEFINITION: 'ARGUMENT_DEFINITION',
+  INTERFACE: 'INTERFACE',
+  UNION: 'UNION',
+  ENUM: 'ENUM',
+  ENUM_VALUE: 'ENUM_VALUE',
+  INPUT_OBJECT: 'INPUT_OBJECT',
+  INPUT_FIELD_DEFINITION: 'INPUT_FIELD_DEFINITION'
+});
 /**
  * The enum type representing the directive location values.
- *
- * @deprecated Please use `DirectiveLocation`. Will be remove in v17.
  */
-
-(function (DirectiveLocation) {
-  DirectiveLocation['QUERY'] = 'QUERY';
-  DirectiveLocation['MUTATION'] = 'MUTATION';
-  DirectiveLocation['SUBSCRIPTION'] = 'SUBSCRIPTION';
-  DirectiveLocation['FIELD'] = 'FIELD';
-  DirectiveLocation['FRAGMENT_DEFINITION'] = 'FRAGMENT_DEFINITION';
-  DirectiveLocation['FRAGMENT_SPREAD'] = 'FRAGMENT_SPREAD';
-  DirectiveLocation['INLINE_FRAGMENT'] = 'INLINE_FRAGMENT';
-  DirectiveLocation['VARIABLE_DEFINITION'] = 'VARIABLE_DEFINITION';
-  DirectiveLocation['SCHEMA'] = 'SCHEMA';
-  DirectiveLocation['SCALAR'] = 'SCALAR';
-  DirectiveLocation['OBJECT'] = 'OBJECT';
-  DirectiveLocation['FIELD_DEFINITION'] = 'FIELD_DEFINITION';
-  DirectiveLocation['ARGUMENT_DEFINITION'] = 'ARGUMENT_DEFINITION';
-  DirectiveLocation['INTERFACE'] = 'INTERFACE';
-  DirectiveLocation['UNION'] = 'UNION';
-  DirectiveLocation['ENUM'] = 'ENUM';
-  DirectiveLocation['ENUM_VALUE'] = 'ENUM_VALUE';
-  DirectiveLocation['INPUT_OBJECT'] = 'INPUT_OBJECT';
-  DirectiveLocation['INPUT_FIELD_DEFINITION'] = 'INPUT_FIELD_DEFINITION';
-})(DirectiveLocation || (DirectiveLocation = {}));
 
 /***/ }),
 
@@ -15865,58 +15783,65 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * The set of allowed kind values for AST nodes.
  */
-var Kind;
+var Kind = Object.freeze({
+  // Name
+  NAME: 'Name',
+  // Document
+  DOCUMENT: 'Document',
+  OPERATION_DEFINITION: 'OperationDefinition',
+  VARIABLE_DEFINITION: 'VariableDefinition',
+  SELECTION_SET: 'SelectionSet',
+  FIELD: 'Field',
+  ARGUMENT: 'Argument',
+  // Fragments
+  FRAGMENT_SPREAD: 'FragmentSpread',
+  INLINE_FRAGMENT: 'InlineFragment',
+  FRAGMENT_DEFINITION: 'FragmentDefinition',
+  // Values
+  VARIABLE: 'Variable',
+  INT: 'IntValue',
+  FLOAT: 'FloatValue',
+  STRING: 'StringValue',
+  BOOLEAN: 'BooleanValue',
+  NULL: 'NullValue',
+  ENUM: 'EnumValue',
+  LIST: 'ListValue',
+  OBJECT: 'ObjectValue',
+  OBJECT_FIELD: 'ObjectField',
+  // Directives
+  DIRECTIVE: 'Directive',
+  // Types
+  NAMED_TYPE: 'NamedType',
+  LIST_TYPE: 'ListType',
+  NON_NULL_TYPE: 'NonNullType',
+  // Type System Definitions
+  SCHEMA_DEFINITION: 'SchemaDefinition',
+  OPERATION_TYPE_DEFINITION: 'OperationTypeDefinition',
+  // Type Definitions
+  SCALAR_TYPE_DEFINITION: 'ScalarTypeDefinition',
+  OBJECT_TYPE_DEFINITION: 'ObjectTypeDefinition',
+  FIELD_DEFINITION: 'FieldDefinition',
+  INPUT_VALUE_DEFINITION: 'InputValueDefinition',
+  INTERFACE_TYPE_DEFINITION: 'InterfaceTypeDefinition',
+  UNION_TYPE_DEFINITION: 'UnionTypeDefinition',
+  ENUM_TYPE_DEFINITION: 'EnumTypeDefinition',
+  ENUM_VALUE_DEFINITION: 'EnumValueDefinition',
+  INPUT_OBJECT_TYPE_DEFINITION: 'InputObjectTypeDefinition',
+  // Directive Definitions
+  DIRECTIVE_DEFINITION: 'DirectiveDefinition',
+  // Type System Extensions
+  SCHEMA_EXTENSION: 'SchemaExtension',
+  // Type Extensions
+  SCALAR_TYPE_EXTENSION: 'ScalarTypeExtension',
+  OBJECT_TYPE_EXTENSION: 'ObjectTypeExtension',
+  INTERFACE_TYPE_EXTENSION: 'InterfaceTypeExtension',
+  UNION_TYPE_EXTENSION: 'UnionTypeExtension',
+  ENUM_TYPE_EXTENSION: 'EnumTypeExtension',
+  INPUT_OBJECT_TYPE_EXTENSION: 'InputObjectTypeExtension'
+});
 /**
  * The enum type representing the possible kind values of AST nodes.
- *
- * @deprecated Please use `Kind`. Will be remove in v17.
  */
-
-(function (Kind) {
-  Kind['NAME'] = 'Name';
-  Kind['DOCUMENT'] = 'Document';
-  Kind['OPERATION_DEFINITION'] = 'OperationDefinition';
-  Kind['VARIABLE_DEFINITION'] = 'VariableDefinition';
-  Kind['SELECTION_SET'] = 'SelectionSet';
-  Kind['FIELD'] = 'Field';
-  Kind['ARGUMENT'] = 'Argument';
-  Kind['FRAGMENT_SPREAD'] = 'FragmentSpread';
-  Kind['INLINE_FRAGMENT'] = 'InlineFragment';
-  Kind['FRAGMENT_DEFINITION'] = 'FragmentDefinition';
-  Kind['VARIABLE'] = 'Variable';
-  Kind['INT'] = 'IntValue';
-  Kind['FLOAT'] = 'FloatValue';
-  Kind['STRING'] = 'StringValue';
-  Kind['BOOLEAN'] = 'BooleanValue';
-  Kind['NULL'] = 'NullValue';
-  Kind['ENUM'] = 'EnumValue';
-  Kind['LIST'] = 'ListValue';
-  Kind['OBJECT'] = 'ObjectValue';
-  Kind['OBJECT_FIELD'] = 'ObjectField';
-  Kind['DIRECTIVE'] = 'Directive';
-  Kind['NAMED_TYPE'] = 'NamedType';
-  Kind['LIST_TYPE'] = 'ListType';
-  Kind['NON_NULL_TYPE'] = 'NonNullType';
-  Kind['SCHEMA_DEFINITION'] = 'SchemaDefinition';
-  Kind['OPERATION_TYPE_DEFINITION'] = 'OperationTypeDefinition';
-  Kind['SCALAR_TYPE_DEFINITION'] = 'ScalarTypeDefinition';
-  Kind['OBJECT_TYPE_DEFINITION'] = 'ObjectTypeDefinition';
-  Kind['FIELD_DEFINITION'] = 'FieldDefinition';
-  Kind['INPUT_VALUE_DEFINITION'] = 'InputValueDefinition';
-  Kind['INTERFACE_TYPE_DEFINITION'] = 'InterfaceTypeDefinition';
-  Kind['UNION_TYPE_DEFINITION'] = 'UnionTypeDefinition';
-  Kind['ENUM_TYPE_DEFINITION'] = 'EnumTypeDefinition';
-  Kind['ENUM_VALUE_DEFINITION'] = 'EnumValueDefinition';
-  Kind['INPUT_OBJECT_TYPE_DEFINITION'] = 'InputObjectTypeDefinition';
-  Kind['DIRECTIVE_DEFINITION'] = 'DirectiveDefinition';
-  Kind['SCHEMA_EXTENSION'] = 'SchemaExtension';
-  Kind['SCALAR_TYPE_EXTENSION'] = 'ScalarTypeExtension';
-  Kind['OBJECT_TYPE_EXTENSION'] = 'ObjectTypeExtension';
-  Kind['INTERFACE_TYPE_EXTENSION'] = 'InterfaceTypeExtension';
-  Kind['UNION_TYPE_EXTENSION'] = 'UnionTypeExtension';
-  Kind['ENUM_TYPE_EXTENSION'] = 'EnumTypeExtension';
-  Kind['INPUT_OBJECT_TYPE_EXTENSION'] = 'InputObjectTypeExtension';
-})(Kind || (Kind = {}));
 
 /***/ }),
 
@@ -15932,16 +15857,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Lexer": function() { return /* binding */ Lexer; },
 /* harmony export */   "isPunctuatorTokenKind": function() { return /* binding */ isPunctuatorTokenKind; }
 /* harmony export */ });
-/* harmony import */ var _error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../error/syntaxError.mjs */ "./node_modules/graphql/error/syntaxError.mjs");
+/* harmony import */ var _error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../error/syntaxError.mjs */ "./node_modules/graphql/error/syntaxError.mjs");
 /* harmony import */ var _ast_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ast.mjs */ "./node_modules/graphql/language/ast.mjs");
 /* harmony import */ var _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tokenKind.mjs */ "./node_modules/graphql/language/tokenKind.mjs");
-/* harmony import */ var _blockString_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./blockString.mjs */ "./node_modules/graphql/language/blockString.mjs");
-/* harmony import */ var _characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./characterClasses.mjs */ "./node_modules/graphql/language/characterClasses.mjs");
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-
+/* harmony import */ var _blockString_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./blockString.mjs */ "./node_modules/graphql/language/blockString.mjs");
 
 
 
@@ -15955,7 +15874,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * whenever called.
  */
 
-var Lexer = /*#__PURE__*/function (_Symbol$toStringTag) {
+var Lexer = /*#__PURE__*/function () {
   /**
    * The previously focused non-ignored token.
    */
@@ -15972,19 +15891,20 @@ var Lexer = /*#__PURE__*/function (_Symbol$toStringTag) {
    * The character offset at which the current line begins.
    */
   function Lexer(source) {
-    var startOfFileToken = new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.SOF, 0, 0, 0, 0);
+    var startOfFileToken = new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.SOF, 0, 0, 0, 0, null);
     this.source = source;
     this.lastToken = startOfFileToken;
     this.token = startOfFileToken;
     this.line = 1;
     this.lineStart = 0;
   }
-
-  var _proto = Lexer.prototype;
-
   /**
    * Advances the token stream to the next non-ignored token.
    */
+
+
+  var _proto = Lexer.prototype;
+
   _proto.advance = function advance() {
     this.lastToken = this.token;
     var token = this.token = this.lookahead();
@@ -16001,32 +15921,18 @@ var Lexer = /*#__PURE__*/function (_Symbol$toStringTag) {
 
     if (token.kind !== _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.EOF) {
       do {
-        if (token.next) {
-          token = token.next;
-        } else {
-          // Read the next token and form a link in the token linked-list.
-          var nextToken = readNextToken(this, token.end); // @ts-expect-error next is only mutable during parsing.
+        var _token$next; // Note: next is only mutable during parsing, so we cast to allow this.
 
-          token.next = nextToken; // @ts-expect-error prev is only mutable during parsing.
 
-          nextToken.prev = token;
-          token = nextToken;
-        }
+        token = (_token$next = token.next) !== null && _token$next !== void 0 ? _token$next : token.next = readToken(this, token);
       } while (token.kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.COMMENT);
     }
 
     return token;
   };
 
-  _createClass(Lexer, [{
-    key: _Symbol$toStringTag,
-    get: function get() {
-      return 'Lexer';
-    }
-  }]);
-
   return Lexer;
-}(Symbol.toStringTag);
+}();
 /**
  * @internal
  */
@@ -16034,71 +15940,13 @@ var Lexer = /*#__PURE__*/function (_Symbol$toStringTag) {
 function isPunctuatorTokenKind(kind) {
   return kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BANG || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.DOLLAR || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.AMP || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PAREN_L || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PAREN_R || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.SPREAD || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.COLON || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.EQUALS || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.AT || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACKET_L || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACKET_R || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACE_L || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PIPE || kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACE_R;
 }
-/**
- * A Unicode scalar value is any Unicode code point except surrogate code
- * points. In other words, the inclusive ranges of values 0x0000 to 0xD7FF and
- * 0xE000 to 0x10FFFF.
- *
- * SourceCharacter ::
- *   - "Any Unicode scalar value"
- */
 
-function isUnicodeScalarValue(code) {
-  return code >= 0x0000 && code <= 0xd7ff || code >= 0xe000 && code <= 0x10ffff;
-}
-/**
- * The GraphQL specification defines source text as a sequence of unicode scalar
- * values (which Unicode defines to exclude surrogate code points). However
- * JavaScript defines strings as a sequence of UTF-16 code units which may
- * include surrogates. A surrogate pair is a valid source character as it
- * encodes a supplementary code point (above U+FFFF), but unpaired surrogate
- * code points are not valid source characters.
- */
-
-
-function isSupplementaryCodePoint(body, location) {
-  return isLeadingSurrogate(body.charCodeAt(location)) && isTrailingSurrogate(body.charCodeAt(location + 1));
-}
-
-function isLeadingSurrogate(code) {
-  return code >= 0xd800 && code <= 0xdbff;
-}
-
-function isTrailingSurrogate(code) {
-  return code >= 0xdc00 && code <= 0xdfff;
-}
-/**
- * Prints the code point (or end of file reference) at a given location in a
- * source for use in error messages.
- *
- * Printable ASCII is printed quoted, while other points are printed in Unicode
- * code point form (ie. U+1234).
- */
-
-
-function printCodePointAt(lexer, location) {
-  var code = lexer.source.body.codePointAt(location);
-
-  if (code === undefined) {
-    return _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.EOF;
-  } else if (code >= 0x0020 && code <= 0x007e) {
-    // Printable ASCII
-    var char = String.fromCodePoint(code);
-    return char === '"' ? "'\"'" : "\"" + char + "\"";
-  } // Unicode code point
-
-
-  return 'U+' + code.toString(16).toUpperCase().padStart(4, '0');
-}
-/**
- * Create a token with line and column location information.
- */
-
-
-function createToken(lexer, kind, start, end, value) {
-  var line = lexer.line;
-  var col = 1 + start - lexer.lineStart;
-  return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(kind, start, end, line, col, value);
+function printCharCode(code) {
+  return (// NaN/undefined represents access beyond the end of the file.
+    isNaN(code) ? _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.EOF : // Trust JSON for ASCII.
+    code < 0x007f ? JSON.stringify(String.fromCharCode(code)) : // Otherwise print the escaped form.
+    "\"\\u".concat(('00' + code.toString(16).toUpperCase()).slice(-4), "\"")
+  );
 }
 /**
  * Gets the next token from the source starting at the given position.
@@ -16109,646 +15957,585 @@ function createToken(lexer, kind, start, end, value) {
  */
 
 
-function readNextToken(lexer, start) {
-  var body = lexer.source.body;
+function readToken(lexer, prev) {
+  var source = lexer.source;
+  var body = source.body;
   var bodyLength = body.length;
-  var position = start;
+  var pos = prev.end;
 
-  while (position < bodyLength) {
-    var code = body.charCodeAt(position); // SourceCharacter
+  while (pos < bodyLength) {
+    var code = body.charCodeAt(pos);
+    var _line = lexer.line;
+
+    var _col = 1 + pos - lexer.lineStart; // SourceCharacter
+
 
     switch (code) {
-      // Ignored ::
-      //   - UnicodeBOM
-      //   - WhiteSpace
-      //   - LineTerminator
-      //   - Comment
-      //   - Comma
-      //
-      // UnicodeBOM :: "Byte Order Mark (U+FEFF)"
-      //
-      // WhiteSpace ::
-      //   - "Horizontal Tab (U+0009)"
-      //   - "Space (U+0020)"
-      //
-      // Comma :: ,
       case 0xfeff: // <BOM>
 
-      case 0x0009: // \t
+      case 9: //   \t
 
-      case 0x0020: // <space>
+      case 32: //  <space>
 
-      case 0x002c:
-        // ,
-        ++position;
+      case 44:
+        //  ,
+        ++pos;
         continue;
-      // LineTerminator ::
-      //   - "New Line (U+000A)"
-      //   - "Carriage Return (U+000D)" [lookahead != "New Line (U+000A)"]
-      //   - "Carriage Return (U+000D)" "New Line (U+000A)"
 
-      case 0x000a:
-        // \n
-        ++position;
+      case 10:
+        //  \n
+        ++pos;
         ++lexer.line;
-        lexer.lineStart = position;
+        lexer.lineStart = pos;
         continue;
 
-      case 0x000d:
-        // \r
-        if (body.charCodeAt(position + 1) === 0x000a) {
-          position += 2;
+      case 13:
+        //  \r
+        if (body.charCodeAt(pos + 1) === 10) {
+          pos += 2;
         } else {
-          ++position;
+          ++pos;
         }
 
         ++lexer.line;
-        lexer.lineStart = position;
+        lexer.lineStart = pos;
         continue;
-      // Comment
 
-      case 0x0023:
-        // #
-        return readComment(lexer, position);
-      // Token ::
-      //   - Punctuator
-      //   - Name
-      //   - IntValue
-      //   - FloatValue
-      //   - StringValue
-      //
-      // Punctuator :: one of ! $ & ( ) ... : = @ [ ] { | }
+      case 33:
+        //  !
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BANG, pos, pos + 1, _line, _col, prev);
 
-      case 0x0021:
-        // !
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BANG, position, position + 1);
+      case 35:
+        //  #
+        return readComment(source, pos, _line, _col, prev);
 
-      case 0x0024:
-        // $
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.DOLLAR, position, position + 1);
+      case 36:
+        //  $
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.DOLLAR, pos, pos + 1, _line, _col, prev);
 
-      case 0x0026:
-        // &
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.AMP, position, position + 1);
+      case 38:
+        //  &
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.AMP, pos, pos + 1, _line, _col, prev);
 
-      case 0x0028:
-        // (
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PAREN_L, position, position + 1);
+      case 40:
+        //  (
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PAREN_L, pos, pos + 1, _line, _col, prev);
 
-      case 0x0029:
-        // )
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PAREN_R, position, position + 1);
+      case 41:
+        //  )
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PAREN_R, pos, pos + 1, _line, _col, prev);
 
-      case 0x002e:
-        // .
-        if (body.charCodeAt(position + 1) === 0x002e && body.charCodeAt(position + 2) === 0x002e) {
-          return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.SPREAD, position, position + 3);
+      case 46:
+        //  .
+        if (body.charCodeAt(pos + 1) === 46 && body.charCodeAt(pos + 2) === 46) {
+          return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.SPREAD, pos, pos + 3, _line, _col, prev);
         }
 
         break;
 
-      case 0x003a:
-        // :
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.COLON, position, position + 1);
+      case 58:
+        //  :
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.COLON, pos, pos + 1, _line, _col, prev);
 
-      case 0x003d:
-        // =
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.EQUALS, position, position + 1);
+      case 61:
+        //  =
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.EQUALS, pos, pos + 1, _line, _col, prev);
 
-      case 0x0040:
-        // @
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.AT, position, position + 1);
+      case 64:
+        //  @
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.AT, pos, pos + 1, _line, _col, prev);
 
-      case 0x005b:
-        // [
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACKET_L, position, position + 1);
+      case 91:
+        //  [
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACKET_L, pos, pos + 1, _line, _col, prev);
 
-      case 0x005d:
-        // ]
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACKET_R, position, position + 1);
+      case 93:
+        //  ]
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACKET_R, pos, pos + 1, _line, _col, prev);
 
-      case 0x007b:
+      case 123:
         // {
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACE_L, position, position + 1);
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACE_L, pos, pos + 1, _line, _col, prev);
 
-      case 0x007c:
+      case 124:
         // |
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PIPE, position, position + 1);
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.PIPE, pos, pos + 1, _line, _col, prev);
 
-      case 0x007d:
+      case 125:
         // }
-        return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACE_R, position, position + 1);
-      // StringValue
+        return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BRACE_R, pos, pos + 1, _line, _col, prev);
 
-      case 0x0022:
-        // "
-        if (body.charCodeAt(position + 1) === 0x0022 && body.charCodeAt(position + 2) === 0x0022) {
-          return readBlockString(lexer, position);
+      case 34:
+        //  "
+        if (body.charCodeAt(pos + 1) === 34 && body.charCodeAt(pos + 2) === 34) {
+          return readBlockString(source, pos, _line, _col, prev, lexer);
         }
 
-        return readString(lexer, position);
-    } // IntValue | FloatValue (Digit | -)
+        return readString(source, pos, _line, _col, prev);
 
+      case 45: //  -
 
-    if ((0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isDigit)(code) || code === 0x002d) {
-      return readNumber(lexer, position, code);
-    } // Name
+      case 48: //  0
 
+      case 49: //  1
 
-    if ((0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isNameStart)(code)) {
-      return readName(lexer, position);
+      case 50: //  2
+
+      case 51: //  3
+
+      case 52: //  4
+
+      case 53: //  5
+
+      case 54: //  6
+
+      case 55: //  7
+
+      case 56: //  8
+
+      case 57:
+        //  9
+        return readNumber(source, pos, code, _line, _col, prev);
+
+      case 65: //  A
+
+      case 66: //  B
+
+      case 67: //  C
+
+      case 68: //  D
+
+      case 69: //  E
+
+      case 70: //  F
+
+      case 71: //  G
+
+      case 72: //  H
+
+      case 73: //  I
+
+      case 74: //  J
+
+      case 75: //  K
+
+      case 76: //  L
+
+      case 77: //  M
+
+      case 78: //  N
+
+      case 79: //  O
+
+      case 80: //  P
+
+      case 81: //  Q
+
+      case 82: //  R
+
+      case 83: //  S
+
+      case 84: //  T
+
+      case 85: //  U
+
+      case 86: //  V
+
+      case 87: //  W
+
+      case 88: //  X
+
+      case 89: //  Y
+
+      case 90: //  Z
+
+      case 95: //  _
+
+      case 97: //  a
+
+      case 98: //  b
+
+      case 99: //  c
+
+      case 100: // d
+
+      case 101: // e
+
+      case 102: // f
+
+      case 103: // g
+
+      case 104: // h
+
+      case 105: // i
+
+      case 106: // j
+
+      case 107: // k
+
+      case 108: // l
+
+      case 109: // m
+
+      case 110: // n
+
+      case 111: // o
+
+      case 112: // p
+
+      case 113: // q
+
+      case 114: // r
+
+      case 115: // s
+
+      case 116: // t
+
+      case 117: // u
+
+      case 118: // v
+
+      case 119: // w
+
+      case 120: // x
+
+      case 121: // y
+
+      case 122:
+        // z
+        return readName(source, pos, _line, _col, prev);
     }
 
-    throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, code === 0x0027 ? 'Unexpected single quote character (\'), did you mean to use a double quote (")?' : isUnicodeScalarValue(code) || isSupplementaryCodePoint(body, position) ? "Unexpected character: " + printCodePointAt(lexer, position) + "." : "Invalid character: " + printCodePointAt(lexer, position) + ".");
+    throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, pos, unexpectedCharacterMessage(code));
   }
 
-  return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.EOF, bodyLength, bodyLength);
+  var line = lexer.line;
+  var col = 1 + pos - lexer.lineStart;
+  return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.EOF, bodyLength, bodyLength, line, col, prev);
+}
+/**
+ * Report a message that an unexpected character was encountered.
+ */
+
+
+function unexpectedCharacterMessage(code) {
+  if (code < 0x0020 && code !== 0x0009 && code !== 0x000a && code !== 0x000d) {
+    return "Cannot contain the invalid character ".concat(printCharCode(code), ".");
+  }
+
+  if (code === 39) {
+    // '
+    return 'Unexpected single quote character (\'), did you mean to use a double quote (")?';
+  }
+
+  return "Cannot parse the unexpected character ".concat(printCharCode(code), ".");
 }
 /**
  * Reads a comment token from the source file.
  *
- * ```
- * Comment :: # CommentChar* [lookahead != CommentChar]
- *
- * CommentChar :: SourceCharacter but not LineTerminator
- * ```
+ * #[\u0009\u0020-\uFFFF]*
  */
 
 
-function readComment(lexer, start) {
-  var body = lexer.source.body;
-  var bodyLength = body.length;
-  var position = start + 1;
+function readComment(source, start, line, col, prev) {
+  var body = source.body;
+  var code;
+  var position = start;
 
-  while (position < bodyLength) {
-    var code = body.charCodeAt(position); // LineTerminator (\n | \r)
+  do {
+    code = body.charCodeAt(++position);
+  } while (!isNaN(code) && ( // SourceCharacter but not LineTerminator
+  code > 0x001f || code === 0x0009));
 
-    if (code === 0x000a || code === 0x000d) {
-      break;
-    } // SourceCharacter
-
-
-    if (isUnicodeScalarValue(code)) {
-      ++position;
-    } else if (isSupplementaryCodePoint(body, position)) {
-      position += 2;
-    } else {
-      break;
-    }
-  }
-
-  return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.COMMENT, start, position, body.slice(start + 1, position));
+  return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.COMMENT, start, position, line, col, prev, body.slice(start + 1, position));
 }
 /**
- * Reads a number token from the source file, either a FloatValue or an IntValue
- * depending on whether a FractionalPart or ExponentPart is encountered.
+ * Reads a number token from the source file, either a float
+ * or an int depending on whether a decimal point appears.
  *
- * ```
- * IntValue :: IntegerPart [lookahead != {Digit, `.`, NameStart}]
- *
- * IntegerPart ::
- *   - NegativeSign? 0
- *   - NegativeSign? NonZeroDigit Digit*
- *
- * NegativeSign :: -
- *
- * NonZeroDigit :: Digit but not `0`
- *
- * FloatValue ::
- *   - IntegerPart FractionalPart ExponentPart [lookahead != {Digit, `.`, NameStart}]
- *   - IntegerPart FractionalPart [lookahead != {Digit, `.`, NameStart}]
- *   - IntegerPart ExponentPart [lookahead != {Digit, `.`, NameStart}]
- *
- * FractionalPart :: . Digit+
- *
- * ExponentPart :: ExponentIndicator Sign? Digit+
- *
- * ExponentIndicator :: one of `e` `E`
- *
- * Sign :: one of + -
- * ```
+ * Int:   -?(0|[1-9][0-9]*)
+ * Float: -?(0|[1-9][0-9]*)(\.[0-9]+)?((E|e)(+|-)?[0-9]+)?
  */
 
 
-function readNumber(lexer, start, firstCode) {
-  var body = lexer.source.body;
-  var position = start;
+function readNumber(source, start, firstCode, line, col, prev) {
+  var body = source.body;
   var code = firstCode;
-  var isFloat = false; // NegativeSign (-)
+  var position = start;
+  var isFloat = false;
 
-  if (code === 0x002d) {
+  if (code === 45) {
+    // -
     code = body.charCodeAt(++position);
-  } // Zero (0)
+  }
 
-
-  if (code === 0x0030) {
+  if (code === 48) {
+    // 0
     code = body.charCodeAt(++position);
 
-    if ((0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isDigit)(code)) {
-      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, "Invalid number, unexpected digit after 0: " + printCodePointAt(lexer, position) + ".");
+    if (code >= 48 && code <= 57) {
+      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, "Invalid number, unexpected digit after 0: ".concat(printCharCode(code), "."));
     }
   } else {
-    position = readDigits(lexer, position, code);
+    position = readDigits(source, position, code);
     code = body.charCodeAt(position);
-  } // Full stop (.)
+  }
 
-
-  if (code === 0x002e) {
+  if (code === 46) {
+    // .
     isFloat = true;
     code = body.charCodeAt(++position);
-    position = readDigits(lexer, position, code);
+    position = readDigits(source, position, code);
     code = body.charCodeAt(position);
-  } // E e
+  }
 
-
-  if (code === 0x0045 || code === 0x0065) {
+  if (code === 69 || code === 101) {
+    // E e
     isFloat = true;
-    code = body.charCodeAt(++position); // + -
+    code = body.charCodeAt(++position);
 
-    if (code === 0x002b || code === 0x002d) {
+    if (code === 43 || code === 45) {
+      // + -
       code = body.charCodeAt(++position);
     }
 
-    position = readDigits(lexer, position, code);
+    position = readDigits(source, position, code);
     code = body.charCodeAt(position);
   } // Numbers cannot be followed by . or NameStart
 
 
-  if (code === 0x002e || (0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isNameStart)(code)) {
-    throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, "Invalid number, expected digit but got: " + printCodePointAt(lexer, position) + ".");
+  if (code === 46 || isNameStart(code)) {
+    throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, "Invalid number, expected digit but got: ".concat(printCharCode(code), "."));
   }
 
-  return createToken(lexer, isFloat ? _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.FLOAT : _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.INT, start, position, body.slice(start, position));
+  return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(isFloat ? _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.FLOAT : _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.INT, start, position, line, col, prev, body.slice(start, position));
 }
 /**
- * Returns the new position in the source after reading one or more digits.
+ * Returns the new position in the source after reading digits.
  */
 
 
-function readDigits(lexer, start, firstCode) {
-  if (!(0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isDigit)(firstCode)) {
-    throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, start, "Invalid number, expected digit but got: " + printCodePointAt(lexer, start) + ".");
+function readDigits(source, start, firstCode) {
+  var body = source.body;
+  var position = start;
+  var code = firstCode;
+
+  if (code >= 48 && code <= 57) {
+    // 0 - 9
+    do {
+      code = body.charCodeAt(++position);
+    } while (code >= 48 && code <= 57); // 0 - 9
+
+
+    return position;
   }
 
-  var body = lexer.source.body;
-  var position = start + 1; // +1 to skip first firstCode
-
-  while ((0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isDigit)(body.charCodeAt(position))) {
-    ++position;
-  }
-
-  return position;
+  throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, "Invalid number, expected digit but got: ".concat(printCharCode(code), "."));
 }
 /**
- * Reads a single-quote string token from the source file.
+ * Reads a string token from the source file.
  *
- * ```
- * StringValue ::
- *   - `""` [lookahead != `"`]
- *   - `"` StringCharacter+ `"`
- *
- * StringCharacter ::
- *   - SourceCharacter but not `"` or `\` or LineTerminator
- *   - `\u` EscapedUnicode
- *   - `\` EscapedCharacter
- *
- * EscapedUnicode ::
- *   - `{` HexDigit+ `}`
- *   - HexDigit HexDigit HexDigit HexDigit
- *
- * EscapedCharacter :: one of `"` `\` `/` `b` `f` `n` `r` `t`
- * ```
+ * "([^"\\\u000A\u000D]|(\\(u[0-9a-fA-F]{4}|["\\/bfnrt])))*"
  */
 
 
-function readString(lexer, start) {
-  var body = lexer.source.body;
-  var bodyLength = body.length;
+function readString(source, start, line, col, prev) {
+  var body = source.body;
   var position = start + 1;
   var chunkStart = position;
+  var code = 0;
   var value = '';
 
-  while (position < bodyLength) {
-    var code = body.charCodeAt(position); // Closing Quote (")
-
-    if (code === 0x0022) {
+  while (position < body.length && !isNaN(code = body.charCodeAt(position)) && // not LineTerminator
+  code !== 0x000a && code !== 0x000d) {
+    // Closing Quote (")
+    if (code === 34) {
       value += body.slice(chunkStart, position);
-      return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.STRING, start, position + 1, value);
-    } // Escape Sequence (\)
-
-
-    if (code === 0x005c) {
-      value += body.slice(chunkStart, position);
-
-      var _escape = body.charCodeAt(position + 1) === 0x0075 // u
-      ? body.charCodeAt(position + 2) === 0x007b // {
-      ? readEscapedUnicodeVariableWidth(lexer, position) : readEscapedUnicodeFixedWidth(lexer, position) : readEscapedCharacter(lexer, position);
-
-      value += _escape.value;
-      position += _escape.size;
-      chunkStart = position;
-      continue;
-    } // LineTerminator (\n | \r)
-
-
-    if (code === 0x000a || code === 0x000d) {
-      break;
+      return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.STRING, start, position + 1, line, col, prev, value);
     } // SourceCharacter
 
 
-    if (isUnicodeScalarValue(code)) {
-      ++position;
-    } else if (isSupplementaryCodePoint(body, position)) {
-      position += 2;
-    } else {
-      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, "Invalid character within String: " + printCodePointAt(lexer, position) + ".");
+    if (code < 0x0020 && code !== 0x0009) {
+      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, "Invalid character within String: ".concat(printCharCode(code), "."));
     }
-  }
 
-  throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, 'Unterminated string.');
-} // The string value and lexed size of an escape sequence.
+    ++position;
 
-
-function readEscapedUnicodeVariableWidth(lexer, position) {
-  var body = lexer.source.body;
-  var point = 0;
-  var size = 3; // Cannot be larger than 12 chars (\u{00000000}).
-
-  while (size < 12) {
-    var code = body.charCodeAt(position + size++); // Closing Brace (})
-
-    if (code === 0x007d) {
-      // Must be at least 5 chars (\u{0}) and encode a Unicode scalar value.
-      if (size < 5 || !isUnicodeScalarValue(point)) {
-        break;
-      }
-
-      return {
-        value: String.fromCodePoint(point),
-        size: size
-      };
-    } // Append this hex digit to the code point.
-
-
-    point = point << 4 | readHexDigit(code);
-
-    if (point < 0) {
-      break;
-    }
-  }
-
-  throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, "Invalid Unicode escape sequence: \"" + body.slice(position, position + size) + "\".");
-}
-
-function readEscapedUnicodeFixedWidth(lexer, position) {
-  var body = lexer.source.body;
-  var code = read16BitHexCode(body, position + 2);
-
-  if (isUnicodeScalarValue(code)) {
-    return {
-      value: String.fromCodePoint(code),
-      size: 6
-    };
-  } // GraphQL allows JSON-style surrogate pair escape sequences, but only when
-  // a valid pair is formed.
-
-
-  if (isLeadingSurrogate(code)) {
-    // \u
-    if (body.charCodeAt(position + 6) === 0x005c && body.charCodeAt(position + 7) === 0x0075) {
-      var trailingCode = read16BitHexCode(body, position + 8);
-
-      if (isTrailingSurrogate(trailingCode)) {
-        // JavaScript defines strings as a sequence of UTF-16 code units and
-        // encodes Unicode code points above U+FFFF using a surrogate pair of
-        // code units. Since this is a surrogate pair escape sequence, just
-        // include both codes into the JavaScript string value. Had JavaScript
-        // not been internally based on UTF-16, then this surrogate pair would
-        // be decoded to retrieve the supplementary code point.
-        return {
-          value: String.fromCodePoint(code, trailingCode),
-          size: 12
-        };
-      }
-    }
-  }
-
-  throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, "Invalid Unicode escape sequence: \"" + body.slice(position, position + 6) + "\".");
-}
-/**
- * Reads four hexadecimal characters and returns the positive integer that 16bit
- * hexadecimal string represents. For example, "000f" will return 15, and "dead"
- * will return 57005.
- *
- * Returns a negative number if any char was not a valid hexadecimal digit.
- */
-
-
-function read16BitHexCode(body, position) {
-  // readHexDigit() returns -1 on error. ORing a negative value with any other
-  // value always produces a negative value.
-  return readHexDigit(body.charCodeAt(position)) << 12 | readHexDigit(body.charCodeAt(position + 1)) << 8 | readHexDigit(body.charCodeAt(position + 2)) << 4 | readHexDigit(body.charCodeAt(position + 3));
-}
-/**
- * Reads a hexadecimal character and returns its positive integer value (0-15).
- *
- * '0' becomes 0, '9' becomes 9
- * 'A' becomes 10, 'F' becomes 15
- * 'a' becomes 10, 'f' becomes 15
- *
- * Returns -1 if the provided character code was not a valid hexadecimal digit.
- *
- * HexDigit :: one of
- *   - `0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
- *   - `A` `B` `C` `D` `E` `F`
- *   - `a` `b` `c` `d` `e` `f`
- */
-
-
-function readHexDigit(code) {
-  return code >= 0x0030 && code <= 0x0039 // 0-9
-  ? code - 0x0030 : code >= 0x0041 && code <= 0x0046 // A-F
-  ? code - 0x0037 : code >= 0x0061 && code <= 0x0066 // a-f
-  ? code - 0x0057 : -1;
-}
-/**
- * | Escaped Character | Code Point | Character Name               |
- * | ----------------- | ---------- | ---------------------------- |
- * | `"`               | U+0022     | double quote                 |
- * | `\`               | U+005C     | reverse solidus (back slash) |
- * | `/`               | U+002F     | solidus (forward slash)      |
- * | `b`               | U+0008     | backspace                    |
- * | `f`               | U+000C     | form feed                    |
- * | `n`               | U+000A     | line feed (new line)         |
- * | `r`               | U+000D     | carriage return              |
- * | `t`               | U+0009     | horizontal tab               |
- */
-
-
-function readEscapedCharacter(lexer, position) {
-  var body = lexer.source.body;
-  var code = body.charCodeAt(position + 1);
-
-  switch (code) {
-    case 0x0022:
-      // "
-      return {
-        value: "\"",
-        size: 2
-      };
-
-    case 0x005c:
+    if (code === 92) {
       // \
-      return {
-        value: "\\",
-        size: 2
-      };
+      value += body.slice(chunkStart, position - 1);
+      code = body.charCodeAt(position);
 
-    case 0x002f:
-      // /
-      return {
-        value: "/",
-        size: 2
-      };
+      switch (code) {
+        case 34:
+          value += '"';
+          break;
 
-    case 0x0062:
-      // b
-      return {
-        value: "\b",
-        size: 2
-      };
+        case 47:
+          value += '/';
+          break;
 
-    case 0x0066:
-      // f
-      return {
-        value: "\f",
-        size: 2
-      };
+        case 92:
+          value += '\\';
+          break;
 
-    case 0x006e:
-      // n
-      return {
-        value: "\n",
-        size: 2
-      };
+        case 98:
+          value += '\b';
+          break;
 
-    case 0x0072:
-      // r
-      return {
-        value: "\r",
-        size: 2
-      };
+        case 102:
+          value += '\f';
+          break;
 
-    case 0x0074:
-      // t
-      return {
-        value: "\t",
-        size: 2
-      };
+        case 110:
+          value += '\n';
+          break;
+
+        case 114:
+          value += '\r';
+          break;
+
+        case 116:
+          value += '\t';
+          break;
+
+        case 117:
+          {
+            // uXXXX
+            var charCode = uniCharCode(body.charCodeAt(position + 1), body.charCodeAt(position + 2), body.charCodeAt(position + 3), body.charCodeAt(position + 4));
+
+            if (charCode < 0) {
+              var invalidSequence = body.slice(position + 1, position + 5);
+              throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, "Invalid character escape sequence: \\u".concat(invalidSequence, "."));
+            }
+
+            value += String.fromCharCode(charCode);
+            position += 4;
+            break;
+          }
+
+        default:
+          throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, "Invalid character escape sequence: \\".concat(String.fromCharCode(code), "."));
+      }
+
+      ++position;
+      chunkStart = position;
+    }
   }
 
-  throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, "Invalid character escape sequence: \"" + body.slice(position, position + 2) + "\".");
+  throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, 'Unterminated string.');
 }
 /**
  * Reads a block string token from the source file.
  *
- * ```
- * StringValue ::
- *   - `"""` BlockStringCharacter* `"""`
- *
- * BlockStringCharacter ::
- *   - SourceCharacter but not `"""` or `\"""`
- *   - `\"""`
- * ```
+ * """("?"?(\\"""|\\(?!=""")|[^"\\]))*"""
  */
 
 
-function readBlockString(lexer, start) {
-  var body = lexer.source.body;
-  var bodyLength = body.length;
-  var lineStart = lexer.lineStart;
+function readBlockString(source, start, line, col, prev, lexer) {
+  var body = source.body;
   var position = start + 3;
   var chunkStart = position;
-  var currentLine = '';
-  var blockLines = [];
+  var code = 0;
+  var rawValue = '';
 
-  while (position < bodyLength) {
-    var code = body.charCodeAt(position); // Closing Triple-Quote (""")
-
-    if (code === 0x0022 && body.charCodeAt(position + 1) === 0x0022 && body.charCodeAt(position + 2) === 0x0022) {
-      currentLine += body.slice(chunkStart, position);
-      blockLines.push(currentLine);
-      var token = createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BLOCK_STRING, start, position + 3, // Return a string of the lines joined with U+000A.
-      (0,_blockString_mjs__WEBPACK_IMPORTED_MODULE_4__.dedentBlockStringLines)(blockLines).join('\n'));
-      lexer.line += blockLines.length - 1;
-      lexer.lineStart = lineStart;
-      return token;
-    } // Escaped Triple-Quote (\""")
+  while (position < body.length && !isNaN(code = body.charCodeAt(position))) {
+    // Closing Triple-Quote (""")
+    if (code === 34 && body.charCodeAt(position + 1) === 34 && body.charCodeAt(position + 2) === 34) {
+      rawValue += body.slice(chunkStart, position);
+      return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.BLOCK_STRING, start, position + 3, line, col, prev, (0,_blockString_mjs__WEBPACK_IMPORTED_MODULE_3__.dedentBlockStringValue)(rawValue));
+    } // SourceCharacter
 
 
-    if (code === 0x005c && body.charCodeAt(position + 1) === 0x0022 && body.charCodeAt(position + 2) === 0x0022 && body.charCodeAt(position + 3) === 0x0022) {
-      currentLine += body.slice(chunkStart, position);
-      chunkStart = position + 1; // skip only slash
+    if (code < 0x0020 && code !== 0x0009 && code !== 0x000a && code !== 0x000d) {
+      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, "Invalid character within String: ".concat(printCharCode(code), "."));
+    }
 
-      position += 4;
-      continue;
-    } // LineTerminator
-
-
-    if (code === 0x000a || code === 0x000d) {
-      currentLine += body.slice(chunkStart, position);
-      blockLines.push(currentLine);
-
-      if (code === 0x000d && body.charCodeAt(position + 1) === 0x000a) {
+    if (code === 10) {
+      // new line
+      ++position;
+      ++lexer.line;
+      lexer.lineStart = position;
+    } else if (code === 13) {
+      // carriage return
+      if (body.charCodeAt(position + 1) === 10) {
         position += 2;
       } else {
         ++position;
       }
 
-      currentLine = '';
+      ++lexer.line;
+      lexer.lineStart = position;
+    } else if ( // Escape Triple-Quote (\""")
+    code === 92 && body.charCodeAt(position + 1) === 34 && body.charCodeAt(position + 2) === 34 && body.charCodeAt(position + 3) === 34) {
+      rawValue += body.slice(chunkStart, position) + '"""';
+      position += 4;
       chunkStart = position;
-      lineStart = position;
-      continue;
-    } // SourceCharacter
-
-
-    if (isUnicodeScalarValue(code)) {
-      ++position;
-    } else if (isSupplementaryCodePoint(body, position)) {
-      position += 2;
     } else {
-      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, "Invalid character within String: " + printCodePointAt(lexer, position) + ".");
+      ++position;
     }
   }
 
-  throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_3__.syntaxError)(lexer.source, position, 'Unterminated string.');
+  throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_2__.syntaxError)(source, position, 'Unterminated string.');
+}
+/**
+ * Converts four hexadecimal chars to the integer that the
+ * string represents. For example, uniCharCode('0','0','0','f')
+ * will return 15, and uniCharCode('0','0','f','f') returns 255.
+ *
+ * Returns a negative number on error, if a char was invalid.
+ *
+ * This is implemented by noting that char2hex() returns -1 on error,
+ * which means the result of ORing the char2hex() will also be negative.
+ */
+
+
+function uniCharCode(a, b, c, d) {
+  return char2hex(a) << 12 | char2hex(b) << 8 | char2hex(c) << 4 | char2hex(d);
+}
+/**
+ * Converts a hex character to its integer value.
+ * '0' becomes 0, '9' becomes 9
+ * 'A' becomes 10, 'F' becomes 15
+ * 'a' becomes 10, 'f' becomes 15
+ *
+ * Returns -1 on error.
+ */
+
+
+function char2hex(a) {
+  return a >= 48 && a <= 57 ? a - 48 // 0-9
+  : a >= 65 && a <= 70 ? a - 55 // A-F
+  : a >= 97 && a <= 102 ? a - 87 // a-f
+  : -1;
 }
 /**
  * Reads an alphanumeric + underscore name from the source.
  *
- * ```
- * Name ::
- *   - NameStart NameContinue* [lookahead != NameContinue]
- * ```
+ * [_A-Za-z][_0-9A-Za-z]*
  */
 
 
-function readName(lexer, start) {
-  var body = lexer.source.body;
+function readName(source, start, line, col, prev) {
+  var body = source.body;
   var bodyLength = body.length;
   var position = start + 1;
+  var code = 0;
 
-  while (position < bodyLength) {
-    var code = body.charCodeAt(position);
-
-    if ((0,_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isNameContinue)(code)) {
-      ++position;
-    } else {
-      break;
-    }
+  while (position !== bodyLength && !isNaN(code = body.charCodeAt(position)) && (code === 95 || // _
+  code >= 48 && code <= 57 || // 0-9
+  code >= 65 && code <= 90 || // A-Z
+  code >= 97 && code <= 122) // a-z
+  ) {
+    ++position;
   }
 
-  return createToken(lexer, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.NAME, start, position, body.slice(start, position));
+  return new _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.Token(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_1__.TokenKind.NAME, start, position, line, col, prev, body.slice(start, position));
+} // _ A-Z a-z
+
+
+function isNameStart(code) {
+  return code === 95 || code >= 65 && code <= 90 || code >= 97 && code <= 122;
 }
 
 /***/ }),
@@ -16764,15 +16551,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getLocation": function() { return /* binding */ getLocation; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
-var LineRegExp = /\r\n|[\n\r]/g;
 /**
  * Represents a location in a Source.
  */
@@ -16781,26 +16559,20 @@ var LineRegExp = /\r\n|[\n\r]/g;
  * Takes a Source and a UTF-8 character offset, and returns the corresponding
  * line and column as a SourceLocation.
  */
-
 function getLocation(source, position) {
-  var lastLineStart = 0;
+  var lineRegexp = /\r\n|[\n\r]/g;
   var line = 1;
+  var column = position + 1;
+  var match;
 
-  for (var _iterator = _createForOfIteratorHelperLoose(source.body.matchAll(LineRegExp)), _step; !(_step = _iterator()).done;) {
-    var match = _step.value;
-    typeof match.index === 'number' || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_0__.invariant)(false);
-
-    if (match.index >= position) {
-      break;
-    }
-
-    lastLineStart = match.index + match[0].length;
+  while ((match = lineRegexp.exec(source.body)) && match.index < position) {
     line += 1;
+    column = position + 1 - (match.index + match[0].length);
   }
 
   return {
     line: line,
-    column: position + 1 - lastLineStart
+    column: column
   };
 }
 
@@ -16817,16 +16589,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "parse": function() { return /* binding */ parse; },
 /* harmony export */   "parseValue": function() { return /* binding */ parseValue; },
-/* harmony export */   "parseConstValue": function() { return /* binding */ parseConstValue; },
 /* harmony export */   "parseType": function() { return /* binding */ parseType; },
 /* harmony export */   "Parser": function() { return /* binding */ Parser; }
 /* harmony export */ });
-/* harmony import */ var _error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../error/syntaxError.mjs */ "./node_modules/graphql/error/syntaxError.mjs");
+/* harmony import */ var _error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../error/syntaxError.mjs */ "./node_modules/graphql/error/syntaxError.mjs");
 /* harmony import */ var _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
 /* harmony import */ var _ast_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ast.mjs */ "./node_modules/graphql/language/ast.mjs");
 /* harmony import */ var _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tokenKind.mjs */ "./node_modules/graphql/language/tokenKind.mjs");
 /* harmony import */ var _source_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./source.mjs */ "./node_modules/graphql/language/source.mjs");
-/* harmony import */ var _directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./directiveLocation.mjs */ "./node_modules/graphql/language/directiveLocation.mjs");
+/* harmony import */ var _directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./directiveLocation.mjs */ "./node_modules/graphql/language/directiveLocation.mjs");
 /* harmony import */ var _lexer_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lexer.mjs */ "./node_modules/graphql/language/lexer.mjs");
 
 
@@ -16863,18 +16634,6 @@ function parseValue(source, options) {
   var parser = new Parser(source, options);
   parser.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.SOF);
   var value = parser.parseValueLiteral(false);
-  parser.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.EOF);
-  return value;
-}
-/**
- * Similar to parseValue(), but raises a parse error if it encounters a
- * variable. The return type will be a constant value.
- */
-
-function parseConstValue(source, options) {
-  var parser = new Parser(source, options);
-  parser.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.SOF);
-  var value = parser.parseConstValueLiteral();
   parser.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.EOF);
   return value;
 }
@@ -16923,10 +16682,11 @@ var Parser = /*#__PURE__*/function () {
 
   _proto.parseName = function parseName() {
     var token = this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.NAME);
-    return this.node(token, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.NAME,
-      value: token.value
-    });
+      value: token.value,
+      loc: this.loc(token)
+    };
   } // Implements the parsing rules in the Document section.
 
   /**
@@ -16935,10 +16695,12 @@ var Parser = /*#__PURE__*/function () {
   ;
 
   _proto.parseDocument = function parseDocument() {
-    return this.node(this._lexer.token, {
+    var start = this._lexer.token;
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.DOCUMENT,
-      definitions: this.many(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.SOF, this.parseDefinition, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.EOF)
-    });
+      definitions: this.many(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.SOF, this.parseDefinition, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.EOF),
+      loc: this.loc(start)
+    };
   }
   /**
    * Definition :
@@ -16949,63 +16711,12 @@ var Parser = /*#__PURE__*/function () {
    * ExecutableDefinition :
    *   - OperationDefinition
    *   - FragmentDefinition
-   *
-   * TypeSystemDefinition :
-   *   - SchemaDefinition
-   *   - TypeDefinition
-   *   - DirectiveDefinition
-   *
-   * TypeDefinition :
-   *   - ScalarTypeDefinition
-   *   - ObjectTypeDefinition
-   *   - InterfaceTypeDefinition
-   *   - UnionTypeDefinition
-   *   - EnumTypeDefinition
-   *   - InputObjectTypeDefinition
    */
   ;
 
   _proto.parseDefinition = function parseDefinition() {
-    if (this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L)) {
-      return this.parseOperationDefinition();
-    } // Many definitions begin with a description and require a lookahead.
-
-
-    var hasDescription = this.peekDescription();
-    var keywordToken = hasDescription ? this._lexer.lookahead() : this._lexer.token;
-
-    if (keywordToken.kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.NAME) {
-      switch (keywordToken.value) {
-        case 'schema':
-          return this.parseSchemaDefinition();
-
-        case 'scalar':
-          return this.parseScalarTypeDefinition();
-
-        case 'type':
-          return this.parseObjectTypeDefinition();
-
-        case 'interface':
-          return this.parseInterfaceTypeDefinition();
-
-        case 'union':
-          return this.parseUnionTypeDefinition();
-
-        case 'enum':
-          return this.parseEnumTypeDefinition();
-
-        case 'input':
-          return this.parseInputObjectTypeDefinition();
-
-        case 'directive':
-          return this.parseDirectiveDefinition();
-      }
-
-      if (hasDescription) {
-        throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_4__.syntaxError)(this._lexer.source, this._lexer.token.start, 'Unexpected description, descriptions are supported only on type definitions.');
-      }
-
-      switch (keywordToken.value) {
+    if (this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.NAME)) {
+      switch (this._lexer.token.value) {
         case 'query':
         case 'mutation':
         case 'subscription':
@@ -17014,12 +16725,26 @@ var Parser = /*#__PURE__*/function () {
         case 'fragment':
           return this.parseFragmentDefinition();
 
+        case 'schema':
+        case 'scalar':
+        case 'type':
+        case 'interface':
+        case 'union':
+        case 'enum':
+        case 'input':
+        case 'directive':
+          return this.parseTypeSystemDefinition();
+
         case 'extend':
           return this.parseTypeSystemExtension();
       }
+    } else if (this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L)) {
+      return this.parseOperationDefinition();
+    } else if (this.peekDescription()) {
+      return this.parseTypeSystemDefinition();
     }
 
-    throw this.unexpected(keywordToken);
+    throw this.unexpected();
   } // Implements the parsing rules in the Operations section.
 
   /**
@@ -17033,14 +16758,15 @@ var Parser = /*#__PURE__*/function () {
     var start = this._lexer.token;
 
     if (this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L)) {
-      return this.node(start, {
+      return {
         kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.OPERATION_DEFINITION,
-        operation: _ast_mjs__WEBPACK_IMPORTED_MODULE_5__.OperationTypeNode.QUERY,
+        operation: 'query',
         name: undefined,
         variableDefinitions: [],
         directives: [],
-        selectionSet: this.parseSelectionSet()
-      });
+        selectionSet: this.parseSelectionSet(),
+        loc: this.loc(start)
+      };
     }
 
     var operation = this.parseOperationType();
@@ -17050,14 +16776,15 @@ var Parser = /*#__PURE__*/function () {
       name = this.parseName();
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.OPERATION_DEFINITION,
       operation: operation,
       name: name,
       variableDefinitions: this.parseVariableDefinitions(),
       directives: this.parseDirectives(false),
-      selectionSet: this.parseSelectionSet()
-    });
+      selectionSet: this.parseSelectionSet(),
+      loc: this.loc(start)
+    };
   }
   /**
    * OperationType : one of query mutation subscription
@@ -17069,13 +16796,13 @@ var Parser = /*#__PURE__*/function () {
 
     switch (operationToken.value) {
       case 'query':
-        return _ast_mjs__WEBPACK_IMPORTED_MODULE_5__.OperationTypeNode.QUERY;
+        return 'query';
 
       case 'mutation':
-        return _ast_mjs__WEBPACK_IMPORTED_MODULE_5__.OperationTypeNode.MUTATION;
+        return 'mutation';
 
       case 'subscription':
-        return _ast_mjs__WEBPACK_IMPORTED_MODULE_5__.OperationTypeNode.SUBSCRIPTION;
+        return 'subscription';
     }
 
     throw this.unexpected(operationToken);
@@ -17094,13 +16821,15 @@ var Parser = /*#__PURE__*/function () {
   ;
 
   _proto.parseVariableDefinition = function parseVariableDefinition() {
-    return this.node(this._lexer.token, {
+    var start = this._lexer.token;
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.VARIABLE_DEFINITION,
       variable: this.parseVariable(),
       type: (this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.COLON), this.parseTypeReference()),
-      defaultValue: this.expectOptionalToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.EQUALS) ? this.parseConstValueLiteral() : undefined,
-      directives: this.parseConstDirectives()
-    });
+      defaultValue: this.expectOptionalToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.EQUALS) ? this.parseValueLiteral(true) : undefined,
+      directives: this.parseDirectives(true),
+      loc: this.loc(start)
+    };
   }
   /**
    * Variable : $ Name
@@ -17110,23 +16839,24 @@ var Parser = /*#__PURE__*/function () {
   _proto.parseVariable = function parseVariable() {
     var start = this._lexer.token;
     this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.DOLLAR);
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.VARIABLE,
-      name: this.parseName()
-    });
+      name: this.parseName(),
+      loc: this.loc(start)
+    };
   }
   /**
-   * ```
    * SelectionSet : { Selection+ }
-   * ```
    */
   ;
 
   _proto.parseSelectionSet = function parseSelectionSet() {
-    return this.node(this._lexer.token, {
+    var start = this._lexer.token;
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.SELECTION_SET,
-      selections: this.many(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L, this.parseSelection, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_R)
-    });
+      selections: this.many(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L, this.parseSelection, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_R),
+      loc: this.loc(start)
+    };
   }
   /**
    * Selection :
@@ -17159,14 +16889,15 @@ var Parser = /*#__PURE__*/function () {
       name = nameOrAlias;
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.FIELD,
       alias: alias,
       name: name,
       arguments: this.parseArguments(false),
       directives: this.parseDirectives(false),
-      selectionSet: this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L) ? this.parseSelectionSet() : undefined
-    });
+      selectionSet: this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L) ? this.parseSelectionSet() : undefined,
+      loc: this.loc(start)
+    };
   }
   /**
    * Arguments[Const] : ( Argument[?Const]+ )
@@ -17182,23 +16913,26 @@ var Parser = /*#__PURE__*/function () {
    */
   ;
 
-  _proto.parseArgument = function parseArgument(isConst) {
-    if (isConst === void 0) {
-      isConst = false;
-    }
-
+  _proto.parseArgument = function parseArgument() {
     var start = this._lexer.token;
     var name = this.parseName();
     this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.COLON);
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.ARGUMENT,
       name: name,
-      value: this.parseValueLiteral(isConst)
-    });
+      value: this.parseValueLiteral(false),
+      loc: this.loc(start)
+    };
   };
 
   _proto.parseConstArgument = function parseConstArgument() {
-    return this.parseArgument(true);
+    var start = this._lexer.token;
+    return {
+      kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.ARGUMENT,
+      name: this.parseName(),
+      value: (this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.COLON), this.parseValueLiteral(true)),
+      loc: this.loc(start)
+    };
   } // Implements the parsing rules in the Fragments section.
 
   /**
@@ -17216,19 +16950,21 @@ var Parser = /*#__PURE__*/function () {
     var hasTypeCondition = this.expectOptionalKeyword('on');
 
     if (!hasTypeCondition && this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.NAME)) {
-      return this.node(start, {
+      return {
         kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.FRAGMENT_SPREAD,
         name: this.parseFragmentName(),
-        directives: this.parseDirectives(false)
-      });
+        directives: this.parseDirectives(false),
+        loc: this.loc(start)
+      };
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INLINE_FRAGMENT,
       typeCondition: hasTypeCondition ? this.parseNamedType() : undefined,
       directives: this.parseDirectives(false),
-      selectionSet: this.parseSelectionSet()
-    });
+      selectionSet: this.parseSelectionSet(),
+      loc: this.loc(start)
+    };
   }
   /**
    * FragmentDefinition :
@@ -17242,28 +16978,30 @@ var Parser = /*#__PURE__*/function () {
     var _this$_options;
 
     var start = this._lexer.token;
-    this.expectKeyword('fragment'); // Legacy support for defining variables within fragments changes
+    this.expectKeyword('fragment'); // Experimental support for defining variables within fragments changes
     // the grammar of FragmentDefinition:
     //   - fragment FragmentName VariableDefinitions? on TypeCondition Directives? SelectionSet
 
-    if (((_this$_options = this._options) === null || _this$_options === void 0 ? void 0 : _this$_options.allowLegacyFragmentVariables) === true) {
-      return this.node(start, {
+    if (((_this$_options = this._options) === null || _this$_options === void 0 ? void 0 : _this$_options.experimentalFragmentVariables) === true) {
+      return {
         kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.FRAGMENT_DEFINITION,
         name: this.parseFragmentName(),
         variableDefinitions: this.parseVariableDefinitions(),
         typeCondition: (this.expectKeyword('on'), this.parseNamedType()),
         directives: this.parseDirectives(false),
-        selectionSet: this.parseSelectionSet()
-      });
+        selectionSet: this.parseSelectionSet(),
+        loc: this.loc(start)
+      };
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.FRAGMENT_DEFINITION,
       name: this.parseFragmentName(),
       typeCondition: (this.expectKeyword('on'), this.parseNamedType()),
       directives: this.parseDirectives(false),
-      selectionSet: this.parseSelectionSet()
-    });
+      selectionSet: this.parseSelectionSet(),
+      loc: this.loc(start)
+    };
   }
   /**
    * FragmentName : Name but not `on`
@@ -17311,18 +17049,20 @@ var Parser = /*#__PURE__*/function () {
       case _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.INT:
         this._lexer.advance();
 
-        return this.node(token, {
+        return {
           kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INT,
-          value: token.value
-        });
+          value: token.value,
+          loc: this.loc(token)
+        };
 
       case _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.FLOAT:
         this._lexer.advance();
 
-        return this.node(token, {
+        return {
           kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.FLOAT,
-          value: token.value
-        });
+          value: token.value,
+          loc: this.loc(token)
+        };
 
       case _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.STRING:
       case _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BLOCK_STRING:
@@ -17333,50 +17073,42 @@ var Parser = /*#__PURE__*/function () {
 
         switch (token.value) {
           case 'true':
-            return this.node(token, {
+            return {
               kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.BOOLEAN,
-              value: true
-            });
+              value: true,
+              loc: this.loc(token)
+            };
 
           case 'false':
-            return this.node(token, {
+            return {
               kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.BOOLEAN,
-              value: false
-            });
+              value: false,
+              loc: this.loc(token)
+            };
 
           case 'null':
-            return this.node(token, {
-              kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.NULL
-            });
+            return {
+              kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.NULL,
+              loc: this.loc(token)
+            };
 
           default:
-            return this.node(token, {
+            return {
               kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.ENUM,
-              value: token.value
-            });
+              value: token.value,
+              loc: this.loc(token)
+            };
         }
 
       case _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.DOLLAR:
-        if (isConst) {
-          this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.DOLLAR);
-
-          if (this._lexer.token.kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.NAME) {
-            var varName = this._lexer.token.value;
-            throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_4__.syntaxError)(this._lexer.source, token.start, "Unexpected variable \"$" + varName + "\" in constant value.");
-          } else {
-            throw this.unexpected(token);
-          }
+        if (!isConst) {
+          return this.parseVariable();
         }
 
-        return this.parseVariable();
-
-      default:
-        throw this.unexpected();
+        break;
     }
-  };
 
-  _proto.parseConstValueLiteral = function parseConstValueLiteral() {
-    return this.parseValueLiteral(true);
+    throw this.unexpected();
   };
 
   _proto.parseStringLiteral = function parseStringLiteral() {
@@ -17384,11 +17116,12 @@ var Parser = /*#__PURE__*/function () {
 
     this._lexer.advance();
 
-    return this.node(token, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.STRING,
       value: token.value,
-      block: token.kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BLOCK_STRING
-    });
+      block: token.kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BLOCK_STRING,
+      loc: this.loc(token)
+    };
   }
   /**
    * ListValue[Const] :
@@ -17400,35 +17133,39 @@ var Parser = /*#__PURE__*/function () {
   _proto.parseList = function parseList(isConst) {
     var _this = this;
 
+    var start = this._lexer.token;
+
     var item = function item() {
       return _this.parseValueLiteral(isConst);
     };
 
-    return this.node(this._lexer.token, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.LIST,
-      values: this.any(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACKET_L, item, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACKET_R)
-    });
+      values: this.any(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACKET_L, item, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACKET_R),
+      loc: this.loc(start)
+    };
   }
   /**
-   * ```
    * ObjectValue[Const] :
    *   - { }
    *   - { ObjectField[?Const]+ }
-   * ```
    */
   ;
 
   _proto.parseObject = function parseObject(isConst) {
     var _this2 = this;
 
+    var start = this._lexer.token;
+
     var item = function item() {
       return _this2.parseObjectField(isConst);
     };
 
-    return this.node(this._lexer.token, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.OBJECT,
-      fields: this.any(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L, item, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_R)
-    });
+      fields: this.any(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L, item, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_R),
+      loc: this.loc(start)
+    };
   }
   /**
    * ObjectField[Const] : Name : Value[?Const]
@@ -17439,11 +17176,12 @@ var Parser = /*#__PURE__*/function () {
     var start = this._lexer.token;
     var name = this.parseName();
     this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.COLON);
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.OBJECT_FIELD,
       name: name,
-      value: this.parseValueLiteral(isConst)
-    });
+      value: this.parseValueLiteral(isConst),
+      loc: this.loc(start)
+    };
   } // Implements the parsing rules in the Directives section.
 
   /**
@@ -17459,26 +17197,21 @@ var Parser = /*#__PURE__*/function () {
     }
 
     return directives;
-  };
-
-  _proto.parseConstDirectives = function parseConstDirectives() {
-    return this.parseDirectives(true);
   }
   /**
-   * ```
    * Directive[Const] : @ Name Arguments[?Const]?
-   * ```
    */
   ;
 
   _proto.parseDirective = function parseDirective(isConst) {
     var start = this._lexer.token;
     this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.AT);
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.DIRECTIVE,
       name: this.parseName(),
-      arguments: this.parseArguments(isConst)
-    });
+      arguments: this.parseArguments(isConst),
+      loc: this.loc(start)
+    };
   } // Implements the parsing rules in the Types section.
 
   /**
@@ -17494,21 +17227,23 @@ var Parser = /*#__PURE__*/function () {
     var type;
 
     if (this.expectOptionalToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACKET_L)) {
-      var innerType = this.parseTypeReference();
+      type = this.parseTypeReference();
       this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACKET_R);
-      type = this.node(start, {
+      type = {
         kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.LIST_TYPE,
-        type: innerType
-      });
+        type: type,
+        loc: this.loc(start)
+      };
     } else {
       type = this.parseNamedType();
     }
 
     if (this.expectOptionalToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BANG)) {
-      return this.node(start, {
+      return {
         kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.NON_NULL_TYPE,
-        type: type
-      });
+        type: type,
+        loc: this.loc(start)
+      };
     }
 
     return type;
@@ -17519,12 +17254,64 @@ var Parser = /*#__PURE__*/function () {
   ;
 
   _proto.parseNamedType = function parseNamedType() {
-    return this.node(this._lexer.token, {
+    var start = this._lexer.token;
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.NAMED_TYPE,
-      name: this.parseName()
-    });
+      name: this.parseName(),
+      loc: this.loc(start)
+    };
   } // Implements the parsing rules in the Type Definition section.
+
+  /**
+   * TypeSystemDefinition :
+   *   - SchemaDefinition
+   *   - TypeDefinition
+   *   - DirectiveDefinition
+   *
+   * TypeDefinition :
+   *   - ScalarTypeDefinition
+   *   - ObjectTypeDefinition
+   *   - InterfaceTypeDefinition
+   *   - UnionTypeDefinition
+   *   - EnumTypeDefinition
+   *   - InputObjectTypeDefinition
+   */
   ;
+
+  _proto.parseTypeSystemDefinition = function parseTypeSystemDefinition() {
+    // Many definitions begin with a description and require a lookahead.
+    var keywordToken = this.peekDescription() ? this._lexer.lookahead() : this._lexer.token;
+
+    if (keywordToken.kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.NAME) {
+      switch (keywordToken.value) {
+        case 'schema':
+          return this.parseSchemaDefinition();
+
+        case 'scalar':
+          return this.parseScalarTypeDefinition();
+
+        case 'type':
+          return this.parseObjectTypeDefinition();
+
+        case 'interface':
+          return this.parseInterfaceTypeDefinition();
+
+        case 'union':
+          return this.parseUnionTypeDefinition();
+
+        case 'enum':
+          return this.parseEnumTypeDefinition();
+
+        case 'input':
+          return this.parseInputObjectTypeDefinition();
+
+        case 'directive':
+          return this.parseDirectiveDefinition();
+      }
+    }
+
+    throw this.unexpected(keywordToken);
+  };
 
   _proto.peekDescription = function peekDescription() {
     return this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.STRING) || this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BLOCK_STRING);
@@ -17540,9 +17327,7 @@ var Parser = /*#__PURE__*/function () {
     }
   }
   /**
-   * ```
    * SchemaDefinition : Description? schema Directives[Const]? { OperationTypeDefinition+ }
-   * ```
    */
   ;
 
@@ -17550,14 +17335,15 @@ var Parser = /*#__PURE__*/function () {
     var start = this._lexer.token;
     var description = this.parseDescription();
     this.expectKeyword('schema');
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var operationTypes = this.many(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L, this.parseOperationTypeDefinition, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_R);
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.SCHEMA_DEFINITION,
       description: description,
       directives: directives,
-      operationTypes: operationTypes
-    });
+      operationTypes: operationTypes,
+      loc: this.loc(start)
+    };
   }
   /**
    * OperationTypeDefinition : OperationType : NamedType
@@ -17569,11 +17355,12 @@ var Parser = /*#__PURE__*/function () {
     var operation = this.parseOperationType();
     this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.COLON);
     var type = this.parseNamedType();
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.OPERATION_TYPE_DEFINITION,
       operation: operation,
-      type: type
-    });
+      type: type,
+      loc: this.loc(start)
+    };
   }
   /**
    * ScalarTypeDefinition : Description? scalar Name Directives[Const]?
@@ -17585,13 +17372,14 @@ var Parser = /*#__PURE__*/function () {
     var description = this.parseDescription();
     this.expectKeyword('scalar');
     var name = this.parseName();
-    var directives = this.parseConstDirectives();
-    return this.node(start, {
+    var directives = this.parseDirectives(true);
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.SCALAR_TYPE_DEFINITION,
       description: description,
       name: name,
-      directives: directives
-    });
+      directives: directives,
+      loc: this.loc(start)
+    };
   }
   /**
    * ObjectTypeDefinition :
@@ -17606,16 +17394,17 @@ var Parser = /*#__PURE__*/function () {
     this.expectKeyword('type');
     var name = this.parseName();
     var interfaces = this.parseImplementsInterfaces();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var fields = this.parseFieldsDefinition();
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.OBJECT_TYPE_DEFINITION,
       description: description,
       name: name,
       interfaces: interfaces,
       directives: directives,
-      fields: fields
-    });
+      fields: fields,
+      loc: this.loc(start)
+    };
   }
   /**
    * ImplementsInterfaces :
@@ -17625,16 +17414,43 @@ var Parser = /*#__PURE__*/function () {
   ;
 
   _proto.parseImplementsInterfaces = function parseImplementsInterfaces() {
-    return this.expectOptionalKeyword('implements') ? this.delimitedMany(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.AMP, this.parseNamedType) : [];
+    var _this$_options2;
+
+    if (!this.expectOptionalKeyword('implements')) {
+      return [];
+    }
+
+    if (((_this$_options2 = this._options) === null || _this$_options2 === void 0 ? void 0 : _this$_options2.allowLegacySDLImplementsInterfaces) === true) {
+      var types = []; // Optional leading ampersand
+
+      this.expectOptionalToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.AMP);
+
+      do {
+        types.push(this.parseNamedType());
+      } while (this.expectOptionalToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.AMP) || this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.NAME));
+
+      return types;
+    }
+
+    return this.delimitedMany(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.AMP, this.parseNamedType);
   }
   /**
-   * ```
    * FieldsDefinition : { FieldDefinition+ }
-   * ```
    */
   ;
 
   _proto.parseFieldsDefinition = function parseFieldsDefinition() {
+    var _this$_options3; // Legacy support for the SDL?
+
+
+    if (((_this$_options3 = this._options) === null || _this$_options3 === void 0 ? void 0 : _this$_options3.allowLegacySDLEmptyFields) === true && this.peek(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L) && this._lexer.lookahead().kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_R) {
+      this._lexer.advance();
+
+      this._lexer.advance();
+
+      return [];
+    }
+
     return this.optionalMany(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L, this.parseFieldDefinition, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_R);
   }
   /**
@@ -17650,15 +17466,16 @@ var Parser = /*#__PURE__*/function () {
     var args = this.parseArgumentDefs();
     this.expectToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.COLON);
     var type = this.parseTypeReference();
-    var directives = this.parseConstDirectives();
-    return this.node(start, {
+    var directives = this.parseDirectives(true);
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.FIELD_DEFINITION,
       description: description,
       name: name,
       arguments: args,
       type: type,
-      directives: directives
-    });
+      directives: directives,
+      loc: this.loc(start)
+    };
   }
   /**
    * ArgumentsDefinition : ( InputValueDefinition+ )
@@ -17683,18 +17500,19 @@ var Parser = /*#__PURE__*/function () {
     var defaultValue;
 
     if (this.expectOptionalToken(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.EQUALS)) {
-      defaultValue = this.parseConstValueLiteral();
+      defaultValue = this.parseValueLiteral(true);
     }
 
-    var directives = this.parseConstDirectives();
-    return this.node(start, {
+    var directives = this.parseDirectives(true);
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INPUT_VALUE_DEFINITION,
       description: description,
       name: name,
       type: type,
       defaultValue: defaultValue,
-      directives: directives
-    });
+      directives: directives,
+      loc: this.loc(start)
+    };
   }
   /**
    * InterfaceTypeDefinition :
@@ -17708,16 +17526,17 @@ var Parser = /*#__PURE__*/function () {
     this.expectKeyword('interface');
     var name = this.parseName();
     var interfaces = this.parseImplementsInterfaces();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var fields = this.parseFieldsDefinition();
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INTERFACE_TYPE_DEFINITION,
       description: description,
       name: name,
       interfaces: interfaces,
       directives: directives,
-      fields: fields
-    });
+      fields: fields,
+      loc: this.loc(start)
+    };
   }
   /**
    * UnionTypeDefinition :
@@ -17730,15 +17549,16 @@ var Parser = /*#__PURE__*/function () {
     var description = this.parseDescription();
     this.expectKeyword('union');
     var name = this.parseName();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var types = this.parseUnionMemberTypes();
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.UNION_TYPE_DEFINITION,
       description: description,
       name: name,
       directives: directives,
-      types: types
-    });
+      types: types,
+      loc: this.loc(start)
+    };
   }
   /**
    * UnionMemberTypes :
@@ -17761,20 +17581,19 @@ var Parser = /*#__PURE__*/function () {
     var description = this.parseDescription();
     this.expectKeyword('enum');
     var name = this.parseName();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var values = this.parseEnumValuesDefinition();
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.ENUM_TYPE_DEFINITION,
       description: description,
       name: name,
       directives: directives,
-      values: values
-    });
+      values: values,
+      loc: this.loc(start)
+    };
   }
   /**
-   * ```
    * EnumValuesDefinition : { EnumValueDefinition+ }
-   * ```
    */
   ;
 
@@ -17783,32 +17602,23 @@ var Parser = /*#__PURE__*/function () {
   }
   /**
    * EnumValueDefinition : Description? EnumValue Directives[Const]?
+   *
+   * EnumValue : Name
    */
   ;
 
   _proto.parseEnumValueDefinition = function parseEnumValueDefinition() {
     var start = this._lexer.token;
     var description = this.parseDescription();
-    var name = this.parseEnumValueName();
-    var directives = this.parseConstDirectives();
-    return this.node(start, {
+    var name = this.parseName();
+    var directives = this.parseDirectives(true);
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.ENUM_VALUE_DEFINITION,
       description: description,
       name: name,
-      directives: directives
-    });
-  }
-  /**
-   * EnumValue : Name but not `true`, `false` or `null`
-   */
-  ;
-
-  _proto.parseEnumValueName = function parseEnumValueName() {
-    if (this._lexer.token.value === 'true' || this._lexer.token.value === 'false' || this._lexer.token.value === 'null') {
-      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_4__.syntaxError)(this._lexer.source, this._lexer.token.start, getTokenDesc(this._lexer.token) + " is reserved and cannot be used for an enum value.");
-    }
-
-    return this.parseName();
+      directives: directives,
+      loc: this.loc(start)
+    };
   }
   /**
    * InputObjectTypeDefinition :
@@ -17821,20 +17631,19 @@ var Parser = /*#__PURE__*/function () {
     var description = this.parseDescription();
     this.expectKeyword('input');
     var name = this.parseName();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var fields = this.parseInputFieldsDefinition();
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INPUT_OBJECT_TYPE_DEFINITION,
       description: description,
       name: name,
       directives: directives,
-      fields: fields
-    });
+      fields: fields,
+      loc: this.loc(start)
+    };
   }
   /**
-   * ```
    * InputFieldsDefinition : { InputValueDefinition+ }
-   * ```
    */
   ;
 
@@ -17887,11 +17696,9 @@ var Parser = /*#__PURE__*/function () {
     throw this.unexpected(keywordToken);
   }
   /**
-   * ```
    * SchemaExtension :
    *  - extend schema Directives[Const]? { OperationTypeDefinition+ }
    *  - extend schema Directives[Const]
-   * ```
    */
   ;
 
@@ -17899,18 +17706,19 @@ var Parser = /*#__PURE__*/function () {
     var start = this._lexer.token;
     this.expectKeyword('extend');
     this.expectKeyword('schema');
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var operationTypes = this.optionalMany(_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_L, this.parseOperationTypeDefinition, _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.BRACE_R);
 
     if (directives.length === 0 && operationTypes.length === 0) {
       throw this.unexpected();
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.SCHEMA_EXTENSION,
       directives: directives,
-      operationTypes: operationTypes
-    });
+      operationTypes: operationTypes,
+      loc: this.loc(start)
+    };
   }
   /**
    * ScalarTypeExtension :
@@ -17923,17 +17731,18 @@ var Parser = /*#__PURE__*/function () {
     this.expectKeyword('extend');
     this.expectKeyword('scalar');
     var name = this.parseName();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
 
     if (directives.length === 0) {
       throw this.unexpected();
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.SCALAR_TYPE_EXTENSION,
       name: name,
-      directives: directives
-    });
+      directives: directives,
+      loc: this.loc(start)
+    };
   }
   /**
    * ObjectTypeExtension :
@@ -17949,20 +17758,21 @@ var Parser = /*#__PURE__*/function () {
     this.expectKeyword('type');
     var name = this.parseName();
     var interfaces = this.parseImplementsInterfaces();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var fields = this.parseFieldsDefinition();
 
     if (interfaces.length === 0 && directives.length === 0 && fields.length === 0) {
       throw this.unexpected();
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.OBJECT_TYPE_EXTENSION,
       name: name,
       interfaces: interfaces,
       directives: directives,
-      fields: fields
-    });
+      fields: fields,
+      loc: this.loc(start)
+    };
   }
   /**
    * InterfaceTypeExtension :
@@ -17978,20 +17788,21 @@ var Parser = /*#__PURE__*/function () {
     this.expectKeyword('interface');
     var name = this.parseName();
     var interfaces = this.parseImplementsInterfaces();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var fields = this.parseFieldsDefinition();
 
     if (interfaces.length === 0 && directives.length === 0 && fields.length === 0) {
       throw this.unexpected();
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INTERFACE_TYPE_EXTENSION,
       name: name,
       interfaces: interfaces,
       directives: directives,
-      fields: fields
-    });
+      fields: fields,
+      loc: this.loc(start)
+    };
   }
   /**
    * UnionTypeExtension :
@@ -18005,19 +17816,20 @@ var Parser = /*#__PURE__*/function () {
     this.expectKeyword('extend');
     this.expectKeyword('union');
     var name = this.parseName();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var types = this.parseUnionMemberTypes();
 
     if (directives.length === 0 && types.length === 0) {
       throw this.unexpected();
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.UNION_TYPE_EXTENSION,
       name: name,
       directives: directives,
-      types: types
-    });
+      types: types,
+      loc: this.loc(start)
+    };
   }
   /**
    * EnumTypeExtension :
@@ -18031,19 +17843,20 @@ var Parser = /*#__PURE__*/function () {
     this.expectKeyword('extend');
     this.expectKeyword('enum');
     var name = this.parseName();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var values = this.parseEnumValuesDefinition();
 
     if (directives.length === 0 && values.length === 0) {
       throw this.unexpected();
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.ENUM_TYPE_EXTENSION,
       name: name,
       directives: directives,
-      values: values
-    });
+      values: values,
+      loc: this.loc(start)
+    };
   }
   /**
    * InputObjectTypeExtension :
@@ -18057,25 +17870,24 @@ var Parser = /*#__PURE__*/function () {
     this.expectKeyword('extend');
     this.expectKeyword('input');
     var name = this.parseName();
-    var directives = this.parseConstDirectives();
+    var directives = this.parseDirectives(true);
     var fields = this.parseInputFieldsDefinition();
 
     if (directives.length === 0 && fields.length === 0) {
       throw this.unexpected();
     }
 
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INPUT_OBJECT_TYPE_EXTENSION,
       name: name,
       directives: directives,
-      fields: fields
-    });
+      fields: fields,
+      loc: this.loc(start)
+    };
   }
   /**
-   * ```
    * DirectiveDefinition :
    *   - Description? directive @ Name ArgumentsDefinition? `repeatable`? on DirectiveLocations
-   * ```
    */
   ;
 
@@ -18089,14 +17901,15 @@ var Parser = /*#__PURE__*/function () {
     var repeatable = this.expectOptionalKeyword('repeatable');
     this.expectKeyword('on');
     var locations = this.parseDirectiveLocations();
-    return this.node(start, {
+    return {
       kind: _kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.DIRECTIVE_DEFINITION,
       description: description,
       name: name,
       arguments: args,
       repeatable: repeatable,
-      locations: locations
-    });
+      locations: locations,
+      loc: this.loc(start)
+    };
   }
   /**
    * DirectiveLocations :
@@ -18141,7 +17954,7 @@ var Parser = /*#__PURE__*/function () {
     var start = this._lexer.token;
     var name = this.parseName();
 
-    if (Object.prototype.hasOwnProperty.call(_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_6__.DirectiveLocation, name.value)) {
+    if (_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_4__.DirectiveLocation[name.value] !== undefined) {
       return name;
     }
 
@@ -18149,20 +17962,16 @@ var Parser = /*#__PURE__*/function () {
   } // Core parsing utility functions
 
   /**
-   * Returns a node that, if configured to do so, sets a "loc" field as a
-   * location object, used to identify the place in the source that created a
-   * given parsed object.
+   * Returns a location object, used to identify the place in the source that created a given parsed object.
    */
   ;
 
-  _proto.node = function node(startToken, _node) {
-    var _this$_options2;
+  _proto.loc = function loc(startToken) {
+    var _this$_options4;
 
-    if (((_this$_options2 = this._options) === null || _this$_options2 === void 0 ? void 0 : _this$_options2.noLocation) !== true) {
-      _node.loc = new _ast_mjs__WEBPACK_IMPORTED_MODULE_5__.Location(startToken, this._lexer.lastToken, this._lexer.source);
+    if (((_this$_options4 = this._options) === null || _this$_options4 === void 0 ? void 0 : _this$_options4.noLocation) !== true) {
+      return new _ast_mjs__WEBPACK_IMPORTED_MODULE_5__.Location(startToken, this._lexer.lastToken, this._lexer.source);
     }
-
-    return _node;
   }
   /**
    * Determines if the next token is of a given kind
@@ -18187,11 +17996,11 @@ var Parser = /*#__PURE__*/function () {
       return token;
     }
 
-    throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_4__.syntaxError)(this._lexer.source, token.start, "Expected " + getTokenKindDesc(kind) + ", found " + getTokenDesc(token) + ".");
+    throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_6__.syntaxError)(this._lexer.source, token.start, "Expected ".concat(getTokenKindDesc(kind), ", found ").concat(getTokenDesc(token), "."));
   }
   /**
-   * If the next token is of the given kind, return "true" after advancing the lexer.
-   * Otherwise, do not change the parser state and return "false".
+   * If the next token is of the given kind, return that token after advancing the lexer.
+   * Otherwise, do not change the parser state and return undefined.
    */
   ;
 
@@ -18201,10 +18010,10 @@ var Parser = /*#__PURE__*/function () {
     if (token.kind === kind) {
       this._lexer.advance();
 
-      return true;
+      return token;
     }
 
-    return false;
+    return undefined;
   }
   /**
    * If the next token is a given keyword, advance the lexer.
@@ -18218,7 +18027,7 @@ var Parser = /*#__PURE__*/function () {
     if (token.kind === _tokenKind_mjs__WEBPACK_IMPORTED_MODULE_0__.TokenKind.NAME && token.value === value) {
       this._lexer.advance();
     } else {
-      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_4__.syntaxError)(this._lexer.source, token.start, "Expected \"" + value + "\", found " + getTokenDesc(token) + ".");
+      throw (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_6__.syntaxError)(this._lexer.source, token.start, "Expected \"".concat(value, "\", found ").concat(getTokenDesc(token), "."));
     }
   }
   /**
@@ -18245,7 +18054,7 @@ var Parser = /*#__PURE__*/function () {
 
   _proto.unexpected = function unexpected(atToken) {
     var token = atToken !== null && atToken !== void 0 ? atToken : this._lexer.token;
-    return (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_4__.syntaxError)(this._lexer.source, token.start, "Unexpected " + getTokenDesc(token) + ".");
+    return (0,_error_syntaxError_mjs__WEBPACK_IMPORTED_MODULE_6__.syntaxError)(this._lexer.source, token.start, "Unexpected ".concat(getTokenDesc(token), "."));
   }
   /**
    * Returns a possibly empty list of parse nodes, determined by the parseFn.
@@ -18328,7 +18137,7 @@ var Parser = /*#__PURE__*/function () {
 
 function getTokenDesc(token) {
   var value = token.value;
-  return getTokenKindDesc(token.kind) + (value != null ? " \"" + value + "\"" : '');
+  return getTokenKindDesc(token.kind) + (value != null ? " \"".concat(value, "\"") : '');
 }
 /**
  * A helper function to describe a token kind as a string for debugging.
@@ -18336,7 +18145,7 @@ function getTokenDesc(token) {
 
 
 function getTokenKindDesc(kind) {
-  return (0,_lexer_mjs__WEBPACK_IMPORTED_MODULE_2__.isPunctuatorTokenKind)(kind) ? "\"" + kind + "\"" : kind;
+  return (0,_lexer_mjs__WEBPACK_IMPORTED_MODULE_2__.isPunctuatorTokenKind)(kind) ? "\"".concat(kind, "\"") : kind;
 }
 
 /***/ }),
@@ -18354,7 +18163,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isExecutableDefinitionNode": function() { return /* binding */ isExecutableDefinitionNode; },
 /* harmony export */   "isSelectionNode": function() { return /* binding */ isSelectionNode; },
 /* harmony export */   "isValueNode": function() { return /* binding */ isValueNode; },
-/* harmony export */   "isConstValueNode": function() { return /* binding */ isConstValueNode; },
 /* harmony export */   "isTypeNode": function() { return /* binding */ isTypeNode; },
 /* harmony export */   "isTypeSystemDefinitionNode": function() { return /* binding */ isTypeSystemDefinitionNode; },
 /* harmony export */   "isTypeDefinitionNode": function() { return /* binding */ isTypeDefinitionNode; },
@@ -18374,11 +18182,6 @@ function isSelectionNode(node) {
 }
 function isValueNode(node) {
   return node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.VARIABLE || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.INT || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.FLOAT || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.STRING || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.BOOLEAN || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.NULL || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.ENUM || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.LIST || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.OBJECT;
-}
-function isConstValueNode(node) {
-  return isValueNode(node) && (node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.LIST ? node.values.some(isConstValueNode) : node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.OBJECT ? node.fields.some(function (field) {
-    return isConstValueNode(field.value);
-  }) : node.kind !== _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.VARIABLE);
 }
 function isTypeNode(node) {
   return node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.NAMED_TYPE || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.LIST_TYPE || node.kind === _kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.NON_NULL_TYPE;
@@ -18425,13 +18228,13 @@ function printLocation(location) {
 
 function printSourceLocation(source, sourceLocation) {
   var firstLineColumnOffset = source.locationOffset.column - 1;
-  var body = ''.padStart(firstLineColumnOffset) + source.body;
+  var body = whitespace(firstLineColumnOffset) + source.body;
   var lineIndex = sourceLocation.line - 1;
   var lineOffset = source.locationOffset.line - 1;
   var lineNum = sourceLocation.line + lineOffset;
   var columnOffset = sourceLocation.line === 1 ? firstLineColumnOffset : 0;
   var columnNum = sourceLocation.column + columnOffset;
-  var locationStr = source.name + ":" + lineNum + ":" + columnNum + "\n";
+  var locationStr = "".concat(source.name, ":").concat(lineNum, ":").concat(columnNum, "\n");
   var lines = body.split(/\r\n|[\n\r]/g);
   var locationLine = lines[lineIndex]; // Special case for minified documents
 
@@ -18444,13 +18247,13 @@ function printSourceLocation(source, sourceLocation) {
       subLines.push(locationLine.slice(i, i + 80));
     }
 
-    return locationStr + printPrefixedLines([[lineNum + " |", subLines[0]]].concat(subLines.slice(1, subLineIndex + 1).map(function (subLine) {
-      return ['|', subLine];
-    }), [['|', '^'.padStart(subLineColumnNum)], ['|', subLines[subLineIndex + 1]]]));
+    return locationStr + printPrefixedLines([["".concat(lineNum), subLines[0]]].concat(subLines.slice(1, subLineIndex + 1).map(function (subLine) {
+      return ['', subLine];
+    }), [[' ', whitespace(subLineColumnNum - 1) + '^'], ['', subLines[subLineIndex + 1]]]));
   }
 
   return locationStr + printPrefixedLines([// Lines specified like this: ["prefix", "string"],
-  [lineNum - 1 + " |", lines[lineIndex - 1]], [lineNum + " |", locationLine], ['|', '^'.padStart(columnNum)], [lineNum + 1 + " |", lines[lineIndex + 1]]]);
+  ["".concat(lineNum - 1), lines[lineIndex - 1]], ["".concat(lineNum), locationLine], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1), lines[lineIndex + 1]]]);
 }
 
 function printPrefixedLines(lines) {
@@ -18466,44 +18269,17 @@ function printPrefixedLines(lines) {
   return existingLines.map(function (_ref3) {
     var prefix = _ref3[0],
         line = _ref3[1];
-    return prefix.padStart(padLen) + (line ? ' ' + line : '');
+    return leftPad(padLen, prefix) + (line ? ' | ' + line : ' |');
   }).join('\n');
 }
 
-/***/ }),
+function whitespace(len) {
+  return Array(len + 1).join(' ');
+}
 
-/***/ "./node_modules/graphql/language/printString.mjs":
-/*!*******************************************************!*\
-  !*** ./node_modules/graphql/language/printString.mjs ***!
-  \*******************************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "printString": function() { return /* binding */ printString; }
-/* harmony export */ });
-/**
- * Prints a string as a GraphQL StringValue literal. Replaces control characters
- * and excluded characters (" U+0022 and \\ U+005C) with escape sequences.
- */
-function printString(str) {
-  return "\"" + str.replace(escapedRegExp, escapedReplacer) + "\"";
-} // eslint-disable-next-line no-control-regex
-
-var escapedRegExp = /[\x00-\x1f\x22\x5c\x7f-\x9f]/g;
-
-function escapedReplacer(str) {
-  return escapeSequences[str.charCodeAt(0)];
-} // prettier-ignore
-
-
-var escapeSequences = ["\\u0000", "\\u0001", "\\u0002", "\\u0003", "\\u0004", "\\u0005", "\\u0006", "\\u0007", '\\b', '\\t', '\\n', "\\u000B", '\\f', '\\r', "\\u000E", "\\u000F", "\\u0010", "\\u0011", "\\u0012", "\\u0013", "\\u0014", "\\u0015", "\\u0016", "\\u0017", "\\u0018", "\\u0019", "\\u001A", "\\u001B", "\\u001C", "\\u001D", "\\u001E", "\\u001F", '', '', '\\"', '', '', '', '', '', '', '', '', '', '', '', '', '', // 2F
-'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // 3F
-'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // 4F
-'', '', '', '', '', '', '', '', '', '', '', '', '\\\\', '', '', '', // 5F
-'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // 6F
-'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', "\\u007F", "\\u0080", "\\u0081", "\\u0082", "\\u0083", "\\u0084", "\\u0085", "\\u0086", "\\u0087", "\\u0088", "\\u0089", "\\u008A", "\\u008B", "\\u008C", "\\u008D", "\\u008E", "\\u008F", "\\u0090", "\\u0091", "\\u0092", "\\u0093", "\\u0094", "\\u0095", "\\u0096", "\\u0097", "\\u0098", "\\u0099", "\\u009A", "\\u009B", "\\u009C", "\\u009D", "\\u009E", "\\u009F"];
+function leftPad(len, str) {
+  return whitespace(len - str.length) + str;
+}
 
 /***/ }),
 
@@ -18520,8 +18296,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _visitor_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./visitor.mjs */ "./node_modules/graphql/language/visitor.mjs");
 /* harmony import */ var _blockString_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blockString.mjs */ "./node_modules/graphql/language/blockString.mjs");
-/* harmony import */ var _printString_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./printString.mjs */ "./node_modules/graphql/language/printString.mjs");
-
 
 
 /**
@@ -18530,370 +18304,284 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 function print(ast) {
-  return (0,_visitor_mjs__WEBPACK_IMPORTED_MODULE_0__.visit)(ast, printDocASTReducer);
+  return (0,_visitor_mjs__WEBPACK_IMPORTED_MODULE_0__.visit)(ast, {
+    leave: printDocASTReducer
+  });
 }
-var MAX_LINE_LENGTH = 80;
+var MAX_LINE_LENGTH = 80; // TODO: provide better type coverage in future
+
 var printDocASTReducer = {
-  Name: {
-    leave: function leave(node) {
-      return node.value;
-    }
+  Name: function Name(node) {
+    return node.value;
   },
-  Variable: {
-    leave: function leave(node) {
-      return '$' + node.name;
-    }
+  Variable: function Variable(node) {
+    return '$' + node.name;
   },
   // Document
-  Document: {
-    leave: function leave(node) {
-      return join(node.definitions, '\n\n');
-    }
+  Document: function Document(node) {
+    return join(node.definitions, '\n\n') + '\n';
   },
-  OperationDefinition: {
-    leave: function leave(node) {
-      var varDefs = wrap('(', join(node.variableDefinitions, ', '), ')');
-      var prefix = join([node.operation, join([node.name, varDefs]), join(node.directives, ' ')], ' '); // Anonymous queries with no directives or variable definitions can use
-      // the query short form.
+  OperationDefinition: function OperationDefinition(node) {
+    var op = node.operation;
+    var name = node.name;
+    var varDefs = wrap('(', join(node.variableDefinitions, ', '), ')');
+    var directives = join(node.directives, ' ');
+    var selectionSet = node.selectionSet; // Anonymous queries with no directives or variable definitions can use
+    // the query short form.
 
-      return (prefix === 'query' ? '' : prefix + ' ') + node.selectionSet;
-    }
+    return !name && !directives && !varDefs && op === 'query' ? selectionSet : join([op, join([name, varDefs]), directives, selectionSet], ' ');
   },
-  VariableDefinition: {
-    leave: function leave(_ref) {
-      var variable = _ref.variable,
-          type = _ref.type,
-          defaultValue = _ref.defaultValue,
-          directives = _ref.directives;
-      return variable + ': ' + type + wrap(' = ', defaultValue) + wrap(' ', join(directives, ' '));
-    }
+  VariableDefinition: function VariableDefinition(_ref) {
+    var variable = _ref.variable,
+        type = _ref.type,
+        defaultValue = _ref.defaultValue,
+        directives = _ref.directives;
+    return variable + ': ' + type + wrap(' = ', defaultValue) + wrap(' ', join(directives, ' '));
   },
-  SelectionSet: {
-    leave: function leave(_ref2) {
-      var selections = _ref2.selections;
-      return block(selections);
-    }
+  SelectionSet: function SelectionSet(_ref2) {
+    var selections = _ref2.selections;
+    return block(selections);
   },
-  Field: {
-    leave: function leave(_ref3) {
-      var alias = _ref3.alias,
-          name = _ref3.name,
-          args = _ref3.arguments,
-          directives = _ref3.directives,
-          selectionSet = _ref3.selectionSet;
-      var prefix = wrap('', alias, ': ') + name;
-      var argsLine = prefix + wrap('(', join(args, ', '), ')');
+  Field: function Field(_ref3) {
+    var alias = _ref3.alias,
+        name = _ref3.name,
+        args = _ref3.arguments,
+        directives = _ref3.directives,
+        selectionSet = _ref3.selectionSet;
+    var prefix = wrap('', alias, ': ') + name;
+    var argsLine = prefix + wrap('(', join(args, ', '), ')');
 
-      if (argsLine.length > MAX_LINE_LENGTH) {
-        argsLine = prefix + wrap('(\n', indent(join(args, '\n')), '\n)');
-      }
+    if (argsLine.length > MAX_LINE_LENGTH) {
+      argsLine = prefix + wrap('(\n', indent(join(args, '\n')), '\n)');
+    }
 
-      return join([argsLine, join(directives, ' '), selectionSet], ' ');
-    }
+    return join([argsLine, join(directives, ' '), selectionSet], ' ');
   },
-  Argument: {
-    leave: function leave(_ref4) {
-      var name = _ref4.name,
-          value = _ref4.value;
-      return name + ': ' + value;
-    }
+  Argument: function Argument(_ref4) {
+    var name = _ref4.name,
+        value = _ref4.value;
+    return name + ': ' + value;
   },
   // Fragments
-  FragmentSpread: {
-    leave: function leave(_ref5) {
-      var name = _ref5.name,
-          directives = _ref5.directives;
-      return '...' + name + wrap(' ', join(directives, ' '));
-    }
+  FragmentSpread: function FragmentSpread(_ref5) {
+    var name = _ref5.name,
+        directives = _ref5.directives;
+    return '...' + name + wrap(' ', join(directives, ' '));
   },
-  InlineFragment: {
-    leave: function leave(_ref6) {
-      var typeCondition = _ref6.typeCondition,
-          directives = _ref6.directives,
-          selectionSet = _ref6.selectionSet;
-      return join(['...', wrap('on ', typeCondition), join(directives, ' '), selectionSet], ' ');
-    }
+  InlineFragment: function InlineFragment(_ref6) {
+    var typeCondition = _ref6.typeCondition,
+        directives = _ref6.directives,
+        selectionSet = _ref6.selectionSet;
+    return join(['...', wrap('on ', typeCondition), join(directives, ' '), selectionSet], ' ');
   },
-  FragmentDefinition: {
-    leave: function leave(_ref7 // Note: fragment variable definitions are experimental and may be changed
-    ) {
-      var name = _ref7.name,
-          typeCondition = _ref7.typeCondition,
-          variableDefinitions = _ref7.variableDefinitions,
-          directives = _ref7.directives,
-          selectionSet = _ref7.selectionSet;
-      return (// or removed in the future.
-        "fragment " + name + wrap('(', join(variableDefinitions, ', '), ')') + " " + ("on " + typeCondition + " " + wrap('', join(directives, ' '), ' ')) + selectionSet
-      );
-    }
+  FragmentDefinition: function FragmentDefinition(_ref7) {
+    var name = _ref7.name,
+        typeCondition = _ref7.typeCondition,
+        variableDefinitions = _ref7.variableDefinitions,
+        directives = _ref7.directives,
+        selectionSet = _ref7.selectionSet;
+    return (// Note: fragment variable definitions are experimental and may be changed
+      // or removed in the future.
+      "fragment ".concat(name).concat(wrap('(', join(variableDefinitions, ', '), ')'), " ") + "on ".concat(typeCondition, " ").concat(wrap('', join(directives, ' '), ' ')) + selectionSet
+    );
   },
   // Value
-  IntValue: {
-    leave: function leave(_ref8) {
-      var value = _ref8.value;
-      return value;
-    }
+  IntValue: function IntValue(_ref8) {
+    var value = _ref8.value;
+    return value;
   },
-  FloatValue: {
-    leave: function leave(_ref9) {
-      var value = _ref9.value;
-      return value;
-    }
+  FloatValue: function FloatValue(_ref9) {
+    var value = _ref9.value;
+    return value;
   },
-  StringValue: {
-    leave: function leave(_ref10) {
-      var value = _ref10.value,
-          isBlockString = _ref10.block;
-      return isBlockString ? (0,_blockString_mjs__WEBPACK_IMPORTED_MODULE_1__.printBlockString)(value) : (0,_printString_mjs__WEBPACK_IMPORTED_MODULE_2__.printString)(value);
-    }
+  StringValue: function StringValue(_ref10, key) {
+    var value = _ref10.value,
+        isBlockString = _ref10.block;
+    return isBlockString ? (0,_blockString_mjs__WEBPACK_IMPORTED_MODULE_1__.printBlockString)(value, key === 'description' ? '' : '  ') : JSON.stringify(value);
   },
-  BooleanValue: {
-    leave: function leave(_ref11) {
-      var value = _ref11.value;
-      return value ? 'true' : 'false';
-    }
+  BooleanValue: function BooleanValue(_ref11) {
+    var value = _ref11.value;
+    return value ? 'true' : 'false';
   },
-  NullValue: {
-    leave: function leave() {
-      return 'null';
-    }
+  NullValue: function NullValue() {
+    return 'null';
   },
-  EnumValue: {
-    leave: function leave(_ref12) {
-      var value = _ref12.value;
-      return value;
-    }
+  EnumValue: function EnumValue(_ref12) {
+    var value = _ref12.value;
+    return value;
   },
-  ListValue: {
-    leave: function leave(_ref13) {
-      var values = _ref13.values;
-      return '[' + join(values, ', ') + ']';
-    }
+  ListValue: function ListValue(_ref13) {
+    var values = _ref13.values;
+    return '[' + join(values, ', ') + ']';
   },
-  ObjectValue: {
-    leave: function leave(_ref14) {
-      var fields = _ref14.fields;
-      return '{' + join(fields, ', ') + '}';
-    }
+  ObjectValue: function ObjectValue(_ref14) {
+    var fields = _ref14.fields;
+    return '{' + join(fields, ', ') + '}';
   },
-  ObjectField: {
-    leave: function leave(_ref15) {
-      var name = _ref15.name,
-          value = _ref15.value;
-      return name + ': ' + value;
-    }
+  ObjectField: function ObjectField(_ref15) {
+    var name = _ref15.name,
+        value = _ref15.value;
+    return name + ': ' + value;
   },
   // Directive
-  Directive: {
-    leave: function leave(_ref16) {
-      var name = _ref16.name,
-          args = _ref16.arguments;
-      return '@' + name + wrap('(', join(args, ', '), ')');
-    }
+  Directive: function Directive(_ref16) {
+    var name = _ref16.name,
+        args = _ref16.arguments;
+    return '@' + name + wrap('(', join(args, ', '), ')');
   },
   // Type
-  NamedType: {
-    leave: function leave(_ref17) {
-      var name = _ref17.name;
-      return name;
-    }
+  NamedType: function NamedType(_ref17) {
+    var name = _ref17.name;
+    return name;
   },
-  ListType: {
-    leave: function leave(_ref18) {
-      var type = _ref18.type;
-      return '[' + type + ']';
-    }
+  ListType: function ListType(_ref18) {
+    var type = _ref18.type;
+    return '[' + type + ']';
   },
-  NonNullType: {
-    leave: function leave(_ref19) {
-      var type = _ref19.type;
-      return type + '!';
-    }
+  NonNullType: function NonNullType(_ref19) {
+    var type = _ref19.type;
+    return type + '!';
   },
   // Type System Definitions
-  SchemaDefinition: {
-    leave: function leave(_ref20) {
-      var description = _ref20.description,
-          directives = _ref20.directives,
-          operationTypes = _ref20.operationTypes;
-      return wrap('', description, '\n') + join(['schema', join(directives, ' '), block(operationTypes)], ' ');
-    }
+  SchemaDefinition: addDescription(function (_ref20) {
+    var directives = _ref20.directives,
+        operationTypes = _ref20.operationTypes;
+    return join(['schema', join(directives, ' '), block(operationTypes)], ' ');
+  }),
+  OperationTypeDefinition: function OperationTypeDefinition(_ref21) {
+    var operation = _ref21.operation,
+        type = _ref21.type;
+    return operation + ': ' + type;
   },
-  OperationTypeDefinition: {
-    leave: function leave(_ref21) {
-      var operation = _ref21.operation,
-          type = _ref21.type;
-      return operation + ': ' + type;
-    }
+  ScalarTypeDefinition: addDescription(function (_ref22) {
+    var name = _ref22.name,
+        directives = _ref22.directives;
+    return join(['scalar', name, join(directives, ' ')], ' ');
+  }),
+  ObjectTypeDefinition: addDescription(function (_ref23) {
+    var name = _ref23.name,
+        interfaces = _ref23.interfaces,
+        directives = _ref23.directives,
+        fields = _ref23.fields;
+    return join(['type', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
+  }),
+  FieldDefinition: addDescription(function (_ref24) {
+    var name = _ref24.name,
+        args = _ref24.arguments,
+        type = _ref24.type,
+        directives = _ref24.directives;
+    return name + (hasMultilineItems(args) ? wrap('(\n', indent(join(args, '\n')), '\n)') : wrap('(', join(args, ', '), ')')) + ': ' + type + wrap(' ', join(directives, ' '));
+  }),
+  InputValueDefinition: addDescription(function (_ref25) {
+    var name = _ref25.name,
+        type = _ref25.type,
+        defaultValue = _ref25.defaultValue,
+        directives = _ref25.directives;
+    return join([name + ': ' + type, wrap('= ', defaultValue), join(directives, ' ')], ' ');
+  }),
+  InterfaceTypeDefinition: addDescription(function (_ref26) {
+    var name = _ref26.name,
+        interfaces = _ref26.interfaces,
+        directives = _ref26.directives,
+        fields = _ref26.fields;
+    return join(['interface', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
+  }),
+  UnionTypeDefinition: addDescription(function (_ref27) {
+    var name = _ref27.name,
+        directives = _ref27.directives,
+        types = _ref27.types;
+    return join(['union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
+  }),
+  EnumTypeDefinition: addDescription(function (_ref28) {
+    var name = _ref28.name,
+        directives = _ref28.directives,
+        values = _ref28.values;
+    return join(['enum', name, join(directives, ' '), block(values)], ' ');
+  }),
+  EnumValueDefinition: addDescription(function (_ref29) {
+    var name = _ref29.name,
+        directives = _ref29.directives;
+    return join([name, join(directives, ' ')], ' ');
+  }),
+  InputObjectTypeDefinition: addDescription(function (_ref30) {
+    var name = _ref30.name,
+        directives = _ref30.directives,
+        fields = _ref30.fields;
+    return join(['input', name, join(directives, ' '), block(fields)], ' ');
+  }),
+  DirectiveDefinition: addDescription(function (_ref31) {
+    var name = _ref31.name,
+        args = _ref31.arguments,
+        repeatable = _ref31.repeatable,
+        locations = _ref31.locations;
+    return 'directive @' + name + (hasMultilineItems(args) ? wrap('(\n', indent(join(args, '\n')), '\n)') : wrap('(', join(args, ', '), ')')) + (repeatable ? ' repeatable' : '') + ' on ' + join(locations, ' | ');
+  }),
+  SchemaExtension: function SchemaExtension(_ref32) {
+    var directives = _ref32.directives,
+        operationTypes = _ref32.operationTypes;
+    return join(['extend schema', join(directives, ' '), block(operationTypes)], ' ');
   },
-  ScalarTypeDefinition: {
-    leave: function leave(_ref22) {
-      var description = _ref22.description,
-          name = _ref22.name,
-          directives = _ref22.directives;
-      return wrap('', description, '\n') + join(['scalar', name, join(directives, ' ')], ' ');
-    }
+  ScalarTypeExtension: function ScalarTypeExtension(_ref33) {
+    var name = _ref33.name,
+        directives = _ref33.directives;
+    return join(['extend scalar', name, join(directives, ' ')], ' ');
   },
-  ObjectTypeDefinition: {
-    leave: function leave(_ref23) {
-      var description = _ref23.description,
-          name = _ref23.name,
-          interfaces = _ref23.interfaces,
-          directives = _ref23.directives,
-          fields = _ref23.fields;
-      return wrap('', description, '\n') + join(['type', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
-    }
+  ObjectTypeExtension: function ObjectTypeExtension(_ref34) {
+    var name = _ref34.name,
+        interfaces = _ref34.interfaces,
+        directives = _ref34.directives,
+        fields = _ref34.fields;
+    return join(['extend type', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
   },
-  FieldDefinition: {
-    leave: function leave(_ref24) {
-      var description = _ref24.description,
-          name = _ref24.name,
-          args = _ref24.arguments,
-          type = _ref24.type,
-          directives = _ref24.directives;
-      return wrap('', description, '\n') + name + (hasMultilineItems(args) ? wrap('(\n', indent(join(args, '\n')), '\n)') : wrap('(', join(args, ', '), ')')) + ': ' + type + wrap(' ', join(directives, ' '));
-    }
+  InterfaceTypeExtension: function InterfaceTypeExtension(_ref35) {
+    var name = _ref35.name,
+        interfaces = _ref35.interfaces,
+        directives = _ref35.directives,
+        fields = _ref35.fields;
+    return join(['extend interface', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
   },
-  InputValueDefinition: {
-    leave: function leave(_ref25) {
-      var description = _ref25.description,
-          name = _ref25.name,
-          type = _ref25.type,
-          defaultValue = _ref25.defaultValue,
-          directives = _ref25.directives;
-      return wrap('', description, '\n') + join([name + ': ' + type, wrap('= ', defaultValue), join(directives, ' ')], ' ');
-    }
+  UnionTypeExtension: function UnionTypeExtension(_ref36) {
+    var name = _ref36.name,
+        directives = _ref36.directives,
+        types = _ref36.types;
+    return join(['extend union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
   },
-  InterfaceTypeDefinition: {
-    leave: function leave(_ref26) {
-      var description = _ref26.description,
-          name = _ref26.name,
-          interfaces = _ref26.interfaces,
-          directives = _ref26.directives,
-          fields = _ref26.fields;
-      return wrap('', description, '\n') + join(['interface', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
-    }
+  EnumTypeExtension: function EnumTypeExtension(_ref37) {
+    var name = _ref37.name,
+        directives = _ref37.directives,
+        values = _ref37.values;
+    return join(['extend enum', name, join(directives, ' '), block(values)], ' ');
   },
-  UnionTypeDefinition: {
-    leave: function leave(_ref27) {
-      var description = _ref27.description,
-          name = _ref27.name,
-          directives = _ref27.directives,
-          types = _ref27.types;
-      return wrap('', description, '\n') + join(['union', name, join(directives, ' '), wrap('= ', join(types, ' | '))], ' ');
-    }
-  },
-  EnumTypeDefinition: {
-    leave: function leave(_ref28) {
-      var description = _ref28.description,
-          name = _ref28.name,
-          directives = _ref28.directives,
-          values = _ref28.values;
-      return wrap('', description, '\n') + join(['enum', name, join(directives, ' '), block(values)], ' ');
-    }
-  },
-  EnumValueDefinition: {
-    leave: function leave(_ref29) {
-      var description = _ref29.description,
-          name = _ref29.name,
-          directives = _ref29.directives;
-      return wrap('', description, '\n') + join([name, join(directives, ' ')], ' ');
-    }
-  },
-  InputObjectTypeDefinition: {
-    leave: function leave(_ref30) {
-      var description = _ref30.description,
-          name = _ref30.name,
-          directives = _ref30.directives,
-          fields = _ref30.fields;
-      return wrap('', description, '\n') + join(['input', name, join(directives, ' '), block(fields)], ' ');
-    }
-  },
-  DirectiveDefinition: {
-    leave: function leave(_ref31) {
-      var description = _ref31.description,
-          name = _ref31.name,
-          args = _ref31.arguments,
-          repeatable = _ref31.repeatable,
-          locations = _ref31.locations;
-      return wrap('', description, '\n') + 'directive @' + name + (hasMultilineItems(args) ? wrap('(\n', indent(join(args, '\n')), '\n)') : wrap('(', join(args, ', '), ')')) + (repeatable ? ' repeatable' : '') + ' on ' + join(locations, ' | ');
-    }
-  },
-  SchemaExtension: {
-    leave: function leave(_ref32) {
-      var directives = _ref32.directives,
-          operationTypes = _ref32.operationTypes;
-      return join(['extend schema', join(directives, ' '), block(operationTypes)], ' ');
-    }
-  },
-  ScalarTypeExtension: {
-    leave: function leave(_ref33) {
-      var name = _ref33.name,
-          directives = _ref33.directives;
-      return join(['extend scalar', name, join(directives, ' ')], ' ');
-    }
-  },
-  ObjectTypeExtension: {
-    leave: function leave(_ref34) {
-      var name = _ref34.name,
-          interfaces = _ref34.interfaces,
-          directives = _ref34.directives,
-          fields = _ref34.fields;
-      return join(['extend type', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
-    }
-  },
-  InterfaceTypeExtension: {
-    leave: function leave(_ref35) {
-      var name = _ref35.name,
-          interfaces = _ref35.interfaces,
-          directives = _ref35.directives,
-          fields = _ref35.fields;
-      return join(['extend interface', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
-    }
-  },
-  UnionTypeExtension: {
-    leave: function leave(_ref36) {
-      var name = _ref36.name,
-          directives = _ref36.directives,
-          types = _ref36.types;
-      return join(['extend union', name, join(directives, ' '), wrap('= ', join(types, ' | '))], ' ');
-    }
-  },
-  EnumTypeExtension: {
-    leave: function leave(_ref37) {
-      var name = _ref37.name,
-          directives = _ref37.directives,
-          values = _ref37.values;
-      return join(['extend enum', name, join(directives, ' '), block(values)], ' ');
-    }
-  },
-  InputObjectTypeExtension: {
-    leave: function leave(_ref38) {
-      var name = _ref38.name,
-          directives = _ref38.directives,
-          fields = _ref38.fields;
-      return join(['extend input', name, join(directives, ' '), block(fields)], ' ');
-    }
+  InputObjectTypeExtension: function InputObjectTypeExtension(_ref38) {
+    var name = _ref38.name,
+        directives = _ref38.directives,
+        fields = _ref38.fields;
+    return join(['extend input', name, join(directives, ' '), block(fields)], ' ');
   }
 };
+
+function addDescription(cb) {
+  return function (node) {
+    return join([node.description, cb(node)], '\n');
+  };
+}
 /**
  * Given maybeArray, print an empty string if it is null or empty, otherwise
  * print all items together separated by separator if provided
  */
 
-function join(maybeArray, separator) {
-  if (separator === void 0) {
-    separator = '';
-  }
 
+function join(maybeArray) {
   var _maybeArray$filter$jo;
 
+  var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
   return (_maybeArray$filter$jo = maybeArray === null || maybeArray === void 0 ? void 0 : maybeArray.filter(function (x) {
     return x;
   }).join(separator)) !== null && _maybeArray$filter$jo !== void 0 ? _maybeArray$filter$jo : '';
 }
 /**
- * Given array, print each item on its own line, wrapped in an indented `{ }` block.
+ * Given array, print each item on its own line, wrapped in an
+ * indented "{ }" block.
  */
 
 
@@ -18905,11 +18593,8 @@ function block(array) {
  */
 
 
-function wrap(start, maybeString, end) {
-  if (end === void 0) {
-    end = '';
-  }
-
+function wrap(start, maybeString) {
+  var end = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
   return maybeString != null && maybeString !== '' ? start + maybeString + end : '';
 }
 
@@ -18917,15 +18602,12 @@ function indent(str) {
   return wrap('  ', str.replace(/\n/g, '\n  '));
 }
 
+function isMultiline(str) {
+  return str.indexOf('\n') !== -1;
+}
+
 function hasMultilineItems(maybeArray) {
-  var _maybeArray$some; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-  /* c8 ignore next */
-
-
-  return (_maybeArray$some = maybeArray === null || maybeArray === void 0 ? void 0 : maybeArray.some(function (str) {
-    return str.includes('\n');
-  })) !== null && _maybeArray$some !== void 0 ? _maybeArray$some : false;
+  return maybeArray != null && maybeArray.some(isMultiline);
 }
 
 /***/ }),
@@ -18942,12 +18624,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Source": function() { return /* binding */ Source; },
 /* harmony export */   "isSource": function() { return /* binding */ isSource; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../polyfills/symbols.mjs */ "./node_modules/graphql/polyfills/symbols.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
 /* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
-/* harmony import */ var _jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/instanceOf.mjs */ "./node_modules/graphql/jsutils/instanceOf.mjs");
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+/* harmony import */ var _jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/instanceOf.mjs */ "./node_modules/graphql/jsutils/instanceOf.mjs");
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
 
 
 
@@ -18960,44 +18656,40 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * The `line` and `column` properties in `locationOffset` are 1-indexed.
  */
 
-var Source = /*#__PURE__*/function (_Symbol$toStringTag) {
-  function Source(body, name, locationOffset) {
-    if (name === void 0) {
-      name = 'GraphQL request';
-    }
-
-    if (locationOffset === void 0) {
-      locationOffset = {
-        line: 1,
-        column: 1
-      };
-    }
-
-    typeof body === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__.devAssert)(false, "Body must be a string. Received: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(body) + ".");
+var Source = /*#__PURE__*/function () {
+  function Source(body) {
+    var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'GraphQL request';
+    var locationOffset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+      line: 1,
+      column: 1
+    };
+    typeof body === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(0, "Body must be a string. Received: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(body), "."));
     this.body = body;
     this.name = name;
     this.locationOffset = locationOffset;
-    this.locationOffset.line > 0 || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__.devAssert)(false, 'line in locationOffset is 1-indexed and must be positive.');
-    this.locationOffset.column > 0 || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__.devAssert)(false, 'column in locationOffset is 1-indexed and must be positive.');
-  }
+    this.locationOffset.line > 0 || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(0, 'line in locationOffset is 1-indexed and must be positive.');
+    this.locationOffset.column > 0 || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(0, 'column in locationOffset is 1-indexed and must be positive.');
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+
 
   _createClass(Source, [{
-    key: _Symbol$toStringTag,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'Source';
     }
   }]);
 
   return Source;
-}(Symbol.toStringTag);
+}();
 /**
  * Test if the given value is a Source object.
  *
  * @internal
  */
+// eslint-disable-next-line no-redeclare
 
 function isSource(source) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_2__.instanceOf)(source, Source);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(source, Source);
 }
 
 /***/ }),
@@ -19017,37 +18709,33 @@ __webpack_require__.r(__webpack_exports__);
  * An exported enum describing the different kinds of tokens that the
  * lexer emits.
  */
-var TokenKind;
+var TokenKind = Object.freeze({
+  SOF: '<SOF>',
+  EOF: '<EOF>',
+  BANG: '!',
+  DOLLAR: '$',
+  AMP: '&',
+  PAREN_L: '(',
+  PAREN_R: ')',
+  SPREAD: '...',
+  COLON: ':',
+  EQUALS: '=',
+  AT: '@',
+  BRACKET_L: '[',
+  BRACKET_R: ']',
+  BRACE_L: '{',
+  PIPE: '|',
+  BRACE_R: '}',
+  NAME: 'Name',
+  INT: 'Int',
+  FLOAT: 'Float',
+  STRING: 'String',
+  BLOCK_STRING: 'BlockString',
+  COMMENT: 'Comment'
+});
 /**
  * The enum type representing the token kinds values.
- *
- * @deprecated Please use `TokenKind`. Will be remove in v17.
  */
-
-(function (TokenKind) {
-  TokenKind['SOF'] = '<SOF>';
-  TokenKind['EOF'] = '<EOF>';
-  TokenKind['BANG'] = '!';
-  TokenKind['DOLLAR'] = '$';
-  TokenKind['AMP'] = '&';
-  TokenKind['PAREN_L'] = '(';
-  TokenKind['PAREN_R'] = ')';
-  TokenKind['SPREAD'] = '...';
-  TokenKind['COLON'] = ':';
-  TokenKind['EQUALS'] = '=';
-  TokenKind['AT'] = '@';
-  TokenKind['BRACKET_L'] = '[';
-  TokenKind['BRACKET_R'] = ']';
-  TokenKind['BRACE_L'] = '{';
-  TokenKind['PIPE'] = '|';
-  TokenKind['BRACE_R'] = '}';
-  TokenKind['NAME'] = 'Name';
-  TokenKind['INT'] = 'Int';
-  TokenKind['FLOAT'] = 'Float';
-  TokenKind['STRING'] = 'String';
-  TokenKind['BLOCK_STRING'] = 'BlockString';
-  TokenKind['COMMENT'] = 'Comment';
-})(TokenKind || (TokenKind = {}));
 
 /***/ }),
 
@@ -19060,24 +18748,14 @@ var TokenKind;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "QueryDocumentKeys": function() { return /* binding */ QueryDocumentKeys; },
 /* harmony export */   "BREAK": function() { return /* binding */ BREAK; },
 /* harmony export */   "visit": function() { return /* binding */ visit; },
 /* harmony export */   "visitInParallel": function() { return /* binding */ visitInParallel; },
-/* harmony export */   "getEnterLeaveForKind": function() { return /* binding */ getEnterLeaveForKind; },
 /* harmony export */   "getVisitFn": function() { return /* binding */ getVisitFn; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
 /* harmony import */ var _ast_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ast.mjs */ "./node_modules/graphql/language/ast.mjs");
-/* harmony import */ var _kinds_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
-
 
 
 /**
@@ -19085,6 +18763,53 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * relevant functions to be called during the visitor's traversal.
  */
 
+var QueryDocumentKeys = {
+  Name: [],
+  Document: ['definitions'],
+  OperationDefinition: ['name', 'variableDefinitions', 'directives', 'selectionSet'],
+  VariableDefinition: ['variable', 'type', 'defaultValue', 'directives'],
+  Variable: ['name'],
+  SelectionSet: ['selections'],
+  Field: ['alias', 'name', 'arguments', 'directives', 'selectionSet'],
+  Argument: ['name', 'value'],
+  FragmentSpread: ['name', 'directives'],
+  InlineFragment: ['typeCondition', 'directives', 'selectionSet'],
+  FragmentDefinition: ['name', // Note: fragment variable definitions are experimental and may be changed
+  // or removed in the future.
+  'variableDefinitions', 'typeCondition', 'directives', 'selectionSet'],
+  IntValue: [],
+  FloatValue: [],
+  StringValue: [],
+  BooleanValue: [],
+  NullValue: [],
+  EnumValue: [],
+  ListValue: ['values'],
+  ObjectValue: ['fields'],
+  ObjectField: ['name', 'value'],
+  Directive: ['name', 'arguments'],
+  NamedType: ['name'],
+  ListType: ['type'],
+  NonNullType: ['type'],
+  SchemaDefinition: ['description', 'directives', 'operationTypes'],
+  OperationTypeDefinition: ['type'],
+  ScalarTypeDefinition: ['description', 'name', 'directives'],
+  ObjectTypeDefinition: ['description', 'name', 'interfaces', 'directives', 'fields'],
+  FieldDefinition: ['description', 'name', 'arguments', 'type', 'directives'],
+  InputValueDefinition: ['description', 'name', 'type', 'defaultValue', 'directives'],
+  InterfaceTypeDefinition: ['description', 'name', 'interfaces', 'directives', 'fields'],
+  UnionTypeDefinition: ['description', 'name', 'directives', 'types'],
+  EnumTypeDefinition: ['description', 'name', 'directives', 'values'],
+  EnumValueDefinition: ['description', 'name', 'directives'],
+  InputObjectTypeDefinition: ['description', 'name', 'directives', 'fields'],
+  DirectiveDefinition: ['description', 'name', 'arguments', 'locations'],
+  SchemaExtension: ['directives', 'operationTypes'],
+  ScalarTypeExtension: ['name', 'directives'],
+  ObjectTypeExtension: ['name', 'interfaces', 'directives', 'fields'],
+  InterfaceTypeExtension: ['name', 'interfaces', 'directives', 'fields'],
+  UnionTypeExtension: ['name', 'directives', 'types'],
+  EnumTypeExtension: ['name', 'directives', 'values'],
+  InputObjectTypeExtension: ['name', 'directives', 'fields']
+};
 var BREAK = Object.freeze({});
 /**
  * visit() will walk through an AST using a depth-first traversal, calling
@@ -19100,84 +18825,82 @@ var BREAK = Object.freeze({});
  * a new version of the AST with the changes applied will be returned from the
  * visit function.
  *
- * ```ts
- * const editedAST = visit(ast, {
- *   enter(node, key, parent, path, ancestors) {
- *     // @return
- *     //   undefined: no action
- *     //   false: skip visiting this node
- *     //   visitor.BREAK: stop visiting altogether
- *     //   null: delete this node
- *     //   any value: replace this node with the returned value
- *   },
- *   leave(node, key, parent, path, ancestors) {
- *     // @return
- *     //   undefined: no action
- *     //   false: no action
- *     //   visitor.BREAK: stop visiting altogether
- *     //   null: delete this node
- *     //   any value: replace this node with the returned value
- *   }
- * });
- * ```
+ *     const editedAST = visit(ast, {
+ *       enter(node, key, parent, path, ancestors) {
+ *         // @return
+ *         //   undefined: no action
+ *         //   false: skip visiting this node
+ *         //   visitor.BREAK: stop visiting altogether
+ *         //   null: delete this node
+ *         //   any value: replace this node with the returned value
+ *       },
+ *       leave(node, key, parent, path, ancestors) {
+ *         // @return
+ *         //   undefined: no action
+ *         //   false: no action
+ *         //   visitor.BREAK: stop visiting altogether
+ *         //   null: delete this node
+ *         //   any value: replace this node with the returned value
+ *       }
+ *     });
  *
  * Alternatively to providing enter() and leave() functions, a visitor can
  * instead provide functions named the same as the kinds of AST nodes, or
- * enter/leave visitors at a named key, leading to three permutations of the
+ * enter/leave visitors at a named key, leading to four permutations of the
  * visitor API:
  *
  * 1) Named visitors triggered when entering a node of a specific kind.
  *
- * ```ts
- * visit(ast, {
- *   Kind(node) {
- *     // enter the "Kind" node
- *   }
- * })
- * ```
+ *     visit(ast, {
+ *       Kind(node) {
+ *         // enter the "Kind" node
+ *       }
+ *     })
  *
- * 2) Named visitors that trigger upon entering and leaving a node of a specific kind.
+ * 2) Named visitors that trigger upon entering and leaving a node of
+ *    a specific kind.
  *
- * ```ts
- * visit(ast, {
- *   Kind: {
- *     enter(node) {
- *       // enter the "Kind" node
- *     }
- *     leave(node) {
- *       // leave the "Kind" node
- *     }
- *   }
- * })
- * ```
+ *     visit(ast, {
+ *       Kind: {
+ *         enter(node) {
+ *           // enter the "Kind" node
+ *         }
+ *         leave(node) {
+ *           // leave the "Kind" node
+ *         }
+ *       }
+ *     })
  *
  * 3) Generic visitors that trigger upon entering and leaving any node.
  *
- * ```ts
- * visit(ast, {
- *   enter(node) {
- *     // enter any node
- *   },
- *   leave(node) {
- *     // leave any node
- *   }
- * })
- * ```
+ *     visit(ast, {
+ *       enter(node) {
+ *         // enter any node
+ *       },
+ *       leave(node) {
+ *         // leave any node
+ *       }
+ *     })
+ *
+ * 4) Parallel visitors for entering and leaving nodes of a specific kind.
+ *
+ *     visit(ast, {
+ *       enter: {
+ *         Kind(node) {
+ *           // enter the "Kind" node
+ *         }
+ *       },
+ *       leave: {
+ *         Kind(node) {
+ *           // leave the "Kind" node
+ *         }
+ *       }
+ *     })
  */
 
-function visit(root, visitor, visitorKeys) {
-  if (visitorKeys === void 0) {
-    visitorKeys = _ast_mjs__WEBPACK_IMPORTED_MODULE_0__.QueryDocumentKeys;
-  }
-
-  var enterLeaveMap = new Map();
-
-  for (var _i = 0, _Object$values = Object.values(_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind); _i < _Object$values.length; _i++) {
-    var kind = _Object$values[_i];
-    enterLeaveMap.set(kind, getEnterLeaveForKind(visitor, kind));
-  }
+function visit(root, visitor) {
+  var visitorKeys = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : QueryDocumentKeys;
   /* eslint-disable no-undef-init */
-
 
   var stack = undefined;
   var inArray = Array.isArray(root);
@@ -19205,29 +18928,32 @@ function visit(root, visitor, visitorKeys) {
       if (isEdited) {
         if (inArray) {
           node = node.slice();
-          var editOffset = 0;
-
-          for (var _iterator = _createForOfIteratorHelperLoose(edits), _step; !(_step = _iterator()).done;) {
-            var _step$value = _step.value,
-                editKey = _step$value[0],
-                editValue = _step$value[1];
-            var arrayKey = editKey - editOffset;
-
-            if (editValue === null) {
-              node.splice(arrayKey, 1);
-              editOffset++;
-            } else {
-              node[arrayKey] = editValue;
-            }
-          }
         } else {
-          node = Object.defineProperties({}, Object.getOwnPropertyDescriptors(node));
+          var clone = {};
 
-          for (var _iterator2 = _createForOfIteratorHelperLoose(edits), _step2; !(_step2 = _iterator2()).done;) {
-            var _step2$value = _step2.value,
-                _editKey = _step2$value[0],
-                _editValue = _step2$value[1];
-            node[_editKey] = _editValue;
+          for (var _i2 = 0, _Object$keys2 = Object.keys(node); _i2 < _Object$keys2.length; _i2++) {
+            var k = _Object$keys2[_i2];
+            clone[k] = node[k];
+          }
+
+          node = clone;
+        }
+
+        var editOffset = 0;
+
+        for (var ii = 0; ii < edits.length; ii++) {
+          var editKey = edits[ii][0];
+          var editValue = edits[ii][1];
+
+          if (inArray) {
+            editKey -= editOffset;
+          }
+
+          if (inArray && editValue === null) {
+            node.splice(editKey, 1);
+            editOffset++;
+          } else {
+            node[editKey] = editValue;
           }
         }
       }
@@ -19253,30 +18979,34 @@ function visit(root, visitor, visitorKeys) {
     var result = void 0;
 
     if (!Array.isArray(node)) {
-      var _enterLeaveMap$get, _enterLeaveMap$get2;
-
-      (0,_ast_mjs__WEBPACK_IMPORTED_MODULE_0__.isNode)(node) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, "Invalid AST Node: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(node) + ".");
-      var visitFn = isLeaving ? (_enterLeaveMap$get = enterLeaveMap.get(node.kind)) === null || _enterLeaveMap$get === void 0 ? void 0 : _enterLeaveMap$get.leave : (_enterLeaveMap$get2 = enterLeaveMap.get(node.kind)) === null || _enterLeaveMap$get2 === void 0 ? void 0 : _enterLeaveMap$get2.enter;
-      result = visitFn === null || visitFn === void 0 ? void 0 : visitFn.call(visitor, node, key, parent, path, ancestors);
-
-      if (result === BREAK) {
-        break;
+      if (!(0,_ast_mjs__WEBPACK_IMPORTED_MODULE_0__.isNode)(node)) {
+        throw new Error("Invalid AST Node: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(node), "."));
       }
 
-      if (result === false) {
-        if (!isLeaving) {
-          path.pop();
-          continue;
-        }
-      } else if (result !== undefined) {
-        edits.push([key, result]);
+      var visitFn = getVisitFn(visitor, node.kind, isLeaving);
 
-        if (!isLeaving) {
-          if ((0,_ast_mjs__WEBPACK_IMPORTED_MODULE_0__.isNode)(result)) {
-            node = result;
-          } else {
+      if (visitFn) {
+        result = visitFn.call(visitor, node, key, parent, path, ancestors);
+
+        if (result === BREAK) {
+          break;
+        }
+
+        if (result === false) {
+          if (!isLeaving) {
             path.pop();
             continue;
+          }
+        } else if (result !== undefined) {
+          edits.push([key, result]);
+
+          if (!isLeaving) {
+            if ((0,_ast_mjs__WEBPACK_IMPORTED_MODULE_0__.isNode)(result)) {
+              node = result;
+            } else {
+              path.pop();
+              continue;
+            }
           }
         }
       }
@@ -19289,7 +19019,7 @@ function visit(root, visitor, visitorKeys) {
     if (isLeaving) {
       path.pop();
     } else {
-      var _node$kind;
+      var _visitorKeys$node$kin;
 
       stack = {
         inArray: inArray,
@@ -19299,7 +19029,7 @@ function visit(root, visitor, visitorKeys) {
         prev: stack
       };
       inArray = Array.isArray(node);
-      keys = inArray ? node : (_node$kind = visitorKeys[node.kind]) !== null && _node$kind !== void 0 ? _node$kind : [];
+      keys = inArray ? node : (_visitorKeys$node$kin = visitorKeys[node.kind]) !== null && _visitorKeys$node$kin !== void 0 ? _visitorKeys$node$kin : [];
       index = -1;
       edits = [];
 
@@ -19325,186 +19055,276 @@ function visit(root, visitor, visitorKeys) {
  */
 
 function visitInParallel(visitors) {
-  var skipping = new Array(visitors.length).fill(null);
-  var mergedVisitor = Object.create(null);
+  var skipping = new Array(visitors.length);
+  return {
+    enter: function enter(node) {
+      for (var i = 0; i < visitors.length; i++) {
+        if (skipping[i] == null) {
+          var fn = getVisitFn(visitors[i], node.kind,
+          /* isLeaving */
+          false);
 
-  var _loop = function _loop() {
-    var kind = _Object$values2[_i2];
-    var hasVisitor = false;
-    var enterList = new Array(visitors.length).fill(undefined);
-    var leaveList = new Array(visitors.length).fill(undefined);
-
-    for (var i = 0; i < visitors.length; ++i) {
-      var _getEnterLeaveForKind = getEnterLeaveForKind(visitors[i], kind),
-          enter = _getEnterLeaveForKind.enter,
-          leave = _getEnterLeaveForKind.leave;
-
-      hasVisitor || (hasVisitor = enter != null || leave != null);
-      enterList[i] = enter;
-      leaveList[i] = leave;
-    }
-
-    if (!hasVisitor) {
-      return "continue";
-    }
-
-    var mergedEnterLeave = {
-      enter: function enter() {
-        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
-
-        var node = args[0];
-
-        for (var _i3 = 0; _i3 < visitors.length; _i3++) {
-          if (skipping[_i3] === null) {
-            var _enterList$i;
-
-            var result = (_enterList$i = enterList[_i3]) === null || _enterList$i === void 0 ? void 0 : _enterList$i.apply(visitors[_i3], args);
+          if (fn) {
+            var result = fn.apply(visitors[i], arguments);
 
             if (result === false) {
-              skipping[_i3] = node;
+              skipping[i] = node;
             } else if (result === BREAK) {
-              skipping[_i3] = BREAK;
+              skipping[i] = BREAK;
             } else if (result !== undefined) {
               return result;
             }
           }
         }
-      },
-      leave: function leave() {
-        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-          args[_key2] = arguments[_key2];
-        }
+      }
+    },
+    leave: function leave(node) {
+      for (var i = 0; i < visitors.length; i++) {
+        if (skipping[i] == null) {
+          var fn = getVisitFn(visitors[i], node.kind,
+          /* isLeaving */
+          true);
 
-        var node = args[0];
-
-        for (var _i4 = 0; _i4 < visitors.length; _i4++) {
-          if (skipping[_i4] === null) {
-            var _leaveList$i;
-
-            var result = (_leaveList$i = leaveList[_i4]) === null || _leaveList$i === void 0 ? void 0 : _leaveList$i.apply(visitors[_i4], args);
+          if (fn) {
+            var result = fn.apply(visitors[i], arguments);
 
             if (result === BREAK) {
-              skipping[_i4] = BREAK;
+              skipping[i] = BREAK;
             } else if (result !== undefined && result !== false) {
               return result;
             }
-          } else if (skipping[_i4] === node) {
-            skipping[_i4] = null;
           }
+        } else if (skipping[i] === node) {
+          skipping[i] = null;
         }
       }
-    };
-    mergedVisitor[kind] = mergedEnterLeave;
-  };
-
-  for (var _i2 = 0, _Object$values2 = Object.values(_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind); _i2 < _Object$values2.length; _i2++) {
-    var _ret = _loop();
-
-    if (_ret === "continue") continue;
-  }
-
-  return mergedVisitor;
-}
-/**
- * Given a visitor instance and a node kind, return EnterLeaveVisitor for that kind.
- */
-
-function getEnterLeaveForKind(visitor, kind) {
-  var kindVisitor = visitor[kind];
-
-  if (typeof kindVisitor === 'object') {
-    // { Kind: { enter() {}, leave() {} } }
-    return kindVisitor;
-  } else if (typeof kindVisitor === 'function') {
-    // { Kind() {} }
-    return {
-      enter: kindVisitor,
-      leave: undefined
-    };
-  } // { enter() {}, leave() {} }
-
-
-  return {
-    enter: visitor.enter,
-    leave: visitor.leave
+    }
   };
 }
 /**
  * Given a visitor instance, if it is leaving or not, and a node kind, return
  * the function the visitor runtime should call.
- *
- * @deprecated Please use `getEnterLeaveForKind` instead. Will be removed in v17
  */
 
-/* c8 ignore next 8 */
-
 function getVisitFn(visitor, kind, isLeaving) {
-  var _getEnterLeaveForKind2 = getEnterLeaveForKind(visitor, kind),
-      enter = _getEnterLeaveForKind2.enter,
-      leave = _getEnterLeaveForKind2.leave;
+  var kindVisitor = visitor[kind];
 
-  return isLeaving ? leave : enter;
+  if (kindVisitor) {
+    if (!isLeaving && typeof kindVisitor === 'function') {
+      // { Kind() {} }
+      return kindVisitor;
+    }
+
+    var kindSpecificVisitor = isLeaving ? kindVisitor.leave : kindVisitor.enter;
+
+    if (typeof kindSpecificVisitor === 'function') {
+      // { Kind: { enter() {}, leave() {} } }
+      return kindSpecificVisitor;
+    }
+  } else {
+    var specificVisitor = isLeaving ? visitor.leave : visitor.enter;
+
+    if (specificVisitor) {
+      if (typeof specificVisitor === 'function') {
+        // { enter() {}, leave() {} }
+        return specificVisitor;
+      }
+
+      var specificKindVisitor = specificVisitor[kind];
+
+      if (typeof specificKindVisitor === 'function') {
+        // { enter: { Kind() {} }, leave: { Kind() {} } }
+        return specificKindVisitor;
+      }
+    }
+  }
 }
 
 /***/ }),
 
-/***/ "./node_modules/graphql/type/assertName.mjs":
-/*!**************************************************!*\
-  !*** ./node_modules/graphql/type/assertName.mjs ***!
-  \**************************************************/
+/***/ "./node_modules/graphql/polyfills/arrayFrom.mjs":
+/*!******************************************************!*\
+  !*** ./node_modules/graphql/polyfills/arrayFrom.mjs ***!
+  \******************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _symbols_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./symbols.mjs */ "./node_modules/graphql/polyfills/symbols.mjs");
+
+/* eslint-disable no-redeclare */
+// $FlowFixMe[name-already-bound]
+
+var arrayFrom = Array.from || function (obj, mapFn, thisArg) {
+  if (obj == null) {
+    throw new TypeError('Array.from requires an array-like object - not null or undefined');
+  } // Is Iterable?
+
+
+  var iteratorMethod = obj[_symbols_mjs__WEBPACK_IMPORTED_MODULE_0__.SYMBOL_ITERATOR];
+
+  if (typeof iteratorMethod === 'function') {
+    var iterator = iteratorMethod.call(obj);
+    var result = [];
+    var step;
+
+    for (var i = 0; !(step = iterator.next()).done; ++i) {
+      result.push(mapFn.call(thisArg, step.value, i)); // Infinite Iterators could cause forEach to run forever.
+      // After a very large number of iterations, produce an error.
+      // istanbul ignore if (Too big to actually test)
+
+      if (i > 9999999) {
+        throw new TypeError('Near-infinite iteration.');
+      }
+    }
+
+    return result;
+  } // Is Array like?
+
+
+  var length = obj.length;
+
+  if (typeof length === 'number' && length >= 0 && length % 1 === 0) {
+    var _result = [];
+
+    for (var _i = 0; _i < length; ++_i) {
+      if (Object.prototype.hasOwnProperty.call(obj, _i)) {
+        _result.push(mapFn.call(thisArg, obj[_i], _i));
+      }
+    }
+
+    return _result;
+  }
+
+  return [];
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (arrayFrom);
+
+/***/ }),
+
+/***/ "./node_modules/graphql/polyfills/find.mjs":
+/*!*************************************************!*\
+  !*** ./node_modules/graphql/polyfills/find.mjs ***!
+  \*************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* eslint-disable no-redeclare */
+// $FlowFixMe[name-already-bound]
+var find = Array.prototype.find ? function (list, predicate) {
+  return Array.prototype.find.call(list, predicate);
+} : function (list, predicate) {
+  for (var _i2 = 0; _i2 < list.length; _i2++) {
+    var value = list[_i2];
+
+    if (predicate(value)) {
+      return value;
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (find);
+
+/***/ }),
+
+/***/ "./node_modules/graphql/polyfills/isFinite.mjs":
+/*!*****************************************************!*\
+  !*** ./node_modules/graphql/polyfills/isFinite.mjs ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* eslint-disable no-redeclare */
+// $FlowFixMe[name-already-bound] workaround for: https://github.com/facebook/flow/issues/4441
+var isFinitePolyfill = Number.isFinite || function (value) {
+  return typeof value === 'number' && isFinite(value);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (isFinitePolyfill);
+
+/***/ }),
+
+/***/ "./node_modules/graphql/polyfills/isInteger.mjs":
+/*!******************************************************!*\
+  !*** ./node_modules/graphql/polyfills/isInteger.mjs ***!
+  \******************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* eslint-disable no-redeclare */
+// $FlowFixMe[name-already-bound] workaround for: https://github.com/facebook/flow/issues/4441
+var isInteger = Number.isInteger || function (value) {
+  return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (isInteger);
+
+/***/ }),
+
+/***/ "./node_modules/graphql/polyfills/objectEntries.mjs":
+/*!**********************************************************!*\
+  !*** ./node_modules/graphql/polyfills/objectEntries.mjs ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* eslint-disable no-redeclare */
+// $FlowFixMe[name-already-bound] workaround for: https://github.com/facebook/flow/issues/4441
+var objectEntries = Object.entries || function (obj) {
+  return Object.keys(obj).map(function (key) {
+    return [key, obj[key]];
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (objectEntries);
+
+/***/ }),
+
+/***/ "./node_modules/graphql/polyfills/objectValues.mjs":
+/*!*********************************************************!*\
+  !*** ./node_modules/graphql/polyfills/objectValues.mjs ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* eslint-disable no-redeclare */
+// $FlowFixMe[name-already-bound] workaround for: https://github.com/facebook/flow/issues/4441
+var objectValues = Object.values || function (obj) {
+  return Object.keys(obj).map(function (key) {
+    return obj[key];
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (objectValues);
+
+/***/ }),
+
+/***/ "./node_modules/graphql/polyfills/symbols.mjs":
+/*!****************************************************!*\
+  !*** ./node_modules/graphql/polyfills/symbols.mjs ***!
+  \****************************************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "assertName": function() { return /* binding */ assertName; },
-/* harmony export */   "assertEnumValueName": function() { return /* binding */ assertEnumValueName; }
+/* harmony export */   "SYMBOL_ITERATOR": function() { return /* binding */ SYMBOL_ITERATOR; },
+/* harmony export */   "SYMBOL_ASYNC_ITERATOR": function() { return /* binding */ SYMBOL_ASYNC_ITERATOR; },
+/* harmony export */   "SYMBOL_TO_STRING_TAG": function() { return /* binding */ SYMBOL_TO_STRING_TAG; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-/* harmony import */ var _language_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../language/characterClasses.mjs */ "./node_modules/graphql/language/characterClasses.mjs");
+// In ES2015 (or a polyfilled) environment, this will be Symbol.iterator
+// istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2317')
+var SYMBOL_ITERATOR = typeof Symbol === 'function' && Symbol.iterator != null ? Symbol.iterator : '@@iterator'; // In ES2017 (or a polyfilled) environment, this will be Symbol.asyncIterator
+// istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2317')
 
+var SYMBOL_ASYNC_ITERATOR = typeof Symbol === 'function' && Symbol.asyncIterator != null ? Symbol.asyncIterator : '@@asyncIterator'; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2317')
 
-
-/**
- * Upholds the spec rules about naming.
- */
-
-function assertName(name) {
-  name != null || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__.devAssert)(false, 'Must provide name.');
-  typeof name === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__.devAssert)(false, 'Expected name to be a string.');
-
-  if (name.length === 0) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError('Expected name to be a non-empty string.');
-  }
-
-  for (var i = 1; i < name.length; ++i) {
-    if (!(0,_language_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isNameContinue)(name.charCodeAt(i))) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Names must only contain [_a-zA-Z0-9] but \"" + name + "\" does not.");
-    }
-  }
-
-  if (!(0,_language_characterClasses_mjs__WEBPACK_IMPORTED_MODULE_2__.isNameStart)(name.charCodeAt(0))) {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Names must start with [_a-zA-Z] but \"" + name + "\" does not.");
-  }
-
-  return name;
-}
-/**
- * Upholds the spec rules about naming enum values.
- *
- * @internal
- */
-
-function assertEnumValueName(name) {
-  if (name === 'true' || name === 'false' || name === 'null') {
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Enum values cannot be named: " + name);
-  }
-
-  return assertName(name);
-}
+var SYMBOL_TO_STRING_TAG = typeof Symbol === 'function' && Symbol.toStringTag != null ? Symbol.toStringTag : '@@toStringTag';
 
 /***/ }),
 
@@ -19555,11 +19375,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isNamedType": function() { return /* binding */ isNamedType; },
 /* harmony export */   "assertNamedType": function() { return /* binding */ assertNamedType; },
 /* harmony export */   "getNamedType": function() { return /* binding */ getNamedType; },
-/* harmony export */   "resolveReadonlyArrayThunk": function() { return /* binding */ resolveReadonlyArrayThunk; },
-/* harmony export */   "resolveObjMapThunk": function() { return /* binding */ resolveObjMapThunk; },
 /* harmony export */   "GraphQLScalarType": function() { return /* binding */ GraphQLScalarType; },
 /* harmony export */   "GraphQLObjectType": function() { return /* binding */ GraphQLObjectType; },
-/* harmony export */   "defineArguments": function() { return /* binding */ defineArguments; },
 /* harmony export */   "argsToArgsConfig": function() { return /* binding */ argsToArgsConfig; },
 /* harmony export */   "isRequiredArgument": function() { return /* binding */ isRequiredArgument; },
 /* harmony export */   "GraphQLInterfaceType": function() { return /* binding */ GraphQLInterfaceType; },
@@ -19568,53 +19385,64 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "GraphQLInputObjectType": function() { return /* binding */ GraphQLInputObjectType; },
 /* harmony export */   "isRequiredInputField": function() { return /* binding */ isRequiredInputField; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../polyfills/objectEntries.mjs */ "./node_modules/graphql/polyfills/objectEntries.mjs");
+/* harmony import */ var _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../polyfills/symbols.mjs */ "./node_modules/graphql/polyfills/symbols.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
-/* harmony import */ var _jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../jsutils/mapValue.mjs */ "./node_modules/graphql/jsutils/mapValue.mjs");
+/* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
+/* harmony import */ var _jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/mapValue.mjs */ "./node_modules/graphql/jsutils/mapValue.mjs");
 /* harmony import */ var _jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../jsutils/toObjMap.mjs */ "./node_modules/graphql/jsutils/toObjMap.mjs");
-/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
-/* harmony import */ var _jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../jsutils/keyValMap.mjs */ "./node_modules/graphql/jsutils/keyValMap.mjs");
+/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
+/* harmony import */ var _jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../jsutils/keyValMap.mjs */ "./node_modules/graphql/jsutils/keyValMap.mjs");
 /* harmony import */ var _jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/instanceOf.mjs */ "./node_modules/graphql/jsutils/instanceOf.mjs");
-/* harmony import */ var _jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../jsutils/didYouMean.mjs */ "./node_modules/graphql/jsutils/didYouMean.mjs");
-/* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
-/* harmony import */ var _jsutils_identityFunc_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/identityFunc.mjs */ "./node_modules/graphql/jsutils/identityFunc.mjs");
-/* harmony import */ var _jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../jsutils/suggestionList.mjs */ "./node_modules/graphql/jsutils/suggestionList.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
+/* harmony import */ var _jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../jsutils/didYouMean.mjs */ "./node_modules/graphql/jsutils/didYouMean.mjs");
+/* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
+/* harmony import */ var _jsutils_identityFunc_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../jsutils/identityFunc.mjs */ "./node_modules/graphql/jsutils/identityFunc.mjs");
+/* harmony import */ var _jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/defineInspect.mjs */ "./node_modules/graphql/jsutils/defineInspect.mjs");
+/* harmony import */ var _jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../jsutils/suggestionList.mjs */ "./node_modules/graphql/jsutils/suggestionList.mjs");
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
+/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
+/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
 /* harmony import */ var _utilities_valueFromASTUntyped_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/valueFromASTUntyped.mjs */ "./node_modules/graphql/utilities/valueFromASTUntyped.mjs");
-/* harmony import */ var _assertName_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./assertName.mjs */ "./node_modules/graphql/type/assertName.mjs");
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-
-
-
-
-
-
-
-
-
-
-
-
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
 
 
 
- // Predicates & Assertions
 
-/**
- * These are all of the possible kinds of types.
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function isType(type) {
   return isScalarType(type) || isObjectType(type) || isInterfaceType(type) || isUnionType(type) || isEnumType(type) || isInputObjectType(type) || isListType(type) || isNonNullType(type);
 }
 function assertType(type) {
   if (!isType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL type."));
   }
 
   return type;
@@ -19622,83 +19450,91 @@ function assertType(type) {
 /**
  * There are predicates for each kind of GraphQL type.
  */
+// eslint-disable-next-line no-redeclare
 
 function isScalarType(type) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__.instanceOf)(type, GraphQLScalarType);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type, GraphQLScalarType);
 }
 function assertScalarType(type) {
   if (!isScalarType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL Scalar type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL Scalar type."));
   }
 
   return type;
-}
+} // eslint-disable-next-line no-redeclare
+
 function isObjectType(type) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__.instanceOf)(type, GraphQLObjectType);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type, GraphQLObjectType);
 }
 function assertObjectType(type) {
   if (!isObjectType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL Object type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL Object type."));
   }
 
   return type;
-}
+} // eslint-disable-next-line no-redeclare
+
 function isInterfaceType(type) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__.instanceOf)(type, GraphQLInterfaceType);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type, GraphQLInterfaceType);
 }
 function assertInterfaceType(type) {
   if (!isInterfaceType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL Interface type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL Interface type."));
   }
 
   return type;
-}
+} // eslint-disable-next-line no-redeclare
+
 function isUnionType(type) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__.instanceOf)(type, GraphQLUnionType);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type, GraphQLUnionType);
 }
 function assertUnionType(type) {
   if (!isUnionType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL Union type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL Union type."));
   }
 
   return type;
-}
+} // eslint-disable-next-line no-redeclare
+
 function isEnumType(type) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__.instanceOf)(type, GraphQLEnumType);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type, GraphQLEnumType);
 }
 function assertEnumType(type) {
   if (!isEnumType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL Enum type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL Enum type."));
   }
 
   return type;
-}
+} // eslint-disable-next-line no-redeclare
+
 function isInputObjectType(type) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__.instanceOf)(type, GraphQLInputObjectType);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type, GraphQLInputObjectType);
 }
 function assertInputObjectType(type) {
   if (!isInputObjectType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL Input Object type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL Input Object type."));
   }
 
   return type;
-}
+} // eslint-disable-next-line no-redeclare
+
 function isListType(type) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__.instanceOf)(type, GraphQLList);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type, GraphQLList);
 }
 function assertListType(type) {
   if (!isListType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL List type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL List type."));
   }
 
   return type;
-}
+} // eslint-disable-next-line no-redeclare
+
 function isNonNullType(type) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__.instanceOf)(type, GraphQLNonNull);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type, GraphQLNonNull);
 }
 function assertNonNullType(type) {
   if (!isNonNullType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL Non-Null type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL Non-Null type."));
   }
 
   return type;
@@ -19712,7 +19548,7 @@ function isInputType(type) {
 }
 function assertInputType(type) {
   if (!isInputType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL input type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL input type."));
   }
 
   return type;
@@ -19726,7 +19562,7 @@ function isOutputType(type) {
 }
 function assertOutputType(type) {
   if (!isOutputType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL output type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL output type."));
   }
 
   return type;
@@ -19740,7 +19576,7 @@ function isLeafType(type) {
 }
 function assertLeafType(type) {
   if (!isLeafType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL leaf type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL leaf type."));
   }
 
   return type;
@@ -19754,7 +19590,7 @@ function isCompositeType(type) {
 }
 function assertCompositeType(type) {
   if (!isCompositeType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL composite type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL composite type."));
   }
 
   return type;
@@ -19768,7 +19604,7 @@ function isAbstractType(type) {
 }
 function assertAbstractType(type) {
   if (!isAbstractType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL abstract type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL abstract type."));
   }
 
   return type;
@@ -19782,42 +19618,50 @@ function assertAbstractType(type) {
  *
  * Example:
  *
- * ```ts
- * const PersonType = new GraphQLObjectType({
- *   name: 'Person',
- *   fields: () => ({
- *     parents: { type: new GraphQLList(PersonType) },
- *     children: { type: new GraphQLList(PersonType) },
- *   })
- * })
- * ```
+ *     const PersonType = new GraphQLObjectType({
+ *       name: 'Person',
+ *       fields: () => ({
+ *         parents: { type: new GraphQLList(PersonType) },
+ *         children: { type: new GraphQLList(PersonType) },
+ *       })
+ *     })
+ *
  */
+// FIXME: workaround to fix issue with Babel parser
 
-var GraphQLList = /*#__PURE__*/function (_Symbol$toStringTag) {
-  function GraphQLList(ofType) {
-    isType(ofType) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, "Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(ofType) + " to be a GraphQL type.");
-    this.ofType = ofType;
+/* ::
+declare class GraphQLList<+T: GraphQLType> {
+  +ofType: T;
+  static <T>(ofType: T): GraphQLList<T>;
+  // Note: constructors cannot be used for covariant types. Drop the "new".
+  constructor(ofType: GraphQLType): void;
+}
+*/
+
+function GraphQLList(ofType) {
+  // istanbul ignore else (to be removed in v16.0.0)
+  if (this instanceof GraphQLList) {
+    this.ofType = assertType(ofType);
+  } else {
+    return new GraphQLList(ofType);
   }
+} // Need to cast through any to alter the prototype.
 
-  var _proto = GraphQLList.prototype;
+GraphQLList.prototype.toString = function toString() {
+  return '[' + String(this.ofType) + ']';
+};
 
-  _proto.toString = function toString() {
-    return '[' + String(this.ofType) + ']';
-  };
+GraphQLList.prototype.toJSON = function toJSON() {
+  return this.toString();
+};
 
-  _proto.toJSON = function toJSON() {
-    return this.toString();
-  };
+Object.defineProperty(GraphQLList.prototype, _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG, {
+  get: function get() {
+    return 'GraphQLList';
+  }
+}); // Print a simplified form when appearing in `inspect` and `util.inspect`.
 
-  _createClass(GraphQLList, [{
-    key: _Symbol$toStringTag,
-    get: function get() {
-      return 'GraphQLList';
-    }
-  }]);
-
-  return GraphQLList;
-}(Symbol.toStringTag);
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(GraphQLList);
 /**
  * Non-Null Type Wrapper
  *
@@ -19829,42 +19673,50 @@ var GraphQLList = /*#__PURE__*/function (_Symbol$toStringTag) {
  *
  * Example:
  *
- * ```ts
- * const RowType = new GraphQLObjectType({
- *   name: 'Row',
- *   fields: () => ({
- *     id: { type: new GraphQLNonNull(GraphQLString) },
- *   })
- * })
- * ```
+ *     const RowType = new GraphQLObjectType({
+ *       name: 'Row',
+ *       fields: () => ({
+ *         id: { type: new GraphQLNonNull(GraphQLString) },
+ *       })
+ *     })
+ *
  * Note: the enforcement of non-nullability occurs within the executor.
  */
+// FIXME: workaround to fix issue with Babel parser
 
-var GraphQLNonNull = /*#__PURE__*/function (_Symbol$toStringTag2) {
-  function GraphQLNonNull(ofType) {
-    isNullableType(ofType) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, "Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(ofType) + " to be a GraphQL nullable type.");
-    this.ofType = ofType;
+/* ::
+declare class GraphQLNonNull<+T: GraphQLNullableType> {
+  +ofType: T;
+  static <T>(ofType: T): GraphQLNonNull<T>;
+  // Note: constructors cannot be used for covariant types. Drop the "new".
+  constructor(ofType: GraphQLType): void;
+}
+*/
+
+function GraphQLNonNull(ofType) {
+  // istanbul ignore else (to be removed in v16.0.0)
+  if (this instanceof GraphQLNonNull) {
+    this.ofType = assertNullableType(ofType);
+  } else {
+    return new GraphQLNonNull(ofType);
   }
+} // Need to cast through any to alter the prototype.
 
-  var _proto2 = GraphQLNonNull.prototype;
+GraphQLNonNull.prototype.toString = function toString() {
+  return String(this.ofType) + '!';
+};
 
-  _proto2.toString = function toString() {
-    return String(this.ofType) + '!';
-  };
+GraphQLNonNull.prototype.toJSON = function toJSON() {
+  return this.toString();
+};
 
-  _proto2.toJSON = function toJSON() {
-    return this.toString();
-  };
+Object.defineProperty(GraphQLNonNull.prototype, _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG, {
+  get: function get() {
+    return 'GraphQLNonNull';
+  }
+}); // Print a simplified form when appearing in `inspect` and `util.inspect`.
 
-  _createClass(GraphQLNonNull, [{
-    key: _Symbol$toStringTag2,
-    get: function get() {
-      return 'GraphQLNonNull';
-    }
-  }]);
-
-  return GraphQLNonNull;
-}(Symbol.toStringTag);
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(GraphQLNonNull);
 /**
  * These types wrap and modify other types
  */
@@ -19874,7 +19726,7 @@ function isWrappingType(type) {
 }
 function assertWrappingType(type) {
   if (!isWrappingType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL wrapping type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL wrapping type."));
   }
 
   return type;
@@ -19888,12 +19740,15 @@ function isNullableType(type) {
 }
 function assertNullableType(type) {
   if (!isNullableType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL nullable type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL nullable type."));
   }
 
   return type;
 }
+/* eslint-disable no-redeclare */
+
 function getNullableType(type) {
+  /* eslint-enable no-redeclare */
   if (type) {
     return isNonNullType(type) ? type.ofType : type;
   }
@@ -19907,12 +19762,15 @@ function isNamedType(type) {
 }
 function assertNamedType(type) {
   if (!isNamedType(type)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + " to be a GraphQL named type.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), " to be a GraphQL named type."));
   }
 
   return type;
 }
+/* eslint-disable no-redeclare */
+
 function getNamedType(type) {
+  /* eslint-enable no-redeclare */
   if (type) {
     var unwrappedType = type;
 
@@ -19928,22 +19786,14 @@ function getNamedType(type) {
  * otherwise immutable type definitions.
  */
 
-function resolveReadonlyArrayThunk(thunk) {
+function resolveThunk(thunk) {
+  // $FlowFixMe[incompatible-use]
   return typeof thunk === 'function' ? thunk() : thunk;
 }
-function resolveObjMapThunk(thunk) {
-  return typeof thunk === 'function' ? thunk() : thunk;
-}
-/**
- * Custom extensions
- *
- * @remarks
- * Use a unique identifier name for your extension, for example the name of
- * your library or project. Do not use a shortened identifier as this increases
- * the risk of conflicts. We recommend you add at most one extension field,
- * an object which can contain all the values you need.
- */
 
+function undefineIfEmpty(arr) {
+  return arr && arr.length > 0 ? arr : undefined;
+}
 /**
  * Scalar Type Definition
  *
@@ -19958,75 +19808,81 @@ function resolveObjMapThunk(thunk) {
  *
  * Example:
  *
- * ```ts
- * const OddType = new GraphQLScalarType({
- *   name: 'Odd',
- *   serialize(value) {
- *     if (value % 2 === 1) {
- *       return value;
- *     }
- *   }
- * });
- * ```
+ *     const OddType = new GraphQLScalarType({
+ *       name: 'Odd',
+ *       serialize(value) {
+ *         if (value % 2 === 1) {
+ *           return value;
+ *         }
+ *       }
+ *     });
+ *
  */
 
-var GraphQLScalarType = /*#__PURE__*/function (_Symbol$toStringTag3) {
-  function GraphQLScalarType(config) {
-    var _config$parseValue, _config$serialize, _config$parseLiteral, _config$extensionASTN;
 
-    var parseValue = (_config$parseValue = config.parseValue) !== null && _config$parseValue !== void 0 ? _config$parseValue : _jsutils_identityFunc_mjs__WEBPACK_IMPORTED_MODULE_3__.identityFunc;
-    this.name = (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(config.name);
+var GraphQLScalarType = /*#__PURE__*/function () {
+  function GraphQLScalarType(config) {
+    var _config$parseValue, _config$serialize, _config$parseLiteral;
+
+    var parseValue = (_config$parseValue = config.parseValue) !== null && _config$parseValue !== void 0 ? _config$parseValue : _jsutils_identityFunc_mjs__WEBPACK_IMPORTED_MODULE_4__["default"];
+    this.name = config.name;
     this.description = config.description;
-    this.specifiedByURL = config.specifiedByURL;
-    this.serialize = (_config$serialize = config.serialize) !== null && _config$serialize !== void 0 ? _config$serialize : _jsutils_identityFunc_mjs__WEBPACK_IMPORTED_MODULE_3__.identityFunc;
+    this.specifiedByUrl = config.specifiedByUrl;
+    this.serialize = (_config$serialize = config.serialize) !== null && _config$serialize !== void 0 ? _config$serialize : _jsutils_identityFunc_mjs__WEBPACK_IMPORTED_MODULE_4__["default"];
     this.parseValue = parseValue;
     this.parseLiteral = (_config$parseLiteral = config.parseLiteral) !== null && _config$parseLiteral !== void 0 ? _config$parseLiteral : function (node, variables) {
       return parseValue((0,_utilities_valueFromASTUntyped_mjs__WEBPACK_IMPORTED_MODULE_5__.valueFromASTUntyped)(node, variables));
     };
-    this.extensions = (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(config.extensions);
+    this.extensions = config.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(config.extensions);
     this.astNode = config.astNode;
-    this.extensionASTNodes = (_config$extensionASTN = config.extensionASTNodes) !== null && _config$extensionASTN !== void 0 ? _config$extensionASTN : [];
-    config.specifiedByURL == null || typeof config.specifiedByURL === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, this.name + " must provide \"specifiedByURL\" as a string, " + ("but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(config.specifiedByURL) + "."));
-    config.serialize == null || typeof config.serialize === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, this.name + " must provide \"serialize\" function. If this custom Scalar is also used as an input type, ensure \"parseValue\" and \"parseLiteral\" functions are also provided.");
+    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
+    typeof config.name === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, 'Must provide name.');
+    config.specifiedByUrl == null || typeof config.specifiedByUrl === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(this.name, " must provide \"specifiedByUrl\" as a string, ") + "but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(config.specifiedByUrl), "."));
+    config.serialize == null || typeof config.serialize === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(this.name, " must provide \"serialize\" function. If this custom Scalar is also used as an input type, ensure \"parseValue\" and \"parseLiteral\" functions are also provided."));
 
     if (config.parseLiteral) {
-      typeof config.parseValue === 'function' && typeof config.parseLiteral === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, this.name + " must provide both \"parseValue\" and \"parseLiteral\" functions.");
+      typeof config.parseValue === 'function' && typeof config.parseLiteral === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(this.name, " must provide both \"parseValue\" and \"parseLiteral\" functions."));
     }
   }
 
-  var _proto3 = GraphQLScalarType.prototype;
+  var _proto = GraphQLScalarType.prototype;
 
-  _proto3.toConfig = function toConfig() {
+  _proto.toConfig = function toConfig() {
+    var _this$extensionASTNod;
+
     return {
       name: this.name,
       description: this.description,
-      specifiedByURL: this.specifiedByURL,
+      specifiedByUrl: this.specifiedByUrl,
       serialize: this.serialize,
       parseValue: this.parseValue,
       parseLiteral: this.parseLiteral,
       extensions: this.extensions,
       astNode: this.astNode,
-      extensionASTNodes: this.extensionASTNodes
+      extensionASTNodes: (_this$extensionASTNod = this.extensionASTNodes) !== null && _this$extensionASTNod !== void 0 ? _this$extensionASTNod : []
     };
   };
 
-  _proto3.toString = function toString() {
+  _proto.toString = function toString() {
     return this.name;
   };
 
-  _proto3.toJSON = function toJSON() {
+  _proto.toJSON = function toJSON() {
     return this.toString();
-  };
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+  ;
 
   _createClass(GraphQLScalarType, [{
-    key: _Symbol$toStringTag3,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'GraphQLScalarType';
     }
   }]);
 
   return GraphQLScalarType;
-}(Symbol.toStringTag);
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
+
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(GraphQLScalarType);
 /**
  * Object Type Definition
  *
@@ -20035,21 +19891,19 @@ var GraphQLScalarType = /*#__PURE__*/function (_Symbol$toStringTag3) {
  *
  * Example:
  *
- * ```ts
- * const AddressType = new GraphQLObjectType({
- *   name: 'Address',
- *   fields: {
- *     street: { type: GraphQLString },
- *     number: { type: GraphQLInt },
- *     formatted: {
- *       type: GraphQLString,
- *       resolve(obj) {
- *         return obj.number + ' ' + obj.street
+ *     const AddressType = new GraphQLObjectType({
+ *       name: 'Address',
+ *       fields: {
+ *         street: { type: GraphQLString },
+ *         number: { type: GraphQLInt },
+ *         formatted: {
+ *           type: GraphQLString,
+ *           resolve(obj) {
+ *             return obj.number + ' ' + obj.street
+ *           }
+ *         }
  *       }
- *     }
- *   }
- * });
- * ```
+ *     });
  *
  * When two types need to refer to each other, or a type needs to refer to
  * itself in a field, you can use a function expression (aka a closure or a
@@ -20057,42 +19911,33 @@ var GraphQLScalarType = /*#__PURE__*/function (_Symbol$toStringTag3) {
  *
  * Example:
  *
- * ```ts
- * const PersonType = new GraphQLObjectType({
- *   name: 'Person',
- *   fields: () => ({
- *     name: { type: GraphQLString },
- *     bestFriend: { type: PersonType },
- *   })
- * });
- * ```
+ *     const PersonType = new GraphQLObjectType({
+ *       name: 'Person',
+ *       fields: () => ({
+ *         name: { type: GraphQLString },
+ *         bestFriend: { type: PersonType },
+ *       })
+ *     });
+ *
  */
 
-var GraphQLObjectType = /*#__PURE__*/function (_Symbol$toStringTag4) {
+var GraphQLObjectType = /*#__PURE__*/function () {
   function GraphQLObjectType(config) {
-    var _config$extensionASTN2;
-
-    this.name = (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(config.name);
+    this.name = config.name;
     this.description = config.description;
     this.isTypeOf = config.isTypeOf;
-    this.extensions = (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(config.extensions);
+    this.extensions = config.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(config.extensions);
     this.astNode = config.astNode;
-    this.extensionASTNodes = (_config$extensionASTN2 = config.extensionASTNodes) !== null && _config$extensionASTN2 !== void 0 ? _config$extensionASTN2 : [];
-
-    this._fields = function () {
-      return defineFieldMap(config);
-    };
-
-    this._interfaces = function () {
-      return defineInterfaces(config);
-    };
-
-    config.isTypeOf == null || typeof config.isTypeOf === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, this.name + " must provide \"isTypeOf\" as a function, " + ("but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(config.isTypeOf) + "."));
+    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
+    this._fields = defineFieldMap.bind(undefined, config);
+    this._interfaces = defineInterfaces.bind(undefined, config);
+    typeof config.name === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, 'Must provide name.');
+    config.isTypeOf == null || typeof config.isTypeOf === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(this.name, " must provide \"isTypeOf\" as a function, ") + "but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(config.isTypeOf), "."));
   }
 
-  var _proto4 = GraphQLObjectType.prototype;
+  var _proto2 = GraphQLObjectType.prototype;
 
-  _proto4.getFields = function getFields() {
+  _proto2.getFields = function getFields() {
     if (typeof this._fields === 'function') {
       this._fields = this._fields();
     }
@@ -20100,7 +19945,7 @@ var GraphQLObjectType = /*#__PURE__*/function (_Symbol$toStringTag4) {
     return this._fields;
   };
 
-  _proto4.getInterfaces = function getInterfaces() {
+  _proto2.getInterfaces = function getInterfaces() {
     if (typeof this._interfaces === 'function') {
       this._interfaces = this._interfaces();
     }
@@ -20108,7 +19953,7 @@ var GraphQLObjectType = /*#__PURE__*/function (_Symbol$toStringTag4) {
     return this._interfaces;
   };
 
-  _proto4.toConfig = function toConfig() {
+  _proto2.toConfig = function toConfig() {
     return {
       name: this.name,
       description: this.description,
@@ -20117,82 +19962,84 @@ var GraphQLObjectType = /*#__PURE__*/function (_Symbol$toStringTag4) {
       isTypeOf: this.isTypeOf,
       extensions: this.extensions,
       astNode: this.astNode,
-      extensionASTNodes: this.extensionASTNodes
+      extensionASTNodes: this.extensionASTNodes || []
     };
   };
 
-  _proto4.toString = function toString() {
+  _proto2.toString = function toString() {
     return this.name;
   };
 
-  _proto4.toJSON = function toJSON() {
+  _proto2.toJSON = function toJSON() {
     return this.toString();
-  };
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+  ;
 
   _createClass(GraphQLObjectType, [{
-    key: _Symbol$toStringTag4,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'GraphQLObjectType';
     }
   }]);
 
   return GraphQLObjectType;
-}(Symbol.toStringTag);
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
+
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(GraphQLObjectType);
 
 function defineInterfaces(config) {
-  var _config$interfaces;
+  var _resolveThunk;
 
-  var interfaces = resolveReadonlyArrayThunk((_config$interfaces = config.interfaces) !== null && _config$interfaces !== void 0 ? _config$interfaces : []);
-  Array.isArray(interfaces) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, config.name + " interfaces must be an Array or a function which returns an Array.");
+  var interfaces = (_resolveThunk = resolveThunk(config.interfaces)) !== null && _resolveThunk !== void 0 ? _resolveThunk : [];
+  Array.isArray(interfaces) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(config.name, " interfaces must be an Array or a function which returns an Array."));
   return interfaces;
 }
 
 function defineFieldMap(config) {
-  var fieldMap = resolveObjMapThunk(config.fields);
-  isPlainObj(fieldMap) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, config.name + " fields must be an object with field names as keys or a function which returns such an object.");
-  return (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(fieldMap, function (fieldConfig, fieldName) {
+  var fieldMap = resolveThunk(config.fields);
+  isPlainObj(fieldMap) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(config.name, " fields must be an object with field names as keys or a function which returns such an object."));
+  return (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(fieldMap, function (fieldConfig, fieldName) {
     var _fieldConfig$args;
 
-    isPlainObj(fieldConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, config.name + "." + fieldName + " field config must be an object.");
-    fieldConfig.resolve == null || typeof fieldConfig.resolve === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, config.name + "." + fieldName + " field resolver must be a function if " + ("provided, but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(fieldConfig.resolve) + "."));
+    isPlainObj(fieldConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(config.name, ".").concat(fieldName, " field config must be an object."));
+    !('isDeprecated' in fieldConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(config.name, ".").concat(fieldName, " should provide \"deprecationReason\" instead of \"isDeprecated\"."));
+    fieldConfig.resolve == null || typeof fieldConfig.resolve === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(config.name, ".").concat(fieldName, " field resolver must be a function if ") + "provided, but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(fieldConfig.resolve), "."));
     var argsConfig = (_fieldConfig$args = fieldConfig.args) !== null && _fieldConfig$args !== void 0 ? _fieldConfig$args : {};
-    isPlainObj(argsConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, config.name + "." + fieldName + " args must be an object with argument names as keys.");
+    isPlainObj(argsConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(config.name, ".").concat(fieldName, " args must be an object with argument names as keys."));
+    var args = (0,_polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_9__["default"])(argsConfig).map(function (_ref) {
+      var argName = _ref[0],
+          argConfig = _ref[1];
+      return {
+        name: argName,
+        description: argConfig.description,
+        type: argConfig.type,
+        defaultValue: argConfig.defaultValue,
+        deprecationReason: argConfig.deprecationReason,
+        extensions: argConfig.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(argConfig.extensions),
+        astNode: argConfig.astNode
+      };
+    });
     return {
-      name: (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(fieldName),
+      name: fieldName,
       description: fieldConfig.description,
       type: fieldConfig.type,
-      args: defineArguments(argsConfig),
+      args: args,
       resolve: fieldConfig.resolve,
       subscribe: fieldConfig.subscribe,
+      isDeprecated: fieldConfig.deprecationReason != null,
       deprecationReason: fieldConfig.deprecationReason,
-      extensions: (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(fieldConfig.extensions),
+      extensions: fieldConfig.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(fieldConfig.extensions),
       astNode: fieldConfig.astNode
     };
   });
 }
 
-function defineArguments(config) {
-  return Object.entries(config).map(function (_ref) {
-    var argName = _ref[0],
-        argConfig = _ref[1];
-    return {
-      name: (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(argName),
-      description: argConfig.description,
-      type: argConfig.type,
-      defaultValue: argConfig.defaultValue,
-      deprecationReason: argConfig.deprecationReason,
-      extensions: (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(argConfig.extensions),
-      astNode: argConfig.astNode
-    };
-  });
-}
-
 function isPlainObj(obj) {
-  return (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_8__.isObjectLike)(obj) && !Array.isArray(obj);
+  return (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(obj) && !Array.isArray(obj);
 }
 
 function fieldsToFieldsConfig(fields) {
-  return (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(fields, function (field) {
+  return (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(fields, function (field) {
     return {
       description: field.description,
       type: field.type,
@@ -20211,7 +20058,7 @@ function fieldsToFieldsConfig(fields) {
 
 
 function argsToArgsConfig(args) {
-  return (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_9__.keyValMap)(args, function (arg) {
+  return (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_11__["default"])(args, function (arg) {
     return arg.name;
   }, function (arg) {
     return {
@@ -20237,34 +20084,32 @@ function isRequiredArgument(arg) {
  *
  * Example:
  *
- * ```ts
- * const EntityType = new GraphQLInterfaceType({
- *   name: 'Entity',
- *   fields: {
- *     name: { type: GraphQLString }
- *   }
- * });
- * ```
+ *     const EntityType = new GraphQLInterfaceType({
+ *       name: 'Entity',
+ *       fields: {
+ *         name: { type: GraphQLString }
+ *       }
+ *     });
+ *
  */
 
-var GraphQLInterfaceType = /*#__PURE__*/function (_Symbol$toStringTag5) {
+var GraphQLInterfaceType = /*#__PURE__*/function () {
   function GraphQLInterfaceType(config) {
-    var _config$extensionASTN3;
-
-    this.name = (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(config.name);
+    this.name = config.name;
     this.description = config.description;
     this.resolveType = config.resolveType;
-    this.extensions = (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(config.extensions);
+    this.extensions = config.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(config.extensions);
     this.astNode = config.astNode;
-    this.extensionASTNodes = (_config$extensionASTN3 = config.extensionASTNodes) !== null && _config$extensionASTN3 !== void 0 ? _config$extensionASTN3 : [];
+    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
     this._fields = defineFieldMap.bind(undefined, config);
     this._interfaces = defineInterfaces.bind(undefined, config);
-    config.resolveType == null || typeof config.resolveType === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, this.name + " must provide \"resolveType\" as a function, " + ("but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(config.resolveType) + "."));
+    typeof config.name === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, 'Must provide name.');
+    config.resolveType == null || typeof config.resolveType === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(this.name, " must provide \"resolveType\" as a function, ") + "but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(config.resolveType), "."));
   }
 
-  var _proto5 = GraphQLInterfaceType.prototype;
+  var _proto3 = GraphQLInterfaceType.prototype;
 
-  _proto5.getFields = function getFields() {
+  _proto3.getFields = function getFields() {
     if (typeof this._fields === 'function') {
       this._fields = this._fields();
     }
@@ -20272,7 +20117,7 @@ var GraphQLInterfaceType = /*#__PURE__*/function (_Symbol$toStringTag5) {
     return this._fields;
   };
 
-  _proto5.getInterfaces = function getInterfaces() {
+  _proto3.getInterfaces = function getInterfaces() {
     if (typeof this._interfaces === 'function') {
       this._interfaces = this._interfaces();
     }
@@ -20280,7 +20125,9 @@ var GraphQLInterfaceType = /*#__PURE__*/function (_Symbol$toStringTag5) {
     return this._interfaces;
   };
 
-  _proto5.toConfig = function toConfig() {
+  _proto3.toConfig = function toConfig() {
+    var _this$extensionASTNod2;
+
     return {
       name: this.name,
       description: this.description,
@@ -20289,27 +20136,30 @@ var GraphQLInterfaceType = /*#__PURE__*/function (_Symbol$toStringTag5) {
       resolveType: this.resolveType,
       extensions: this.extensions,
       astNode: this.astNode,
-      extensionASTNodes: this.extensionASTNodes
+      extensionASTNodes: (_this$extensionASTNod2 = this.extensionASTNodes) !== null && _this$extensionASTNod2 !== void 0 ? _this$extensionASTNod2 : []
     };
   };
 
-  _proto5.toString = function toString() {
+  _proto3.toString = function toString() {
     return this.name;
   };
 
-  _proto5.toJSON = function toJSON() {
+  _proto3.toJSON = function toJSON() {
     return this.toString();
-  };
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+  ;
 
   _createClass(GraphQLInterfaceType, [{
-    key: _Symbol$toStringTag5,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'GraphQLInterfaceType';
     }
   }]);
 
   return GraphQLInterfaceType;
-}(Symbol.toStringTag);
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
+
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(GraphQLInterfaceType);
 /**
  * Union Type Definition
  *
@@ -20319,39 +20169,37 @@ var GraphQLInterfaceType = /*#__PURE__*/function (_Symbol$toStringTag5) {
  *
  * Example:
  *
- * ```ts
- * const PetType = new GraphQLUnionType({
- *   name: 'Pet',
- *   types: [ DogType, CatType ],
- *   resolveType(value) {
- *     if (value instanceof Dog) {
- *       return DogType;
- *     }
- *     if (value instanceof Cat) {
- *       return CatType;
- *     }
- *   }
- * });
- * ```
+ *     const PetType = new GraphQLUnionType({
+ *       name: 'Pet',
+ *       types: [ DogType, CatType ],
+ *       resolveType(value) {
+ *         if (value instanceof Dog) {
+ *           return DogType;
+ *         }
+ *         if (value instanceof Cat) {
+ *           return CatType;
+ *         }
+ *       }
+ *     });
+ *
  */
 
-var GraphQLUnionType = /*#__PURE__*/function (_Symbol$toStringTag6) {
+var GraphQLUnionType = /*#__PURE__*/function () {
   function GraphQLUnionType(config) {
-    var _config$extensionASTN4;
-
-    this.name = (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(config.name);
+    this.name = config.name;
     this.description = config.description;
     this.resolveType = config.resolveType;
-    this.extensions = (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(config.extensions);
+    this.extensions = config.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(config.extensions);
     this.astNode = config.astNode;
-    this.extensionASTNodes = (_config$extensionASTN4 = config.extensionASTNodes) !== null && _config$extensionASTN4 !== void 0 ? _config$extensionASTN4 : [];
+    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
     this._types = defineTypes.bind(undefined, config);
-    config.resolveType == null || typeof config.resolveType === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, this.name + " must provide \"resolveType\" as a function, " + ("but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(config.resolveType) + "."));
+    typeof config.name === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, 'Must provide name.');
+    config.resolveType == null || typeof config.resolveType === 'function' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(this.name, " must provide \"resolveType\" as a function, ") + "but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(config.resolveType), "."));
   }
 
-  var _proto6 = GraphQLUnionType.prototype;
+  var _proto4 = GraphQLUnionType.prototype;
 
-  _proto6.getTypes = function getTypes() {
+  _proto4.getTypes = function getTypes() {
     if (typeof this._types === 'function') {
       this._types = this._types();
     }
@@ -20359,7 +20207,9 @@ var GraphQLUnionType = /*#__PURE__*/function (_Symbol$toStringTag6) {
     return this._types;
   };
 
-  _proto6.toConfig = function toConfig() {
+  _proto4.toConfig = function toConfig() {
+    var _this$extensionASTNod3;
+
     return {
       name: this.name,
       description: this.description,
@@ -20367,31 +20217,34 @@ var GraphQLUnionType = /*#__PURE__*/function (_Symbol$toStringTag6) {
       resolveType: this.resolveType,
       extensions: this.extensions,
       astNode: this.astNode,
-      extensionASTNodes: this.extensionASTNodes
+      extensionASTNodes: (_this$extensionASTNod3 = this.extensionASTNodes) !== null && _this$extensionASTNod3 !== void 0 ? _this$extensionASTNod3 : []
     };
   };
 
-  _proto6.toString = function toString() {
+  _proto4.toString = function toString() {
     return this.name;
   };
 
-  _proto6.toJSON = function toJSON() {
+  _proto4.toJSON = function toJSON() {
     return this.toString();
-  };
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+  ;
 
   _createClass(GraphQLUnionType, [{
-    key: _Symbol$toStringTag6,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'GraphQLUnionType';
     }
   }]);
 
   return GraphQLUnionType;
-}(Symbol.toStringTag);
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
+
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(GraphQLUnionType);
 
 function defineTypes(config) {
-  var types = resolveReadonlyArrayThunk(config.types);
-  Array.isArray(types) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, "Must provide Array of types or a function which returns such an array for Union " + config.name + ".");
+  var types = resolveThunk(config.types);
+  Array.isArray(types) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "Must provide Array of types or a function which returns such an array for Union ".concat(config.name, "."));
   return types;
 }
 /**
@@ -20403,100 +20256,100 @@ function defineTypes(config) {
  *
  * Example:
  *
- * ```ts
- * const RGBType = new GraphQLEnumType({
- *   name: 'RGB',
- *   values: {
- *     RED: { value: 0 },
- *     GREEN: { value: 1 },
- *     BLUE: { value: 2 }
- *   }
- * });
- * ```
+ *     const RGBType = new GraphQLEnumType({
+ *       name: 'RGB',
+ *       values: {
+ *         RED: { value: 0 },
+ *         GREEN: { value: 1 },
+ *         BLUE: { value: 2 }
+ *       }
+ *     });
  *
  * Note: If a value is not provided in a definition, the name of the enum value
  * will be used as its internal value.
  */
 
 
-var GraphQLEnumType = /*#__PURE__*/function (_Symbol$toStringTag7) {
-  /* <T> */
+var GraphQLEnumType
+/* <T> */
+= /*#__PURE__*/function () {
   function GraphQLEnumType(config) {
-    var _config$extensionASTN5;
-
-    this.name = (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(config.name);
+    this.name = config.name;
     this.description = config.description;
-    this.extensions = (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(config.extensions);
+    this.extensions = config.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(config.extensions);
     this.astNode = config.astNode;
-    this.extensionASTNodes = (_config$extensionASTN5 = config.extensionASTNodes) !== null && _config$extensionASTN5 !== void 0 ? _config$extensionASTN5 : [];
+    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
     this._values = defineEnumValues(this.name, config.values);
     this._valueLookup = new Map(this._values.map(function (enumValue) {
       return [enumValue.value, enumValue];
     }));
-    this._nameLookup = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_10__.keyMap)(this._values, function (value) {
+    this._nameLookup = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_12__["default"])(this._values, function (value) {
       return value.name;
     });
+    typeof config.name === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, 'Must provide name.');
   }
 
-  var _proto7 = GraphQLEnumType.prototype;
+  var _proto5 = GraphQLEnumType.prototype;
 
-  _proto7.getValues = function getValues() {
+  _proto5.getValues = function getValues() {
     return this._values;
   };
 
-  _proto7.getValue = function getValue(name) {
+  _proto5.getValue = function getValue(name) {
     return this._nameLookup[name];
   };
 
-  _proto7.serialize = function serialize(outputValue) {
+  _proto5.serialize = function serialize(outputValue) {
     var enumValue = this._valueLookup.get(outputValue);
 
     if (enumValue === undefined) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_11__.GraphQLError("Enum \"" + this.name + "\" cannot represent value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(outputValue));
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_13__.GraphQLError("Enum \"".concat(this.name, "\" cannot represent value: ").concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(outputValue)));
     }
 
     return enumValue.name;
   };
 
-  _proto7.parseValue = function parseValue(inputValue)
+  _proto5.parseValue = function parseValue(inputValue)
   /* T */
   {
     if (typeof inputValue !== 'string') {
-      var valueStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(inputValue);
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_11__.GraphQLError("Enum \"" + this.name + "\" cannot represent non-string value: " + valueStr + "." + didYouMeanEnumValue(this, valueStr));
+      var valueStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(inputValue);
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_13__.GraphQLError("Enum \"".concat(this.name, "\" cannot represent non-string value: ").concat(valueStr, ".") + didYouMeanEnumValue(this, valueStr));
     }
 
     var enumValue = this.getValue(inputValue);
 
     if (enumValue == null) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_11__.GraphQLError("Value \"" + inputValue + "\" does not exist in \"" + this.name + "\" enum." + didYouMeanEnumValue(this, inputValue));
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_13__.GraphQLError("Value \"".concat(inputValue, "\" does not exist in \"").concat(this.name, "\" enum.") + didYouMeanEnumValue(this, inputValue));
     }
 
     return enumValue.value;
   };
 
-  _proto7.parseLiteral = function parseLiteral(valueNode, _variables)
+  _proto5.parseLiteral = function parseLiteral(valueNode, _variables)
   /* T */
   {
     // Note: variables will be resolved to a value before calling this function.
-    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_12__.Kind.ENUM) {
-      var valueStr = (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_13__.print)(valueNode);
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_11__.GraphQLError("Enum \"" + this.name + "\" cannot represent non-enum value: " + valueStr + "." + didYouMeanEnumValue(this, valueStr), valueNode);
+    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_14__.Kind.ENUM) {
+      var valueStr = (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_15__.print)(valueNode);
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_13__.GraphQLError("Enum \"".concat(this.name, "\" cannot represent non-enum value: ").concat(valueStr, ".") + didYouMeanEnumValue(this, valueStr), valueNode);
     }
 
     var enumValue = this.getValue(valueNode.value);
 
     if (enumValue == null) {
-      var _valueStr = (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_13__.print)(valueNode);
+      var _valueStr = (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_15__.print)(valueNode);
 
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_11__.GraphQLError("Value \"" + _valueStr + "\" does not exist in \"" + this.name + "\" enum." + didYouMeanEnumValue(this, _valueStr), valueNode);
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_13__.GraphQLError("Value \"".concat(_valueStr, "\" does not exist in \"").concat(this.name, "\" enum.") + didYouMeanEnumValue(this, _valueStr), valueNode);
     }
 
     return enumValue.value;
   };
 
-  _proto7.toConfig = function toConfig() {
-    var values = (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_9__.keyValMap)(this.getValues(), function (value) {
+  _proto5.toConfig = function toConfig() {
+    var _this$extensionASTNod4;
+
+    var values = (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_11__["default"])(this.getValues(), function (value) {
       return value.name;
     }, function (value) {
       return {
@@ -20513,48 +20366,53 @@ var GraphQLEnumType = /*#__PURE__*/function (_Symbol$toStringTag7) {
       values: values,
       extensions: this.extensions,
       astNode: this.astNode,
-      extensionASTNodes: this.extensionASTNodes
+      extensionASTNodes: (_this$extensionASTNod4 = this.extensionASTNodes) !== null && _this$extensionASTNod4 !== void 0 ? _this$extensionASTNod4 : []
     };
   };
 
-  _proto7.toString = function toString() {
+  _proto5.toString = function toString() {
     return this.name;
   };
 
-  _proto7.toJSON = function toJSON() {
+  _proto5.toJSON = function toJSON() {
     return this.toString();
-  };
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+  ;
 
   _createClass(GraphQLEnumType, [{
-    key: _Symbol$toStringTag7,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'GraphQLEnumType';
     }
   }]);
 
   return GraphQLEnumType;
-}(Symbol.toStringTag);
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
+
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(GraphQLEnumType);
 
 function didYouMeanEnumValue(enumType, unknownValueStr) {
   var allNames = enumType.getValues().map(function (value) {
     return value.name;
   });
-  var suggestedValues = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_14__.suggestionList)(unknownValueStr, allNames);
-  return (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_15__.didYouMean)('the enum value', suggestedValues);
+  var suggestedValues = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_16__["default"])(unknownValueStr, allNames);
+  return (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_17__["default"])('the enum value', suggestedValues);
 }
 
 function defineEnumValues(typeName, valueMap) {
-  isPlainObj(valueMap) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, typeName + " values must be an object with value names as keys.");
-  return Object.entries(valueMap).map(function (_ref2) {
+  isPlainObj(valueMap) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(typeName, " values must be an object with value names as keys."));
+  return (0,_polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_9__["default"])(valueMap).map(function (_ref2) {
     var valueName = _ref2[0],
         valueConfig = _ref2[1];
-    isPlainObj(valueConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, typeName + "." + valueName + " must refer to an object with a \"value\" key " + ("representing an internal value but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(valueConfig) + "."));
+    isPlainObj(valueConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(typeName, ".").concat(valueName, " must refer to an object with a \"value\" key ") + "representing an internal value but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(valueConfig), "."));
+    !('isDeprecated' in valueConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(typeName, ".").concat(valueName, " should provide \"deprecationReason\" instead of \"isDeprecated\"."));
     return {
-      name: (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertEnumValueName)(valueName),
+      name: valueName,
       description: valueConfig.description,
       value: valueConfig.value !== undefined ? valueConfig.value : valueName,
+      isDeprecated: valueConfig.deprecationReason != null,
       deprecationReason: valueConfig.deprecationReason,
-      extensions: (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(valueConfig.extensions),
+      extensions: valueConfig.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(valueConfig.extensions),
       astNode: valueConfig.astNode
     };
   });
@@ -20569,34 +20427,32 @@ function defineEnumValues(typeName, valueMap) {
  *
  * Example:
  *
- * ```ts
- * const GeoPoint = new GraphQLInputObjectType({
- *   name: 'GeoPoint',
- *   fields: {
- *     lat: { type: new GraphQLNonNull(GraphQLFloat) },
- *     lon: { type: new GraphQLNonNull(GraphQLFloat) },
- *     alt: { type: GraphQLFloat, defaultValue: 0 },
- *   }
- * });
- * ```
+ *     const GeoPoint = new GraphQLInputObjectType({
+ *       name: 'GeoPoint',
+ *       fields: {
+ *         lat: { type: new GraphQLNonNull(GraphQLFloat) },
+ *         lon: { type: new GraphQLNonNull(GraphQLFloat) },
+ *         alt: { type: GraphQLFloat, defaultValue: 0 },
+ *       }
+ *     });
+ *
  */
 
 
-var GraphQLInputObjectType = /*#__PURE__*/function (_Symbol$toStringTag8) {
+var GraphQLInputObjectType = /*#__PURE__*/function () {
   function GraphQLInputObjectType(config) {
-    var _config$extensionASTN6;
-
-    this.name = (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(config.name);
+    this.name = config.name;
     this.description = config.description;
-    this.extensions = (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(config.extensions);
+    this.extensions = config.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(config.extensions);
     this.astNode = config.astNode;
-    this.extensionASTNodes = (_config$extensionASTN6 = config.extensionASTNodes) !== null && _config$extensionASTN6 !== void 0 ? _config$extensionASTN6 : [];
+    this.extensionASTNodes = undefineIfEmpty(config.extensionASTNodes);
     this._fields = defineInputFieldMap.bind(undefined, config);
+    typeof config.name === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, 'Must provide name.');
   }
 
-  var _proto8 = GraphQLInputObjectType.prototype;
+  var _proto6 = GraphQLInputObjectType.prototype;
 
-  _proto8.getFields = function getFields() {
+  _proto6.getFields = function getFields() {
     if (typeof this._fields === 'function') {
       this._fields = this._fields();
     }
@@ -20604,8 +20460,10 @@ var GraphQLInputObjectType = /*#__PURE__*/function (_Symbol$toStringTag8) {
     return this._fields;
   };
 
-  _proto8.toConfig = function toConfig() {
-    var fields = (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(this.getFields(), function (field) {
+  _proto6.toConfig = function toConfig() {
+    var _this$extensionASTNod5;
+
+    var fields = (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(this.getFields(), function (field) {
       return {
         description: field.description,
         type: field.type,
@@ -20621,40 +20479,43 @@ var GraphQLInputObjectType = /*#__PURE__*/function (_Symbol$toStringTag8) {
       fields: fields,
       extensions: this.extensions,
       astNode: this.astNode,
-      extensionASTNodes: this.extensionASTNodes
+      extensionASTNodes: (_this$extensionASTNod5 = this.extensionASTNodes) !== null && _this$extensionASTNod5 !== void 0 ? _this$extensionASTNod5 : []
     };
   };
 
-  _proto8.toString = function toString() {
+  _proto6.toString = function toString() {
     return this.name;
   };
 
-  _proto8.toJSON = function toJSON() {
+  _proto6.toJSON = function toJSON() {
     return this.toString();
-  };
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+  ;
 
   _createClass(GraphQLInputObjectType, [{
-    key: _Symbol$toStringTag8,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_2__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'GraphQLInputObjectType';
     }
   }]);
 
   return GraphQLInputObjectType;
-}(Symbol.toStringTag);
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
+
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(GraphQLInputObjectType);
 
 function defineInputFieldMap(config) {
-  var fieldMap = resolveObjMapThunk(config.fields);
-  isPlainObj(fieldMap) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, config.name + " fields must be an object with field names as keys or a function which returns such an object.");
-  return (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(fieldMap, function (fieldConfig, fieldName) {
-    !('resolve' in fieldConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, config.name + "." + fieldName + " field has a resolve property, but Input Types cannot define resolvers.");
+  var fieldMap = resolveThunk(config.fields);
+  isPlainObj(fieldMap) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(config.name, " fields must be an object with field names as keys or a function which returns such an object."));
+  return (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(fieldMap, function (fieldConfig, fieldName) {
+    !('resolve' in fieldConfig) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(0, "".concat(config.name, ".").concat(fieldName, " field has a resolve property, but Input Types cannot define resolvers."));
     return {
-      name: (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_4__.assertName)(fieldName),
+      name: fieldName,
       description: fieldConfig.description,
       type: fieldConfig.type,
       defaultValue: fieldConfig.defaultValue,
       deprecationReason: fieldConfig.deprecationReason,
-      extensions: (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__.toObjMap)(fieldConfig.extensions),
+      extensions: fieldConfig.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(fieldConfig.extensions),
       astNode: fieldConfig.astNode
     };
   });
@@ -20686,18 +20547,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "specifiedDirectives": function() { return /* binding */ specifiedDirectives; },
 /* harmony export */   "isSpecifiedDirective": function() { return /* binding */ isSpecifiedDirective; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../polyfills/objectEntries.mjs */ "./node_modules/graphql/polyfills/objectEntries.mjs");
+/* harmony import */ var _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../polyfills/symbols.mjs */ "./node_modules/graphql/polyfills/symbols.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/toObjMap.mjs */ "./node_modules/graphql/jsutils/toObjMap.mjs");
-/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
+/* harmony import */ var _jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/toObjMap.mjs */ "./node_modules/graphql/jsutils/toObjMap.mjs");
+/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
 /* harmony import */ var _jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/instanceOf.mjs */ "./node_modules/graphql/jsutils/instanceOf.mjs");
-/* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
-/* harmony import */ var _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../language/directiveLocation.mjs */ "./node_modules/graphql/language/directiveLocation.mjs");
-/* harmony import */ var _assertName_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assertName.mjs */ "./node_modules/graphql/type/assertName.mjs");
-/* harmony import */ var _scalars_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
+/* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
+/* harmony import */ var _jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/defineInspect.mjs */ "./node_modules/graphql/jsutils/defineInspect.mjs");
+/* harmony import */ var _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../language/directiveLocation.mjs */ "./node_modules/graphql/language/directiveLocation.mjs");
+/* harmony import */ var _scalars_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
 /* harmony import */ var _definition_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+
 
 
 
@@ -20711,46 +20588,50 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Test if the given value is a GraphQL directive.
  */
+// eslint-disable-next-line no-redeclare
 
 function isDirective(directive) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_0__.instanceOf)(directive, GraphQLDirective);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(directive, GraphQLDirective);
 }
 function assertDirective(directive) {
   if (!isDirective(directive)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(directive) + " to be a GraphQL directive.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(directive), " to be a GraphQL directive."));
   }
 
   return directive;
 }
 /**
- * Custom extensions
- *
- * @remarks
- * Use a unique identifier name for your extension, for example the name of
- * your library or project. Do not use a shortened identifier as this increases
- * the risk of conflicts. We recommend you add at most one extension field,
- * an object which can contain all the values you need.
- */
-
-/**
  * Directives are used by the GraphQL runtime as a way of modifying execution
  * behavior. Type system creators will usually not create these directly.
  */
 
-var GraphQLDirective = /*#__PURE__*/function (_Symbol$toStringTag) {
+var GraphQLDirective = /*#__PURE__*/function () {
   function GraphQLDirective(config) {
     var _config$isRepeatable, _config$args;
 
-    this.name = (0,_assertName_mjs__WEBPACK_IMPORTED_MODULE_2__.assertName)(config.name);
+    this.name = config.name;
     this.description = config.description;
     this.locations = config.locations;
     this.isRepeatable = (_config$isRepeatable = config.isRepeatable) !== null && _config$isRepeatable !== void 0 ? _config$isRepeatable : false;
-    this.extensions = (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_3__.toObjMap)(config.extensions);
+    this.extensions = config.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(config.extensions);
     this.astNode = config.astNode;
-    Array.isArray(config.locations) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_4__.devAssert)(false, "@" + config.name + " locations must be an Array.");
+    config.name || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0, 'Directive must be named.');
+    Array.isArray(config.locations) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0, "@".concat(config.name, " locations must be an Array."));
     var args = (_config$args = config.args) !== null && _config$args !== void 0 ? _config$args : {};
-    (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__.isObjectLike)(args) && !Array.isArray(args) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_4__.devAssert)(false, "@" + config.name + " args must be an object with argument names as keys.");
-    this.args = (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.defineArguments)(args);
+    (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_4__["default"])(args) && !Array.isArray(args) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0, "@".concat(config.name, " args must be an object with argument names as keys."));
+    this.args = (0,_polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(args).map(function (_ref) {
+      var argName = _ref[0],
+          argConfig = _ref[1];
+      return {
+        name: argName,
+        description: argConfig.description,
+        type: argConfig.type,
+        defaultValue: argConfig.defaultValue,
+        deprecationReason: argConfig.deprecationReason,
+        extensions: argConfig.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(argConfig.extensions),
+        astNode: argConfig.astNode
+      };
+    });
   }
 
   var _proto = GraphQLDirective.prototype;
@@ -20773,17 +20654,20 @@ var GraphQLDirective = /*#__PURE__*/function (_Symbol$toStringTag) {
 
   _proto.toJSON = function toJSON() {
     return this.toString();
-  };
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+  ;
 
   _createClass(GraphQLDirective, [{
-    key: _Symbol$toStringTag,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_7__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'GraphQLDirective';
     }
   }]);
 
   return GraphQLDirective;
-}(Symbol.toStringTag);
+}(); // Print a simplified form when appearing in `inspect` and `util.inspect`.
+
+(0,_jsutils_defineInspect_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(GraphQLDirective);
 /**
  * Used to conditionally include fields or fragments.
  */
@@ -20791,10 +20675,10 @@ var GraphQLDirective = /*#__PURE__*/function (_Symbol$toStringTag) {
 var GraphQLIncludeDirective = new GraphQLDirective({
   name: 'include',
   description: 'Directs the executor to include this field or fragment only when the `if` argument is true.',
-  locations: [_language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.FIELD, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.FRAGMENT_SPREAD, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.INLINE_FRAGMENT],
+  locations: [_language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.FIELD, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.FRAGMENT_SPREAD, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.INLINE_FRAGMENT],
   args: {
     if: {
-      type: new _definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLNonNull(_scalars_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLBoolean),
+      type: new _definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLNonNull(_scalars_mjs__WEBPACK_IMPORTED_MODULE_10__.GraphQLBoolean),
       description: 'Included when true.'
     }
   }
@@ -20806,10 +20690,10 @@ var GraphQLIncludeDirective = new GraphQLDirective({
 var GraphQLSkipDirective = new GraphQLDirective({
   name: 'skip',
   description: 'Directs the executor to skip this field or fragment when the `if` argument is true.',
-  locations: [_language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.FIELD, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.FRAGMENT_SPREAD, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.INLINE_FRAGMENT],
+  locations: [_language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.FIELD, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.FRAGMENT_SPREAD, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.INLINE_FRAGMENT],
   args: {
     if: {
-      type: new _definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLNonNull(_scalars_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLBoolean),
+      type: new _definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLNonNull(_scalars_mjs__WEBPACK_IMPORTED_MODULE_10__.GraphQLBoolean),
       description: 'Skipped when true.'
     }
   }
@@ -20826,27 +20710,27 @@ var DEFAULT_DEPRECATION_REASON = 'No longer supported';
 var GraphQLDeprecatedDirective = new GraphQLDirective({
   name: 'deprecated',
   description: 'Marks an element of a GraphQL schema as no longer supported.',
-  locations: [_language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.FIELD_DEFINITION, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.ARGUMENT_DEFINITION, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.INPUT_FIELD_DEFINITION, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.ENUM_VALUE],
+  locations: [_language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.FIELD_DEFINITION, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.ARGUMENT_DEFINITION, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.INPUT_FIELD_DEFINITION, _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.ENUM_VALUE],
   args: {
     reason: {
-      type: _scalars_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLString,
+      type: _scalars_mjs__WEBPACK_IMPORTED_MODULE_10__.GraphQLString,
       description: 'Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted using the Markdown syntax, as specified by [CommonMark](https://commonmark.org/).',
       defaultValue: DEFAULT_DEPRECATION_REASON
     }
   }
 });
 /**
- * Used to provide a URL for specifying the behavior of custom scalar definitions.
+ * Used to provide a URL for specifying the behaviour of custom scalar definitions.
  */
 
 var GraphQLSpecifiedByDirective = new GraphQLDirective({
   name: 'specifiedBy',
-  description: 'Exposes a URL that specifies the behavior of this scalar.',
-  locations: [_language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_7__.DirectiveLocation.SCALAR],
+  description: 'Exposes a URL that specifies the behaviour of this scalar.',
+  locations: [_language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_9__.DirectiveLocation.SCALAR],
   args: {
     url: {
-      type: new _definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLNonNull(_scalars_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLString),
-      description: 'The URL that specifies the behavior of this scalar.'
+      type: new _definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLNonNull(_scalars_mjs__WEBPACK_IMPORTED_MODULE_10__.GraphQLString),
+      description: 'The URL that specifies the behaviour of this scalar.'
     }
   }
 });
@@ -20856,8 +20740,8 @@ var GraphQLSpecifiedByDirective = new GraphQLDirective({
 
 var specifiedDirectives = Object.freeze([GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLSpecifiedByDirective]);
 function isSpecifiedDirective(directive) {
-  return specifiedDirectives.some(function (_ref) {
-    var name = _ref.name;
+  return specifiedDirectives.some(function (_ref2) {
+    var name = _ref2.name;
     return name === directive.name;
   });
 }
@@ -20888,13 +20772,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "introspectionTypes": function() { return /* binding */ introspectionTypes; },
 /* harmony export */   "isIntrospectionType": function() { return /* binding */ isIntrospectionType; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
-/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
-/* harmony import */ var _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../language/directiveLocation.mjs */ "./node_modules/graphql/language/directiveLocation.mjs");
-/* harmony import */ var _utilities_astFromValue_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/astFromValue.mjs */ "./node_modules/graphql/utilities/astFromValue.mjs");
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
+/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
+/* harmony import */ var _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../language/directiveLocation.mjs */ "./node_modules/graphql/language/directiveLocation.mjs");
+/* harmony import */ var _utilities_astFromValue_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/astFromValue.mjs */ "./node_modules/graphql/utilities/astFromValue.mjs");
 /* harmony import */ var _scalars_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
 /* harmony import */ var _definition_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+
 
 
 
@@ -20917,7 +20803,7 @@ var __Schema = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLObjectTyp
         description: 'A list of all types supported by this server.',
         type: new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLNonNull(new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLList(new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLNonNull(__Type))),
         resolve: function resolve(schema) {
-          return Object.values(schema.getTypeMap());
+          return (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(schema.getTypeMap());
         }
       },
       queryType: {
@@ -21003,86 +20889,86 @@ var __DirectiveLocation = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.Graph
   description: 'A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.',
   values: {
     QUERY: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.QUERY,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.QUERY,
       description: 'Location adjacent to a query operation.'
     },
     MUTATION: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.MUTATION,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.MUTATION,
       description: 'Location adjacent to a mutation operation.'
     },
     SUBSCRIPTION: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.SUBSCRIPTION,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.SUBSCRIPTION,
       description: 'Location adjacent to a subscription operation.'
     },
     FIELD: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.FIELD,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.FIELD,
       description: 'Location adjacent to a field.'
     },
     FRAGMENT_DEFINITION: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.FRAGMENT_DEFINITION,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.FRAGMENT_DEFINITION,
       description: 'Location adjacent to a fragment definition.'
     },
     FRAGMENT_SPREAD: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.FRAGMENT_SPREAD,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.FRAGMENT_SPREAD,
       description: 'Location adjacent to a fragment spread.'
     },
     INLINE_FRAGMENT: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.INLINE_FRAGMENT,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.INLINE_FRAGMENT,
       description: 'Location adjacent to an inline fragment.'
     },
     VARIABLE_DEFINITION: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.VARIABLE_DEFINITION,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.VARIABLE_DEFINITION,
       description: 'Location adjacent to a variable definition.'
     },
     SCHEMA: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.SCHEMA,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.SCHEMA,
       description: 'Location adjacent to a schema definition.'
     },
     SCALAR: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.SCALAR,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.SCALAR,
       description: 'Location adjacent to a scalar definition.'
     },
     OBJECT: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.OBJECT,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.OBJECT,
       description: 'Location adjacent to an object type definition.'
     },
     FIELD_DEFINITION: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.FIELD_DEFINITION,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.FIELD_DEFINITION,
       description: 'Location adjacent to a field definition.'
     },
     ARGUMENT_DEFINITION: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.ARGUMENT_DEFINITION,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.ARGUMENT_DEFINITION,
       description: 'Location adjacent to an argument definition.'
     },
     INTERFACE: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.INTERFACE,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.INTERFACE,
       description: 'Location adjacent to an interface definition.'
     },
     UNION: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.UNION,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.UNION,
       description: 'Location adjacent to a union definition.'
     },
     ENUM: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.ENUM,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.ENUM,
       description: 'Location adjacent to an enum definition.'
     },
     ENUM_VALUE: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.ENUM_VALUE,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.ENUM_VALUE,
       description: 'Location adjacent to an enum value definition.'
     },
     INPUT_OBJECT: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.INPUT_OBJECT,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.INPUT_OBJECT,
       description: 'Location adjacent to an input object type definition.'
     },
     INPUT_FIELD_DEFINITION: {
-      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_2__.DirectiveLocation.INPUT_FIELD_DEFINITION,
+      value: _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_3__.DirectiveLocation.INPUT_FIELD_DEFINITION,
       description: 'Location adjacent to an input object field definition.'
     }
   }
 });
 var __Type = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLObjectType({
   name: '__Type',
-  description: 'The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.',
+  description: 'The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.',
   fields: function fields() {
     return {
       kind: {
@@ -21114,38 +21000,33 @@ var __Type = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLObjectType(
 
           if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isListType)(type)) {
             return TypeKind.LIST;
-          }
+          } // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2618')
+
 
           if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isNonNullType)(type)) {
             return TypeKind.NON_NULL;
-          }
-          /* c8 ignore next 3 */
-          // Not reachable, all possible types have been considered)
+          } // istanbul ignore next (Not reachable. All possible types have been considered)
 
 
-           false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__.invariant)(false, "Unexpected type: \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_4__.inspect)(type) + "\".");
+           false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_4__["default"])(0, "Unexpected type: \"".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(type), "\"."));
         }
       },
       name: {
         type: _scalars_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLString,
         resolve: function resolve(type) {
-          return 'name' in type ? type.name : undefined;
+          return type.name !== undefined ? type.name : undefined;
         }
       },
       description: {
         type: _scalars_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLString,
-        resolve: function resolve(type // FIXME: add test case
-        ) {
-          return (
-            /* c8 ignore next */
-            'description' in type ? type.description : undefined
-          );
+        resolve: function resolve(type) {
+          return type.description !== undefined ? type.description : undefined;
         }
       },
-      specifiedByURL: {
+      specifiedByUrl: {
         type: _scalars_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLString,
         resolve: function resolve(obj) {
-          return 'specifiedByURL' in obj ? obj.specifiedByURL : undefined;
+          return obj.specifiedByUrl !== undefined ? obj.specifiedByUrl : undefined;
         }
       },
       fields: {
@@ -21160,7 +21041,7 @@ var __Type = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLObjectType(
           var includeDeprecated = _ref2.includeDeprecated;
 
           if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isObjectType)(type) || (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isInterfaceType)(type)) {
-            var fields = Object.values(type.getFields());
+            var fields = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(type.getFields());
             return includeDeprecated ? fields : fields.filter(function (field) {
               return field.deprecationReason == null;
             });
@@ -21216,7 +21097,7 @@ var __Type = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLObjectType(
           var includeDeprecated = _ref5.includeDeprecated;
 
           if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isInputObjectType)(type)) {
-            var values = Object.values(type.getFields());
+            var values = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(type.getFields());
             return includeDeprecated ? values : values.filter(function (field) {
               return field.deprecationReason == null;
             });
@@ -21226,7 +21107,7 @@ var __Type = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLObjectType(
       ofType: {
         type: __Type,
         resolve: function resolve(type) {
-          return 'ofType' in type ? type.ofType : undefined;
+          return type.ofType !== undefined ? type.ofType : undefined;
         }
       }
     };
@@ -21314,8 +21195,8 @@ var __InputValue = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLObjec
         resolve: function resolve(inputValue) {
           var type = inputValue.type,
               defaultValue = inputValue.defaultValue;
-          var valueAST = (0,_utilities_astFromValue_mjs__WEBPACK_IMPORTED_MODULE_5__.astFromValue)(defaultValue, type);
-          return valueAST ? (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__.print)(valueAST) : null;
+          var valueAST = (0,_utilities_astFromValue_mjs__WEBPACK_IMPORTED_MODULE_6__.astFromValue)(defaultValue, type);
+          return valueAST ? (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_7__.print)(valueAST) : null;
         }
       },
       isDeprecated: {
@@ -21365,19 +21246,16 @@ var __EnumValue = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLObject
     };
   }
 });
-var TypeKind;
-
-(function (TypeKind) {
-  TypeKind['SCALAR'] = 'SCALAR';
-  TypeKind['OBJECT'] = 'OBJECT';
-  TypeKind['INTERFACE'] = 'INTERFACE';
-  TypeKind['UNION'] = 'UNION';
-  TypeKind['ENUM'] = 'ENUM';
-  TypeKind['INPUT_OBJECT'] = 'INPUT_OBJECT';
-  TypeKind['LIST'] = 'LIST';
-  TypeKind['NON_NULL'] = 'NON_NULL';
-})(TypeKind || (TypeKind = {}));
-
+var TypeKind = Object.freeze({
+  SCALAR: 'SCALAR',
+  OBJECT: 'OBJECT',
+  INTERFACE: 'INTERFACE',
+  UNION: 'UNION',
+  ENUM: 'ENUM',
+  INPUT_OBJECT: 'INPUT_OBJECT',
+  LIST: 'LIST',
+  NON_NULL: 'NON_NULL'
+});
 var __TypeKind = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLEnumType({
   name: '__TypeKind',
   description: 'An enum describing what kind of type a given `__Type` is.',
@@ -21430,8 +21308,9 @@ var SchemaMetaFieldDef = {
     var schema = _ref7.schema;
     return schema;
   },
+  isDeprecated: false,
   deprecationReason: undefined,
-  extensions: Object.create(null),
+  extensions: undefined,
   astNode: undefined
 };
 var TypeMetaFieldDef = {
@@ -21444,7 +21323,7 @@ var TypeMetaFieldDef = {
     type: new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLNonNull(_scalars_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLString),
     defaultValue: undefined,
     deprecationReason: undefined,
-    extensions: Object.create(null),
+    extensions: undefined,
     astNode: undefined
   }],
   resolve: function resolve(_source, _ref8, _context, _ref9) {
@@ -21452,8 +21331,9 @@ var TypeMetaFieldDef = {
     var schema = _ref9.schema;
     return schema.getType(name);
   },
+  isDeprecated: false,
   deprecationReason: undefined,
-  extensions: Object.create(null),
+  extensions: undefined,
   astNode: undefined
 };
 var TypeNameMetaFieldDef = {
@@ -21465,8 +21345,9 @@ var TypeNameMetaFieldDef = {
     var parentType = _ref10.parentType;
     return parentType.name;
   },
+  isDeprecated: false,
   deprecationReason: undefined,
-  extensions: Object.create(null),
+  extensions: undefined,
   astNode: undefined
 };
 var introspectionTypes = Object.freeze([__Schema, __Directive, __DirectiveLocation, __Type, __Field, __InputValue, __EnumValue, __TypeKind]);
@@ -21488,8 +21369,6 @@ function isIntrospectionType(type) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GRAPHQL_MAX_INT": function() { return /* binding */ GRAPHQL_MAX_INT; },
-/* harmony export */   "GRAPHQL_MIN_INT": function() { return /* binding */ GRAPHQL_MIN_INT; },
 /* harmony export */   "GraphQLInt": function() { return /* binding */ GraphQLInt; },
 /* harmony export */   "GraphQLFloat": function() { return /* binding */ GraphQLFloat; },
 /* harmony export */   "GraphQLString": function() { return /* binding */ GraphQLString; },
@@ -21498,215 +21377,260 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "specifiedScalarTypes": function() { return /* binding */ specifiedScalarTypes; },
 /* harmony export */   "isSpecifiedScalarType": function() { return /* binding */ isSpecifiedScalarType; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_isFinite_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../polyfills/isFinite.mjs */ "./node_modules/graphql/polyfills/isFinite.mjs");
+/* harmony import */ var _polyfills_isInteger_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../polyfills/isInteger.mjs */ "./node_modules/graphql/polyfills/isInteger.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
-/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
+/* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
+/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
+/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-/* harmony import */ var _definition_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+/* harmony import */ var _definition_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./definition.mjs */ "./node_modules/graphql/type/definition.mjs");
 
 
 
 
 
 
-/**
- * Maximum possible Int value as per GraphQL Spec (32-bit signed integer).
- * n.b. This differs from JavaScript's numbers that are IEEE 754 doubles safe up-to 2^53 - 1
- * */
 
-var GRAPHQL_MAX_INT = 2147483647;
-/**
- * Minimum possible Int value as per GraphQL Spec (32-bit signed integer).
- * n.b. This differs from JavaScript's numbers that are IEEE 754 doubles safe starting at -(2^53 - 1)
- * */
+ // As per the GraphQL Spec, Integers are only treated as valid when a valid
+// 32-bit signed integer, providing the broadest support across platforms.
+//
+// n.b. JavaScript's integers are safe between -(2^53 - 1) and 2^53 - 1 because
+// they are internally represented as IEEE 754 doubles.
 
-var GRAPHQL_MIN_INT = -2147483648;
-var GraphQLInt = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLScalarType({
+var MAX_INT = 2147483647;
+var MIN_INT = -2147483648;
+
+function serializeInt(outputValue) {
+  var coercedValue = serializeObject(outputValue);
+
+  if (typeof coercedValue === 'boolean') {
+    return coercedValue ? 1 : 0;
+  }
+
+  var num = coercedValue;
+
+  if (typeof coercedValue === 'string' && coercedValue !== '') {
+    num = Number(coercedValue);
+  }
+
+  if (!(0,_polyfills_isInteger_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(num)) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non-integer value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(coercedValue)));
+  }
+
+  if (num > MAX_INT || num < MIN_INT) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError('Int cannot represent non 32-bit signed integer value: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(coercedValue));
+  }
+
+  return num;
+}
+
+function coerceInt(inputValue) {
+  if (!(0,_polyfills_isInteger_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(inputValue)) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non-integer value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(inputValue)));
+  }
+
+  if (inputValue > MAX_INT || inputValue < MIN_INT) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non 32-bit signed integer value: ".concat(inputValue));
+  }
+
+  return inputValue;
+}
+
+var GraphQLInt = new _definition_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLScalarType({
   name: 'Int',
   description: 'The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.',
-  serialize: function serialize(outputValue) {
-    var coercedValue = serializeObject(outputValue);
-
-    if (typeof coercedValue === 'boolean') {
-      return coercedValue ? 1 : 0;
-    }
-
-    var num = coercedValue;
-
-    if (typeof coercedValue === 'string' && coercedValue !== '') {
-      num = Number(coercedValue);
-    }
-
-    if (typeof num !== 'number' || !Number.isInteger(num)) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non-integer value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(coercedValue));
-    }
-
-    if (num > GRAPHQL_MAX_INT || num < GRAPHQL_MIN_INT) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError('Int cannot represent non 32-bit signed integer value: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(coercedValue));
-    }
-
-    return num;
-  },
-  parseValue: function parseValue(inputValue) {
-    if (typeof inputValue !== 'number' || !Number.isInteger(inputValue)) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non-integer value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(inputValue));
-    }
-
-    if (inputValue > GRAPHQL_MAX_INT || inputValue < GRAPHQL_MIN_INT) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non 32-bit signed integer value: " + inputValue);
-    }
-
-    return inputValue;
-  },
+  serialize: serializeInt,
+  parseValue: coerceInt,
   parseLiteral: function parseLiteral(valueNode) {
-    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INT) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non-integer value: " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_4__.print)(valueNode), valueNode);
+    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INT) {
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non-integer value: ".concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__.print)(valueNode)), valueNode);
     }
 
     var num = parseInt(valueNode.value, 10);
 
-    if (num > GRAPHQL_MAX_INT || num < GRAPHQL_MIN_INT) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non 32-bit signed integer value: " + valueNode.value, valueNode);
+    if (num > MAX_INT || num < MIN_INT) {
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Int cannot represent non 32-bit signed integer value: ".concat(valueNode.value), valueNode);
     }
 
     return num;
   }
 });
-var GraphQLFloat = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLScalarType({
+
+function serializeFloat(outputValue) {
+  var coercedValue = serializeObject(outputValue);
+
+  if (typeof coercedValue === 'boolean') {
+    return coercedValue ? 1 : 0;
+  }
+
+  var num = coercedValue;
+
+  if (typeof coercedValue === 'string' && coercedValue !== '') {
+    num = Number(coercedValue);
+  }
+
+  if (!(0,_polyfills_isFinite_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(num)) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Float cannot represent non numeric value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(coercedValue)));
+  }
+
+  return num;
+}
+
+function coerceFloat(inputValue) {
+  if (!(0,_polyfills_isFinite_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(inputValue)) {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Float cannot represent non numeric value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(inputValue)));
+  }
+
+  return inputValue;
+}
+
+var GraphQLFloat = new _definition_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLScalarType({
   name: 'Float',
   description: 'The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).',
-  serialize: function serialize(outputValue) {
-    var coercedValue = serializeObject(outputValue);
-
-    if (typeof coercedValue === 'boolean') {
-      return coercedValue ? 1 : 0;
-    }
-
-    var num = coercedValue;
-
-    if (typeof coercedValue === 'string' && coercedValue !== '') {
-      num = Number(coercedValue);
-    }
-
-    if (typeof num !== 'number' || !Number.isFinite(num)) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Float cannot represent non numeric value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(coercedValue));
-    }
-
-    return num;
-  },
-  parseValue: function parseValue(inputValue) {
-    if (typeof inputValue !== 'number' || !Number.isFinite(inputValue)) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Float cannot represent non numeric value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(inputValue));
-    }
-
-    return inputValue;
-  },
+  serialize: serializeFloat,
+  parseValue: coerceFloat,
   parseLiteral: function parseLiteral(valueNode) {
-    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.FLOAT && valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INT) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Float cannot represent non numeric value: " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_4__.print)(valueNode), valueNode);
+    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.FLOAT && valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INT) {
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Float cannot represent non numeric value: ".concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__.print)(valueNode)), valueNode);
     }
 
     return parseFloat(valueNode.value);
   }
-});
-var GraphQLString = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLScalarType({
+}); // Support serializing objects with custom valueOf() or toJSON() functions -
+// a common way to represent a complex value which can be represented as
+// a string (ex: MongoDB id objects).
+
+function serializeObject(outputValue) {
+  if ((0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(outputValue)) {
+    if (typeof outputValue.valueOf === 'function') {
+      var valueOfResult = outputValue.valueOf();
+
+      if (!(0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(valueOfResult)) {
+        return valueOfResult;
+      }
+    }
+
+    if (typeof outputValue.toJSON === 'function') {
+      // $FlowFixMe[incompatible-use]
+      return outputValue.toJSON();
+    }
+  }
+
+  return outputValue;
+}
+
+function serializeString(outputValue) {
+  var coercedValue = serializeObject(outputValue); // Serialize string, boolean and number values to a string, but do not
+  // attempt to coerce object, function, symbol, or other types as strings.
+
+  if (typeof coercedValue === 'string') {
+    return coercedValue;
+  }
+
+  if (typeof coercedValue === 'boolean') {
+    return coercedValue ? 'true' : 'false';
+  }
+
+  if ((0,_polyfills_isFinite_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(coercedValue)) {
+    return coercedValue.toString();
+  }
+
+  throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("String cannot represent value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(outputValue)));
+}
+
+function coerceString(inputValue) {
+  if (typeof inputValue !== 'string') {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("String cannot represent a non string value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(inputValue)));
+  }
+
+  return inputValue;
+}
+
+var GraphQLString = new _definition_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLScalarType({
   name: 'String',
   description: 'The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.',
-  serialize: function serialize(outputValue) {
-    var coercedValue = serializeObject(outputValue); // Serialize string, boolean and number values to a string, but do not
-    // attempt to coerce object, function, symbol, or other types as strings.
-
-    if (typeof coercedValue === 'string') {
-      return coercedValue;
-    }
-
-    if (typeof coercedValue === 'boolean') {
-      return coercedValue ? 'true' : 'false';
-    }
-
-    if (typeof coercedValue === 'number' && Number.isFinite(coercedValue)) {
-      return coercedValue.toString();
-    }
-
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("String cannot represent value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(outputValue));
-  },
-  parseValue: function parseValue(inputValue) {
-    if (typeof inputValue !== 'string') {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("String cannot represent a non string value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(inputValue));
-    }
-
-    return inputValue;
-  },
+  serialize: serializeString,
+  parseValue: coerceString,
   parseLiteral: function parseLiteral(valueNode) {
-    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.STRING) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("String cannot represent a non string value: " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_4__.print)(valueNode), valueNode);
+    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.STRING) {
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("String cannot represent a non string value: ".concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__.print)(valueNode)), valueNode);
     }
 
     return valueNode.value;
   }
 });
-var GraphQLBoolean = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLScalarType({
+
+function serializeBoolean(outputValue) {
+  var coercedValue = serializeObject(outputValue);
+
+  if (typeof coercedValue === 'boolean') {
+    return coercedValue;
+  }
+
+  if ((0,_polyfills_isFinite_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(coercedValue)) {
+    return coercedValue !== 0;
+  }
+
+  throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Boolean cannot represent a non boolean value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(coercedValue)));
+}
+
+function coerceBoolean(inputValue) {
+  if (typeof inputValue !== 'boolean') {
+    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Boolean cannot represent a non boolean value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(inputValue)));
+  }
+
+  return inputValue;
+}
+
+var GraphQLBoolean = new _definition_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLScalarType({
   name: 'Boolean',
   description: 'The `Boolean` scalar type represents `true` or `false`.',
-  serialize: function serialize(outputValue) {
-    var coercedValue = serializeObject(outputValue);
-
-    if (typeof coercedValue === 'boolean') {
-      return coercedValue;
-    }
-
-    if (Number.isFinite(coercedValue)) {
-      return coercedValue !== 0;
-    }
-
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Boolean cannot represent a non boolean value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(coercedValue));
-  },
-  parseValue: function parseValue(inputValue) {
-    if (typeof inputValue !== 'boolean') {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Boolean cannot represent a non boolean value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(inputValue));
-    }
-
-    return inputValue;
-  },
+  serialize: serializeBoolean,
+  parseValue: coerceBoolean,
   parseLiteral: function parseLiteral(valueNode) {
-    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.BOOLEAN) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Boolean cannot represent a non boolean value: " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_4__.print)(valueNode), valueNode);
+    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.BOOLEAN) {
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Boolean cannot represent a non boolean value: ".concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__.print)(valueNode)), valueNode);
     }
 
     return valueNode.value;
   }
 });
-var GraphQLID = new _definition_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLScalarType({
+
+function serializeID(outputValue) {
+  var coercedValue = serializeObject(outputValue);
+
+  if (typeof coercedValue === 'string') {
+    return coercedValue;
+  }
+
+  if ((0,_polyfills_isInteger_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(coercedValue)) {
+    return String(coercedValue);
+  }
+
+  throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("ID cannot represent value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(outputValue)));
+}
+
+function coerceID(inputValue) {
+  if (typeof inputValue === 'string') {
+    return inputValue;
+  }
+
+  if ((0,_polyfills_isInteger_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(inputValue)) {
+    return inputValue.toString();
+  }
+
+  throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("ID cannot represent value: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(inputValue)));
+}
+
+var GraphQLID = new _definition_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLScalarType({
   name: 'ID',
   description: 'The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.',
-  serialize: function serialize(outputValue) {
-    var coercedValue = serializeObject(outputValue);
-
-    if (typeof coercedValue === 'string') {
-      return coercedValue;
-    }
-
-    if (Number.isInteger(coercedValue)) {
-      return String(coercedValue);
-    }
-
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("ID cannot represent value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(outputValue));
-  },
-  parseValue: function parseValue(inputValue) {
-    if (typeof inputValue === 'string') {
-      return inputValue;
-    }
-
-    if (typeof inputValue === 'number' && Number.isInteger(inputValue)) {
-      return inputValue.toString();
-    }
-
-    throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("ID cannot represent value: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(inputValue));
-  },
+  serialize: serializeID,
+  parseValue: coerceID,
   parseLiteral: function parseLiteral(valueNode) {
-    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.STRING && valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_3__.Kind.INT) {
-      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError('ID cannot represent a non-string and non-integer value: ' + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_4__.print)(valueNode), valueNode);
+    if (valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.STRING && valueNode.kind !== _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INT) {
+      throw new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError('ID cannot represent a non-string and non-integer value: ' + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__.print)(valueNode), valueNode);
     }
 
     return valueNode.value;
@@ -21718,26 +21642,6 @@ function isSpecifiedScalarType(type) {
     var name = _ref.name;
     return type.name === name;
   });
-} // Support serializing objects with custom valueOf() or toJSON() functions -
-// a common way to represent a complex value which can be represented as
-// a string (ex: MongoDB id objects).
-
-function serializeObject(outputValue) {
-  if ((0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__.isObjectLike)(outputValue)) {
-    if (typeof outputValue.valueOf === 'function') {
-      var valueOfResult = outputValue.valueOf();
-
-      if (!(0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_5__.isObjectLike)(valueOfResult)) {
-        return valueOfResult;
-      }
-    }
-
-    if (typeof outputValue.toJSON === 'function') {
-      return outputValue.toJSON();
-    }
-  }
-
-  return outputValue;
 }
 
 /***/ }),
@@ -21755,24 +21659,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "assertSchema": function() { return /* binding */ assertSchema; },
 /* harmony export */   "GraphQLSchema": function() { return /* binding */ GraphQLSchema; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../polyfills/find.mjs */ "./node_modules/graphql/polyfills/find.mjs");
+/* harmony import */ var _polyfills_arrayFrom_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../polyfills/arrayFrom.mjs */ "./node_modules/graphql/polyfills/arrayFrom.mjs");
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
+/* harmony import */ var _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../polyfills/symbols.mjs */ "./node_modules/graphql/polyfills/symbols.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
 /* harmony import */ var _jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../jsutils/toObjMap.mjs */ "./node_modules/graphql/jsutils/toObjMap.mjs");
 /* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
 /* harmony import */ var _jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/instanceOf.mjs */ "./node_modules/graphql/jsutils/instanceOf.mjs");
 /* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
-/* harmony import */ var _language_ast_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../language/ast.mjs */ "./node_modules/graphql/language/ast.mjs");
 /* harmony import */ var _introspection_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
 /* harmony import */ var _directives_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./directives.mjs */ "./node_modules/graphql/type/directives.mjs");
-/* harmony import */ var _definition_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+/* harmony import */ var _definition_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 
 
@@ -21786,27 +21702,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Test if the given value is a GraphQL schema.
  */
+// eslint-disable-next-line no-redeclare
 
 function isSchema(schema) {
-  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_0__.instanceOf)(schema, GraphQLSchema);
+  return (0,_jsutils_instanceOf_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(schema, GraphQLSchema);
 }
 function assertSchema(schema) {
   if (!isSchema(schema)) {
-    throw new Error("Expected " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(schema) + " to be a GraphQL schema.");
+    throw new Error("Expected ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(schema), " to be a GraphQL schema."));
   }
 
   return schema;
 }
-/**
- * Custom extensions
- *
- * @remarks
- * Use a unique identifier name for your extension, for example the name of
- * your library or project. Do not use a shortened identifier as this increases
- * the risk of conflicts. We recommend you add at most one extension field,
- * an object which can contain all the values you need.
- */
-
 /**
  * Schema Definition
  *
@@ -21816,12 +21723,10 @@ function assertSchema(schema) {
  *
  * Example:
  *
- * ```ts
- * const MyAppSchema = new GraphQLSchema({
- *   query: MyAppQueryRootType,
- *   mutation: MyAppMutationRootType,
- * })
- * ```
+ *     const MyAppSchema = new GraphQLSchema({
+ *       query: MyAppQueryRootType,
+ *       mutation: MyAppMutationRootType,
+ *     })
  *
  * Note: When the schema is constructed, by default only the types that are
  * reachable by traversing the root types are included, other types must be
@@ -21829,69 +21734,66 @@ function assertSchema(schema) {
  *
  * Example:
  *
- * ```ts
- * const characterInterface = new GraphQLInterfaceType({
- *   name: 'Character',
- *   ...
- * });
+ *     const characterInterface = new GraphQLInterfaceType({
+ *       name: 'Character',
+ *       ...
+ *     });
  *
- * const humanType = new GraphQLObjectType({
- *   name: 'Human',
- *   interfaces: [characterInterface],
- *   ...
- * });
+ *     const humanType = new GraphQLObjectType({
+ *       name: 'Human',
+ *       interfaces: [characterInterface],
+ *       ...
+ *     });
  *
- * const droidType = new GraphQLObjectType({
- *   name: 'Droid',
- *   interfaces: [characterInterface],
- *   ...
- * });
+ *     const droidType = new GraphQLObjectType({
+ *       name: 'Droid',
+ *       interfaces: [characterInterface],
+ *       ...
+ *     });
  *
- * const schema = new GraphQLSchema({
- *   query: new GraphQLObjectType({
- *     name: 'Query',
- *     fields: {
- *       hero: { type: characterInterface, ... },
- *     }
- *   }),
- *   ...
- *   // Since this schema references only the `Character` interface it's
- *   // necessary to explicitly list the types that implement it if
- *   // you want them to be included in the final schema.
- *   types: [humanType, droidType],
- * })
- * ```
+ *     const schema = new GraphQLSchema({
+ *       query: new GraphQLObjectType({
+ *         name: 'Query',
+ *         fields: {
+ *           hero: { type: characterInterface, ... },
+ *         }
+ *       }),
+ *       ...
+ *       // Since this schema references only the `Character` interface it's
+ *       // necessary to explicitly list the types that implement it if
+ *       // you want them to be included in the final schema.
+ *       types: [humanType, droidType],
+ *     })
  *
  * Note: If an array of `directives` are provided to GraphQLSchema, that will be
  * the exact list of directives represented and allowed. If `directives` is not
- * provided then a default set of the specified directives (e.g. `@include` and
- * `@skip`) will be used. If you wish to provide *additional* directives to these
+ * provided then a default set of the specified directives (e.g. @include and
+ * @skip) will be used. If you wish to provide *additional* directives to these
  * specified directives, you must explicitly declare them. Example:
  *
- * ```ts
- * const MyAppSchema = new GraphQLSchema({
- *   ...
- *   directives: specifiedDirectives.concat([ myCustomDirective ]),
- * })
- * ```
+ *     const MyAppSchema = new GraphQLSchema({
+ *       ...
+ *       directives: specifiedDirectives.concat([ myCustomDirective ]),
+ *     })
+ *
  */
 
-var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
+var GraphQLSchema = /*#__PURE__*/function () {
   // Used as a cache for validateSchema().
   function GraphQLSchema(config) {
-    var _config$extensionASTN, _config$directives; // If this schema was built from a source known to be valid, then it may be
+    var _config$directives; // If this schema was built from a source known to be valid, then it may be
     // marked with assumeValid to avoid an additional type system validation.
 
 
     this.__validationErrors = config.assumeValid === true ? [] : undefined; // Check for common mistakes during construction to produce early errors.
 
-    (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectLike)(config) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__.devAssert)(false, 'Must provide configuration object.');
-    !config.types || Array.isArray(config.types) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__.devAssert)(false, "\"types\" must be Array if provided but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(config.types) + ".");
-    !config.directives || Array.isArray(config.directives) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__.devAssert)(false, '"directives" must be Array if provided but got: ' + ((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(config.directives) + "."));
+    (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(config) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0, 'Must provide configuration object.');
+    !config.types || Array.isArray(config.types) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0, "\"types\" must be Array if provided but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(config.types), "."));
+    !config.directives || Array.isArray(config.directives) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0, '"directives" must be Array if provided but got: ' + "".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(config.directives), "."));
     this.description = config.description;
-    this.extensions = (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_4__.toObjMap)(config.extensions);
+    this.extensions = config.extensions && (0,_jsutils_toObjMap_mjs__WEBPACK_IMPORTED_MODULE_4__["default"])(config.extensions);
     this.astNode = config.astNode;
-    this.extensionASTNodes = (_config$extensionASTN = config.extensionASTNodes) !== null && _config$extensionASTN !== void 0 ? _config$extensionASTN : [];
+    this.extensionASTNodes = config.extensionASTNodes;
     this._queryType = config.query;
     this._mutationType = config.mutation;
     this._subscriptionType = config.subscription; // Provide specified directives (e.g. @include and @skip) by default.
@@ -21902,10 +21804,10 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
     var allReferencedTypes = new Set(config.types);
 
     if (config.types != null) {
-      for (var _iterator = _createForOfIteratorHelperLoose(config.types), _step; !(_step = _iterator()).done;) {
-        var type = _step.value;
-        // When we ready to process this type, we remove it from "collected" types
+      for (var _i2 = 0, _config$types2 = config.types; _i2 < _config$types2.length; _i2++) {
+        var type = _config$types2[_i2]; // When we ready to process this type, we remove it from "collected" types
         // and then add it together with all dependent types in the correct position.
+
         allReferencedTypes.delete(type);
         collectReferencedTypes(type, allReferencedTypes);
       }
@@ -21923,13 +21825,12 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
       collectReferencedTypes(this._subscriptionType, allReferencedTypes);
     }
 
-    for (var _iterator2 = _createForOfIteratorHelperLoose(this._directives), _step2; !(_step2 = _iterator2()).done;) {
-      var directive = _step2.value;
+    for (var _i4 = 0, _this$_directives2 = this._directives; _i4 < _this$_directives2.length; _i4++) {
+      var directive = _this$_directives2[_i4]; // Directives are not validated until validateSchema() is called.
 
-      // Directives are not validated until validateSchema() is called.
       if ((0,_directives_mjs__WEBPACK_IMPORTED_MODULE_5__.isDirective)(directive)) {
-        for (var _iterator4 = _createForOfIteratorHelperLoose(directive.args), _step4; !(_step4 = _iterator4()).done;) {
-          var arg = _step4.value;
+        for (var _i6 = 0, _directive$args2 = directive.args; _i6 < _directive$args2.length; _i6++) {
+          var arg = _directive$args2[_i6];
           collectReferencedTypes(arg.type, allReferencedTypes);
         }
       }
@@ -21942,28 +21843,28 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
 
     this._implementationsMap = Object.create(null);
 
-    for (var _iterator3 = _createForOfIteratorHelperLoose(allReferencedTypes), _step3; !(_step3 = _iterator3()).done;) {
-      var namedType = _step3.value;
+    for (var _i8 = 0, _arrayFrom2 = (0,_polyfills_arrayFrom_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(allReferencedTypes); _i8 < _arrayFrom2.length; _i8++) {
+      var namedType = _arrayFrom2[_i8];
 
       if (namedType == null) {
         continue;
       }
 
       var typeName = namedType.name;
-      typeName || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__.devAssert)(false, 'One of the provided types for building the Schema is missing a name.');
+      typeName || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0, 'One of the provided types for building the Schema is missing a name.');
 
       if (this._typeMap[typeName] !== undefined) {
-        throw new Error("Schema must contain uniquely named types but contains multiple types named \"" + typeName + "\".");
+        throw new Error("Schema must contain uniquely named types but contains multiple types named \"".concat(typeName, "\"."));
       }
 
       this._typeMap[typeName] = namedType;
 
-      if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isInterfaceType)(namedType)) {
+      if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isInterfaceType)(namedType)) {
         // Store implementations by interface.
-        for (var _iterator5 = _createForOfIteratorHelperLoose(namedType.getInterfaces()), _step5; !(_step5 = _iterator5()).done;) {
-          var iface = _step5.value;
+        for (var _i10 = 0, _namedType$getInterfa2 = namedType.getInterfaces(); _i10 < _namedType$getInterfa2.length; _i10++) {
+          var iface = _namedType$getInterfa2[_i10];
 
-          if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isInterfaceType)(iface)) {
+          if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isInterfaceType)(iface)) {
             var implementations = this._implementationsMap[iface.name];
 
             if (implementations === undefined) {
@@ -21976,12 +21877,12 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
             implementations.interfaces.push(namedType);
           }
         }
-      } else if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isObjectType)(namedType)) {
+      } else if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isObjectType)(namedType)) {
         // Store implementations by objects.
-        for (var _iterator6 = _createForOfIteratorHelperLoose(namedType.getInterfaces()), _step6; !(_step6 = _iterator6()).done;) {
-          var _iface = _step6.value;
+        for (var _i12 = 0, _namedType$getInterfa4 = namedType.getInterfaces(); _i12 < _namedType$getInterfa4.length; _i12++) {
+          var _iface = _namedType$getInterfa4[_i12];
 
-          if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isInterfaceType)(_iface)) {
+          if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isInterfaceType)(_iface)) {
             var _implementations = this._implementationsMap[_iface.name];
 
             if (_implementations === undefined) {
@@ -22012,19 +21913,6 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
     return this._subscriptionType;
   };
 
-  _proto.getRootType = function getRootType(operation) {
-    switch (operation) {
-      case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_8__.OperationTypeNode.QUERY:
-        return this.getQueryType();
-
-      case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_8__.OperationTypeNode.MUTATION:
-        return this.getMutationType();
-
-      case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_8__.OperationTypeNode.SUBSCRIPTION:
-        return this.getSubscriptionType();
-    }
-  };
-
   _proto.getTypeMap = function getTypeMap() {
     return this._typeMap;
   };
@@ -22034,7 +21922,7 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
   };
 
   _proto.getPossibleTypes = function getPossibleTypes(abstractType) {
-    return (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isUnionType)(abstractType) ? abstractType.getTypes() : this.getImplementations(abstractType).objects;
+    return (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isUnionType)(abstractType) ? abstractType.getTypes() : this.getImplementations(abstractType).objects;
   };
 
   _proto.getImplementations = function getImplementations(interfaceType) {
@@ -22043,6 +21931,11 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
       objects: [],
       interfaces: []
     };
+  } // @deprecated: use isSubType instead - will be removed in v16.
+  ;
+
+  _proto.isPossibleType = function isPossibleType(abstractType, possibleType) {
+    return this.isSubType(abstractType, possibleType);
   };
 
   _proto.isSubType = function isSubType(abstractType, maybeSubType) {
@@ -22051,21 +21944,21 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
     if (map === undefined) {
       map = Object.create(null);
 
-      if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isUnionType)(abstractType)) {
-        for (var _iterator7 = _createForOfIteratorHelperLoose(abstractType.getTypes()), _step7; !(_step7 = _iterator7()).done;) {
-          var type = _step7.value;
+      if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isUnionType)(abstractType)) {
+        for (var _i14 = 0, _abstractType$getType2 = abstractType.getTypes(); _i14 < _abstractType$getType2.length; _i14++) {
+          var type = _abstractType$getType2[_i14];
           map[type.name] = true;
         }
       } else {
         var implementations = this.getImplementations(abstractType);
 
-        for (var _iterator8 = _createForOfIteratorHelperLoose(implementations.objects), _step8; !(_step8 = _iterator8()).done;) {
-          var _type = _step8.value;
+        for (var _i16 = 0, _implementations$obje2 = implementations.objects; _i16 < _implementations$obje2.length; _i16++) {
+          var _type = _implementations$obje2[_i16];
           map[_type.name] = true;
         }
 
-        for (var _iterator9 = _createForOfIteratorHelperLoose(implementations.interfaces), _step9; !(_step9 = _iterator9()).done;) {
-          var _type2 = _step9.value;
+        for (var _i18 = 0, _implementations$inte2 = implementations.interfaces; _i18 < _implementations$inte2.length; _i18++) {
+          var _type2 = _implementations$inte2[_i18];
           map[_type2.name] = true;
         }
       }
@@ -22081,65 +21974,68 @@ var GraphQLSchema = /*#__PURE__*/function (_Symbol$toStringTag) {
   };
 
   _proto.getDirective = function getDirective(name) {
-    return this.getDirectives().find(function (directive) {
+    return (0,_polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_9__["default"])(this.getDirectives(), function (directive) {
       return directive.name === name;
     });
   };
 
   _proto.toConfig = function toConfig() {
+    var _this$extensionASTNod;
+
     return {
       description: this.description,
       query: this.getQueryType(),
       mutation: this.getMutationType(),
       subscription: this.getSubscriptionType(),
-      types: Object.values(this.getTypeMap()),
-      directives: this.getDirectives(),
+      types: (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(this.getTypeMap()),
+      directives: this.getDirectives().slice(),
       extensions: this.extensions,
       astNode: this.astNode,
-      extensionASTNodes: this.extensionASTNodes,
+      extensionASTNodes: (_this$extensionASTNod = this.extensionASTNodes) !== null && _this$extensionASTNod !== void 0 ? _this$extensionASTNod : [],
       assumeValid: this.__validationErrors !== undefined
     };
-  };
+  } // $FlowFixMe[unsupported-syntax] Flow doesn't support computed properties yet
+  ;
 
   _createClass(GraphQLSchema, [{
-    key: _Symbol$toStringTag,
+    key: _polyfills_symbols_mjs__WEBPACK_IMPORTED_MODULE_11__.SYMBOL_TO_STRING_TAG,
     get: function get() {
       return 'GraphQLSchema';
     }
   }]);
 
   return GraphQLSchema;
-}(Symbol.toStringTag);
+}();
 
 function collectReferencedTypes(type, typeSet) {
-  var namedType = (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.getNamedType)(type);
+  var namedType = (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.getNamedType)(type);
 
   if (!typeSet.has(namedType)) {
     typeSet.add(namedType);
 
-    if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isUnionType)(namedType)) {
-      for (var _iterator10 = _createForOfIteratorHelperLoose(namedType.getTypes()), _step10; !(_step10 = _iterator10()).done;) {
-        var memberType = _step10.value;
+    if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isUnionType)(namedType)) {
+      for (var _i20 = 0, _namedType$getTypes2 = namedType.getTypes(); _i20 < _namedType$getTypes2.length; _i20++) {
+        var memberType = _namedType$getTypes2[_i20];
         collectReferencedTypes(memberType, typeSet);
       }
-    } else if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isObjectType)(namedType) || (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isInterfaceType)(namedType)) {
-      for (var _iterator11 = _createForOfIteratorHelperLoose(namedType.getInterfaces()), _step11; !(_step11 = _iterator11()).done;) {
-        var interfaceType = _step11.value;
+    } else if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isObjectType)(namedType) || (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isInterfaceType)(namedType)) {
+      for (var _i22 = 0, _namedType$getInterfa6 = namedType.getInterfaces(); _i22 < _namedType$getInterfa6.length; _i22++) {
+        var interfaceType = _namedType$getInterfa6[_i22];
         collectReferencedTypes(interfaceType, typeSet);
       }
 
-      for (var _i = 0, _Object$values = Object.values(namedType.getFields()); _i < _Object$values.length; _i++) {
-        var field = _Object$values[_i];
+      for (var _i24 = 0, _objectValues2 = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(namedType.getFields()); _i24 < _objectValues2.length; _i24++) {
+        var field = _objectValues2[_i24];
         collectReferencedTypes(field.type, typeSet);
 
-        for (var _iterator12 = _createForOfIteratorHelperLoose(field.args), _step12; !(_step12 = _iterator12()).done;) {
-          var arg = _step12.value;
+        for (var _i26 = 0, _field$args2 = field.args; _i26 < _field$args2.length; _i26++) {
+          var arg = _field$args2[_i26];
           collectReferencedTypes(arg.type, typeSet);
         }
       }
-    } else if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isInputObjectType)(namedType)) {
-      for (var _i2 = 0, _Object$values2 = Object.values(namedType.getFields()); _i2 < _Object$values2.length; _i2++) {
-        var _field = _Object$values2[_i2];
+    } else if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isInputObjectType)(namedType)) {
+      for (var _i28 = 0, _objectValues4 = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(namedType.getFields()); _i28 < _objectValues4.length; _i28++) {
+        var _field = _objectValues4[_i28];
         collectReferencedTypes(_field.type, typeSet);
       }
     }
@@ -22162,19 +22058,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "validateSchema": function() { return /* binding */ validateSchema; },
 /* harmony export */   "assertValidSchema": function() { return /* binding */ assertValidSchema; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../polyfills/find.mjs */ "./node_modules/graphql/polyfills/find.mjs");
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-/* harmony import */ var _language_ast_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../language/ast.mjs */ "./node_modules/graphql/language/ast.mjs");
-/* harmony import */ var _utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utilities/typeComparators.mjs */ "./node_modules/graphql/utilities/typeComparators.mjs");
+/* harmony import */ var _error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../error/locatedError.mjs */ "./node_modules/graphql/error/locatedError.mjs");
+/* harmony import */ var _utilities_assertValidName_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/assertValidName.mjs */ "./node_modules/graphql/utilities/assertValidName.mjs");
+/* harmony import */ var _utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utilities/typeComparators.mjs */ "./node_modules/graphql/utilities/typeComparators.mjs");
 /* harmony import */ var _schema_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./schema.mjs */ "./node_modules/graphql/type/schema.mjs");
-/* harmony import */ var _introspection_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
-/* harmony import */ var _directives_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./directives.mjs */ "./node_modules/graphql/type/directives.mjs");
+/* harmony import */ var _introspection_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
+/* harmony import */ var _directives_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./directives.mjs */ "./node_modules/graphql/type/directives.mjs");
 /* harmony import */ var _definition_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -22237,7 +22133,11 @@ var SchemaValidationContext = /*#__PURE__*/function () {
   _proto.reportError = function reportError(message, nodes) {
     var _nodes = Array.isArray(nodes) ? nodes.filter(Boolean) : nodes;
 
-    this._errors.push(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError(message, _nodes));
+    this.addError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError(message, _nodes));
+  };
+
+  _proto.addError = function addError(error) {
+    this._errors.push(error);
   };
 
   _proto.getErrors = function getErrors() {
@@ -22256,7 +22156,7 @@ function validateRootTypes(context) {
   } else if (!(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectType)(queryType)) {
     var _getOperationTypeNode;
 
-    context.reportError("Query root type must be Object type, it cannot be " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(queryType) + ".", (_getOperationTypeNode = getOperationTypeNode(schema, _language_ast_mjs__WEBPACK_IMPORTED_MODULE_4__.OperationTypeNode.QUERY)) !== null && _getOperationTypeNode !== void 0 ? _getOperationTypeNode : queryType.astNode);
+    context.reportError("Query root type must be Object type, it cannot be ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(queryType), "."), (_getOperationTypeNode = getOperationTypeNode(schema, 'query')) !== null && _getOperationTypeNode !== void 0 ? _getOperationTypeNode : queryType.astNode);
   }
 
   var mutationType = schema.getMutationType();
@@ -22264,7 +22164,7 @@ function validateRootTypes(context) {
   if (mutationType && !(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectType)(mutationType)) {
     var _getOperationTypeNode2;
 
-    context.reportError('Mutation root type must be Object type if provided, it cannot be ' + ((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(mutationType) + "."), (_getOperationTypeNode2 = getOperationTypeNode(schema, _language_ast_mjs__WEBPACK_IMPORTED_MODULE_4__.OperationTypeNode.MUTATION)) !== null && _getOperationTypeNode2 !== void 0 ? _getOperationTypeNode2 : mutationType.astNode);
+    context.reportError('Mutation root type must be Object type if provided, it cannot be ' + "".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(mutationType), "."), (_getOperationTypeNode2 = getOperationTypeNode(schema, 'mutation')) !== null && _getOperationTypeNode2 !== void 0 ? _getOperationTypeNode2 : mutationType.astNode);
   }
 
   var subscriptionType = schema.getSubscriptionType();
@@ -22272,33 +22172,32 @@ function validateRootTypes(context) {
   if (subscriptionType && !(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectType)(subscriptionType)) {
     var _getOperationTypeNode3;
 
-    context.reportError('Subscription root type must be Object type if provided, it cannot be ' + ((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(subscriptionType) + "."), (_getOperationTypeNode3 = getOperationTypeNode(schema, _language_ast_mjs__WEBPACK_IMPORTED_MODULE_4__.OperationTypeNode.SUBSCRIPTION)) !== null && _getOperationTypeNode3 !== void 0 ? _getOperationTypeNode3 : subscriptionType.astNode);
+    context.reportError('Subscription root type must be Object type if provided, it cannot be ' + "".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(subscriptionType), "."), (_getOperationTypeNode3 = getOperationTypeNode(schema, 'subscription')) !== null && _getOperationTypeNode3 !== void 0 ? _getOperationTypeNode3 : subscriptionType.astNode);
   }
 }
 
 function getOperationTypeNode(schema, operation) {
-  var _flatMap$find;
+  var operationNodes = getAllSubNodes(schema, function (node) {
+    return node.operationTypes;
+  });
 
-  return (_flatMap$find = [schema.astNode].concat(schema.extensionASTNodes).flatMap( // FIXME: https://github.com/graphql/graphql-js/issues/2203
-  function (schemaNode) {
-    var _schemaNode$operation;
+  for (var _i2 = 0; _i2 < operationNodes.length; _i2++) {
+    var node = operationNodes[_i2];
 
-    return (
-      /* c8 ignore next */
-      (_schemaNode$operation = schemaNode === null || schemaNode === void 0 ? void 0 : schemaNode.operationTypes) !== null && _schemaNode$operation !== void 0 ? _schemaNode$operation : []
-    );
-  }).find(function (operationNode) {
-    return operationNode.operation === operation;
-  })) === null || _flatMap$find === void 0 ? void 0 : _flatMap$find.type;
+    if (node.operation === operation) {
+      return node.type;
+    }
+  }
+
+  return undefined;
 }
 
 function validateDirectives(context) {
-  for (var _iterator = _createForOfIteratorHelperLoose(context.schema.getDirectives()), _step; !(_step = _iterator()).done;) {
-    var directive = _step.value;
+  for (var _i4 = 0, _context$schema$getDi2 = context.schema.getDirectives(); _i4 < _context$schema$getDi2.length; _i4++) {
+    var directive = _context$schema$getDi2[_i4]; // Ensure all directives are in fact GraphQL directives.
 
-    // Ensure all directives are in fact GraphQL directives.
-    if (!(0,_directives_mjs__WEBPACK_IMPORTED_MODULE_5__.isDirective)(directive)) {
-      context.reportError("Expected directive but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(directive) + ".", directive === null || directive === void 0 ? void 0 : directive.astNode);
+    if (!(0,_directives_mjs__WEBPACK_IMPORTED_MODULE_4__.isDirective)(directive)) {
+      context.reportError("Expected directive but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(directive), "."), directive === null || directive === void 0 ? void 0 : directive.astNode);
       continue;
     } // Ensure they are named correctly.
 
@@ -22306,19 +22205,20 @@ function validateDirectives(context) {
     validateName(context, directive); // TODO: Ensure proper locations.
     // Ensure the arguments are valid.
 
-    for (var _iterator2 = _createForOfIteratorHelperLoose(directive.args), _step2; !(_step2 = _iterator2()).done;) {
-      var arg = _step2.value;
-      // Ensure they are named correctly.
+    for (var _i6 = 0, _directive$args2 = directive.args; _i6 < _directive$args2.length; _i6++) {
+      var arg = _directive$args2[_i6]; // Ensure they are named correctly.
+
       validateName(context, arg); // Ensure the type is an input type.
 
       if (!(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isInputType)(arg.type)) {
-        context.reportError("The type of @" + directive.name + "(" + arg.name + ":) must be Input Type " + ("but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(arg.type) + "."), arg.astNode);
+        context.reportError("The type of @".concat(directive.name, "(").concat(arg.name, ":) must be Input Type ") + "but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(arg.type), "."), arg.astNode);
       }
 
       if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isRequiredArgument)(arg) && arg.deprecationReason != null) {
         var _arg$astNode;
 
-        context.reportError("Required argument @" + directive.name + "(" + arg.name + ":) cannot be deprecated.", [getDeprecatedDirectiveNode(arg.astNode), (_arg$astNode = arg.astNode) === null || _arg$astNode === void 0 ? void 0 : _arg$astNode.type]);
+        context.reportError("Required argument @".concat(directive.name, "(").concat(arg.name, ":) cannot be deprecated."), [getDeprecatedDirectiveNode(arg.astNode), // istanbul ignore next (TODO need to write coverage tests)
+        (_arg$astNode = arg.astNode) === null || _arg$astNode === void 0 ? void 0 : _arg$astNode.type]);
       }
     }
   }
@@ -22326,8 +22226,10 @@ function validateDirectives(context) {
 
 function validateName(context, node) {
   // Ensure names are valid, however introspection types opt out.
-  if (node.name.startsWith('__')) {
-    context.reportError("Name \"" + node.name + "\" must not begin with \"__\", which is reserved by GraphQL introspection.", node.astNode);
+  var error = (0,_utilities_assertValidName_mjs__WEBPACK_IMPORTED_MODULE_5__.isValidNameError)(node.name);
+
+  if (error) {
+    context.addError((0,_error_locatedError_mjs__WEBPACK_IMPORTED_MODULE_6__.locatedError)(error, node.astNode));
   }
 }
 
@@ -22335,17 +22237,16 @@ function validateTypes(context) {
   var validateInputObjectCircularRefs = createInputObjectCircularRefsValidator(context);
   var typeMap = context.schema.getTypeMap();
 
-  for (var _i = 0, _Object$values = Object.values(typeMap); _i < _Object$values.length; _i++) {
-    var type = _Object$values[_i];
+  for (var _i8 = 0, _objectValues2 = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(typeMap); _i8 < _objectValues2.length; _i8++) {
+    var type = _objectValues2[_i8]; // Ensure all provided types are in fact GraphQL type.
 
-    // Ensure all provided types are in fact GraphQL type.
     if (!(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNamedType)(type)) {
-      context.reportError("Expected GraphQL named type but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(type) + ".", type.astNode);
+      context.reportError("Expected GraphQL named type but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(type), "."), type.astNode);
       continue;
     } // Ensure it is named correctly (excluding introspection types).
 
 
-    if (!(0,_introspection_mjs__WEBPACK_IMPORTED_MODULE_6__.isIntrospectionType)(type)) {
+    if (!(0,_introspection_mjs__WEBPACK_IMPORTED_MODULE_8__.isIntrospectionType)(type)) {
       validateName(context, type);
     }
 
@@ -22375,26 +22276,26 @@ function validateTypes(context) {
 }
 
 function validateFields(context, type) {
-  var fields = Object.values(type.getFields()); // Objects and Interfaces both must define one or more fields.
+  var fields = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(type.getFields()); // Objects and Interfaces both must define one or more fields.
 
   if (fields.length === 0) {
-    context.reportError("Type " + type.name + " must define one or more fields.", [type.astNode].concat(type.extensionASTNodes));
+    context.reportError("Type ".concat(type.name, " must define one or more fields."), getAllNodes(type));
   }
 
-  for (var _i2 = 0, _fields = fields; _i2 < _fields.length; _i2++) {
-    var field = _fields[_i2];
-    // Ensure they are named correctly.
+  for (var _i10 = 0; _i10 < fields.length; _i10++) {
+    var field = fields[_i10]; // Ensure they are named correctly.
+
     validateName(context, field); // Ensure the type is an output type
 
     if (!(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isOutputType)(field.type)) {
       var _field$astNode;
 
-      context.reportError("The type of " + type.name + "." + field.name + " must be Output Type " + ("but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(field.type) + "."), (_field$astNode = field.astNode) === null || _field$astNode === void 0 ? void 0 : _field$astNode.type);
+      context.reportError("The type of ".concat(type.name, ".").concat(field.name, " must be Output Type ") + "but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(field.type), "."), (_field$astNode = field.astNode) === null || _field$astNode === void 0 ? void 0 : _field$astNode.type);
     } // Ensure the arguments are valid
 
 
-    for (var _iterator3 = _createForOfIteratorHelperLoose(field.args), _step3; !(_step3 = _iterator3()).done;) {
-      var arg = _step3.value;
+    for (var _i12 = 0, _field$args2 = field.args; _i12 < _field$args2.length; _i12++) {
+      var arg = _field$args2[_i12];
       var argName = arg.name; // Ensure they are named correctly.
 
       validateName(context, arg); // Ensure the type is an input type
@@ -22402,13 +22303,14 @@ function validateFields(context, type) {
       if (!(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isInputType)(arg.type)) {
         var _arg$astNode2;
 
-        context.reportError("The type of " + type.name + "." + field.name + "(" + argName + ":) must be Input " + ("Type but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(arg.type) + "."), (_arg$astNode2 = arg.astNode) === null || _arg$astNode2 === void 0 ? void 0 : _arg$astNode2.type);
+        context.reportError("The type of ".concat(type.name, ".").concat(field.name, "(").concat(argName, ":) must be Input ") + "Type but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(arg.type), "."), (_arg$astNode2 = arg.astNode) === null || _arg$astNode2 === void 0 ? void 0 : _arg$astNode2.type);
       }
 
       if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isRequiredArgument)(arg) && arg.deprecationReason != null) {
         var _arg$astNode3;
 
-        context.reportError("Required argument " + type.name + "." + field.name + "(" + argName + ":) cannot be deprecated.", [getDeprecatedDirectiveNode(arg.astNode), (_arg$astNode3 = arg.astNode) === null || _arg$astNode3 === void 0 ? void 0 : _arg$astNode3.type]);
+        context.reportError("Required argument ".concat(type.name, ".").concat(field.name, "(").concat(argName, ":) cannot be deprecated."), [getDeprecatedDirectiveNode(arg.astNode), // istanbul ignore next (TODO need to write coverage tests)
+        (_arg$astNode3 = arg.astNode) === null || _arg$astNode3 === void 0 ? void 0 : _arg$astNode3.type]);
       }
     }
   }
@@ -22417,21 +22319,21 @@ function validateFields(context, type) {
 function validateInterfaces(context, type) {
   var ifaceTypeNames = Object.create(null);
 
-  for (var _iterator4 = _createForOfIteratorHelperLoose(type.getInterfaces()), _step4; !(_step4 = _iterator4()).done;) {
-    var iface = _step4.value;
+  for (var _i14 = 0, _type$getInterfaces2 = type.getInterfaces(); _i14 < _type$getInterfaces2.length; _i14++) {
+    var iface = _type$getInterfaces2[_i14];
 
     if (!(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isInterfaceType)(iface)) {
-      context.reportError("Type " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(type) + " must only implement Interface types, " + ("it cannot implement " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(iface) + "."), getAllImplementsInterfaceNodes(type, iface));
+      context.reportError("Type ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(type), " must only implement Interface types, ") + "it cannot implement ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(iface), "."), getAllImplementsInterfaceNodes(type, iface));
       continue;
     }
 
     if (type === iface) {
-      context.reportError("Type " + type.name + " cannot implement itself because it would create a circular reference.", getAllImplementsInterfaceNodes(type, iface));
+      context.reportError("Type ".concat(type.name, " cannot implement itself because it would create a circular reference."), getAllImplementsInterfaceNodes(type, iface));
       continue;
     }
 
     if (ifaceTypeNames[iface.name]) {
-      context.reportError("Type " + type.name + " can only implement " + iface.name + " once.", getAllImplementsInterfaceNodes(type, iface));
+      context.reportError("Type ".concat(type.name, " can only implement ").concat(iface.name, " once."), getAllImplementsInterfaceNodes(type, iface));
       continue;
     }
 
@@ -22444,69 +22346,73 @@ function validateInterfaces(context, type) {
 function validateTypeImplementsInterface(context, type, iface) {
   var typeFieldMap = type.getFields(); // Assert each interface field is implemented.
 
-  for (var _i3 = 0, _Object$values2 = Object.values(iface.getFields()); _i3 < _Object$values2.length; _i3++) {
-    var ifaceField = _Object$values2[_i3];
+  for (var _i16 = 0, _objectValues4 = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(iface.getFields()); _i16 < _objectValues4.length; _i16++) {
+    var ifaceField = _objectValues4[_i16];
     var fieldName = ifaceField.name;
     var typeField = typeFieldMap[fieldName]; // Assert interface field exists on type.
 
     if (!typeField) {
-      context.reportError("Interface field " + iface.name + "." + fieldName + " expected but " + type.name + " does not provide it.", [ifaceField.astNode, type.astNode].concat(type.extensionASTNodes));
+      context.reportError("Interface field ".concat(iface.name, ".").concat(fieldName, " expected but ").concat(type.name, " does not provide it."), [ifaceField.astNode].concat(getAllNodes(type)));
       continue;
     } // Assert interface field type is satisfied by type field type, by being
     // a valid subtype. (covariant)
 
 
-    if (!(0,_utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_7__.isTypeSubTypeOf)(context.schema, typeField.type, ifaceField.type)) {
+    if (!(0,_utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_9__.isTypeSubTypeOf)(context.schema, typeField.type, ifaceField.type)) {
       var _ifaceField$astNode, _typeField$astNode;
 
-      context.reportError("Interface field " + iface.name + "." + fieldName + " expects type " + ((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(ifaceField.type) + " but " + type.name + "." + fieldName + " ") + ("is type " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(typeField.type) + "."), [(_ifaceField$astNode = ifaceField.astNode) === null || _ifaceField$astNode === void 0 ? void 0 : _ifaceField$astNode.type, (_typeField$astNode = typeField.astNode) === null || _typeField$astNode === void 0 ? void 0 : _typeField$astNode.type]);
+      context.reportError("Interface field ".concat(iface.name, ".").concat(fieldName, " expects type ") + "".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(ifaceField.type), " but ").concat(type.name, ".").concat(fieldName, " ") + "is type ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(typeField.type), "."), [// istanbul ignore next (TODO need to write coverage tests)
+      (_ifaceField$astNode = ifaceField.astNode) === null || _ifaceField$astNode === void 0 ? void 0 : _ifaceField$astNode.type, // istanbul ignore next (TODO need to write coverage tests)
+      (_typeField$astNode = typeField.astNode) === null || _typeField$astNode === void 0 ? void 0 : _typeField$astNode.type]);
     } // Assert each interface field arg is implemented.
 
 
-    var _loop = function _loop() {
-      var ifaceArg = _step5.value;
+    var _loop = function _loop(_i18, _ifaceField$args2) {
+      var ifaceArg = _ifaceField$args2[_i18];
       var argName = ifaceArg.name;
-      var typeArg = typeField.args.find(function (arg) {
+      var typeArg = (0,_polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(typeField.args, function (arg) {
         return arg.name === argName;
       }); // Assert interface field arg exists on object field.
 
       if (!typeArg) {
-        context.reportError("Interface field argument " + iface.name + "." + fieldName + "(" + argName + ":) expected but " + type.name + "." + fieldName + " does not provide it.", [ifaceArg.astNode, typeField.astNode]);
+        context.reportError("Interface field argument ".concat(iface.name, ".").concat(fieldName, "(").concat(argName, ":) expected but ").concat(type.name, ".").concat(fieldName, " does not provide it."), [ifaceArg.astNode, typeField.astNode]);
         return "continue";
       } // Assert interface field arg type matches object field arg type.
       // (invariant)
       // TODO: change to contravariant?
 
 
-      if (!(0,_utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_7__.isEqualType)(ifaceArg.type, typeArg.type)) {
-        context.reportError("Interface field argument " + iface.name + "." + fieldName + "(" + argName + ":) " + ("expects type " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(ifaceArg.type) + " but ") + (type.name + "." + fieldName + "(" + argName + ":) is type ") + ((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(typeArg.type) + "."), [(_ifaceArg$astNode = ifaceArg.astNode) === null || _ifaceArg$astNode === void 0 ? void 0 : _ifaceArg$astNode.type, (_typeArg$astNode = typeArg.astNode) === null || _typeArg$astNode === void 0 ? void 0 : _typeArg$astNode.type]);
+      if (!(0,_utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_9__.isEqualType)(ifaceArg.type, typeArg.type)) {
+        var _ifaceArg$astNode, _typeArg$astNode;
+
+        context.reportError("Interface field argument ".concat(iface.name, ".").concat(fieldName, "(").concat(argName, ":) ") + "expects type ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(ifaceArg.type), " but ") + "".concat(type.name, ".").concat(fieldName, "(").concat(argName, ":) is type ") + "".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(typeArg.type), "."), [// istanbul ignore next (TODO need to write coverage tests)
+        (_ifaceArg$astNode = ifaceArg.astNode) === null || _ifaceArg$astNode === void 0 ? void 0 : _ifaceArg$astNode.type, // istanbul ignore next (TODO need to write coverage tests)
+        (_typeArg$astNode = typeArg.astNode) === null || _typeArg$astNode === void 0 ? void 0 : _typeArg$astNode.type]);
       } // TODO: validate default values?
 
     };
 
-    for (var _iterator5 = _createForOfIteratorHelperLoose(ifaceField.args), _step5; !(_step5 = _iterator5()).done;) {
-      var _ifaceArg$astNode, _typeArg$astNode;
-
-      var _ret = _loop();
+    for (var _i18 = 0, _ifaceField$args2 = ifaceField.args; _i18 < _ifaceField$args2.length; _i18++) {
+      var _ret = _loop(_i18, _ifaceField$args2);
 
       if (_ret === "continue") continue;
     } // Assert additional arguments must not be required.
 
 
-    var _loop2 = function _loop2() {
-      var typeArg = _step6.value;
+    var _loop2 = function _loop2(_i20, _typeField$args2) {
+      var typeArg = _typeField$args2[_i20];
       var argName = typeArg.name;
-      var ifaceArg = ifaceField.args.find(function (arg) {
+      var ifaceArg = (0,_polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(ifaceField.args, function (arg) {
         return arg.name === argName;
       });
 
       if (!ifaceArg && (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isRequiredArgument)(typeArg)) {
-        context.reportError("Object field " + type.name + "." + fieldName + " includes required argument " + argName + " that is missing from the Interface field " + iface.name + "." + fieldName + ".", [typeArg.astNode, ifaceField.astNode]);
+        context.reportError("Object field ".concat(type.name, ".").concat(fieldName, " includes required argument ").concat(argName, " that is missing from the Interface field ").concat(iface.name, ".").concat(fieldName, "."), [typeArg.astNode, ifaceField.astNode]);
       }
     };
 
-    for (var _iterator6 = _createForOfIteratorHelperLoose(typeField.args), _step6; !(_step6 = _iterator6()).done;) {
-      _loop2();
+    for (var _i20 = 0, _typeField$args2 = typeField.args; _i20 < _typeField$args2.length; _i20++) {
+      _loop2(_i20, _typeField$args2);
     }
   }
 }
@@ -22514,11 +22420,11 @@ function validateTypeImplementsInterface(context, type, iface) {
 function validateTypeImplementsAncestors(context, type, iface) {
   var ifaceInterfaces = type.getInterfaces();
 
-  for (var _iterator7 = _createForOfIteratorHelperLoose(iface.getInterfaces()), _step7; !(_step7 = _iterator7()).done;) {
-    var transitive = _step7.value;
+  for (var _i22 = 0, _iface$getInterfaces2 = iface.getInterfaces(); _i22 < _iface$getInterfaces2.length; _i22++) {
+    var transitive = _iface$getInterfaces2[_i22];
 
-    if (!ifaceInterfaces.includes(transitive)) {
-      context.reportError(transitive === type ? "Type " + type.name + " cannot implement " + iface.name + " because it would create a circular reference." : "Type " + type.name + " must implement " + transitive.name + " because it is implemented by " + iface.name + ".", [].concat(getAllImplementsInterfaceNodes(iface, transitive), getAllImplementsInterfaceNodes(type, iface)));
+    if (ifaceInterfaces.indexOf(transitive) === -1) {
+      context.reportError(transitive === type ? "Type ".concat(type.name, " cannot implement ").concat(iface.name, " because it would create a circular reference.") : "Type ".concat(type.name, " must implement ").concat(transitive.name, " because it is implemented by ").concat(iface.name, "."), [].concat(getAllImplementsInterfaceNodes(iface, transitive), getAllImplementsInterfaceNodes(type, iface)));
     }
   }
 }
@@ -22527,23 +22433,23 @@ function validateUnionMembers(context, union) {
   var memberTypes = union.getTypes();
 
   if (memberTypes.length === 0) {
-    context.reportError("Union type " + union.name + " must define one or more member types.", [union.astNode].concat(union.extensionASTNodes));
+    context.reportError("Union type ".concat(union.name, " must define one or more member types."), getAllNodes(union));
   }
 
   var includedTypeNames = Object.create(null);
 
-  for (var _iterator8 = _createForOfIteratorHelperLoose(memberTypes), _step8; !(_step8 = _iterator8()).done;) {
-    var memberType = _step8.value;
+  for (var _i24 = 0; _i24 < memberTypes.length; _i24++) {
+    var memberType = memberTypes[_i24];
 
     if (includedTypeNames[memberType.name]) {
-      context.reportError("Union type " + union.name + " can only include type " + memberType.name + " once.", getUnionMemberTypeNodes(union, memberType.name));
+      context.reportError("Union type ".concat(union.name, " can only include type ").concat(memberType.name, " once."), getUnionMemberTypeNodes(union, memberType.name));
       continue;
     }
 
     includedTypeNames[memberType.name] = true;
 
     if (!(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectType)(memberType)) {
-      context.reportError("Union type " + union.name + " can only include Object types, " + ("it cannot include " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(memberType) + "."), getUnionMemberTypeNodes(union, String(memberType)));
+      context.reportError("Union type ".concat(union.name, " can only include Object types, ") + "it cannot include ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(memberType), "."), getUnionMemberTypeNodes(union, String(memberType)));
     }
   }
 }
@@ -22552,39 +22458,45 @@ function validateEnumValues(context, enumType) {
   var enumValues = enumType.getValues();
 
   if (enumValues.length === 0) {
-    context.reportError("Enum type " + enumType.name + " must define one or more values.", [enumType.astNode].concat(enumType.extensionASTNodes));
+    context.reportError("Enum type ".concat(enumType.name, " must define one or more values."), getAllNodes(enumType));
   }
 
-  for (var _iterator9 = _createForOfIteratorHelperLoose(enumValues), _step9; !(_step9 = _iterator9()).done;) {
-    var enumValue = _step9.value;
-    // Ensure valid name.
+  for (var _i26 = 0; _i26 < enumValues.length; _i26++) {
+    var enumValue = enumValues[_i26];
+    var valueName = enumValue.name; // Ensure valid name.
+
     validateName(context, enumValue);
+
+    if (valueName === 'true' || valueName === 'false' || valueName === 'null') {
+      context.reportError("Enum type ".concat(enumType.name, " cannot include value: ").concat(valueName, "."), enumValue.astNode);
+    }
   }
 }
 
 function validateInputFields(context, inputObj) {
-  var fields = Object.values(inputObj.getFields());
+  var fields = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(inputObj.getFields());
 
   if (fields.length === 0) {
-    context.reportError("Input Object type " + inputObj.name + " must define one or more fields.", [inputObj.astNode].concat(inputObj.extensionASTNodes));
+    context.reportError("Input Object type ".concat(inputObj.name, " must define one or more fields."), getAllNodes(inputObj));
   } // Ensure the arguments are valid
 
 
-  for (var _i4 = 0, _fields2 = fields; _i4 < _fields2.length; _i4++) {
-    var field = _fields2[_i4];
-    // Ensure they are named correctly.
+  for (var _i28 = 0; _i28 < fields.length; _i28++) {
+    var field = fields[_i28]; // Ensure they are named correctly.
+
     validateName(context, field); // Ensure the type is an input type
 
     if (!(0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isInputType)(field.type)) {
       var _field$astNode2;
 
-      context.reportError("The type of " + inputObj.name + "." + field.name + " must be Input Type " + ("but got: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__.inspect)(field.type) + "."), (_field$astNode2 = field.astNode) === null || _field$astNode2 === void 0 ? void 0 : _field$astNode2.type);
+      context.reportError("The type of ".concat(inputObj.name, ".").concat(field.name, " must be Input Type ") + "but got: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(field.type), "."), (_field$astNode2 = field.astNode) === null || _field$astNode2 === void 0 ? void 0 : _field$astNode2.type);
     }
 
     if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isRequiredInputField)(field) && field.deprecationReason != null) {
       var _field$astNode3;
 
-      context.reportError("Required input field " + inputObj.name + "." + field.name + " cannot be deprecated.", [getDeprecatedDirectiveNode(field.astNode), (_field$astNode3 = field.astNode) === null || _field$astNode3 === void 0 ? void 0 : _field$astNode3.type]);
+      context.reportError("Required input field ".concat(inputObj.name, ".").concat(field.name, " cannot be deprecated."), [getDeprecatedDirectiveNode(field.astNode), // istanbul ignore next (TODO need to write coverage tests)
+      (_field$astNode3 = field.astNode) === null || _field$astNode3 === void 0 ? void 0 : _field$astNode3.type]);
     }
   }
 }
@@ -22609,10 +22521,10 @@ function createInputObjectCircularRefsValidator(context) {
 
     visitedTypes[inputObj.name] = true;
     fieldPathIndexByTypeName[inputObj.name] = fieldPath.length;
-    var fields = Object.values(inputObj.getFields());
+    var fields = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(inputObj.getFields());
 
-    for (var _i5 = 0, _fields3 = fields; _i5 < _fields3.length; _i5++) {
-      var field = _fields3[_i5];
+    for (var _i30 = 0; _i30 < fields.length; _i30++) {
+      var field = fields[_i30];
 
       if ((0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(field.type) && (0,_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isInputObjectType)(field.type.ofType)) {
         var fieldType = field.type.ofType;
@@ -22626,7 +22538,7 @@ function createInputObjectCircularRefsValidator(context) {
           var pathStr = cyclePath.map(function (fieldObj) {
             return fieldObj.name;
           }).join('.');
-          context.reportError("Cannot reference Input Object \"" + fieldType.name + "\" within itself through a series of non-null fields: \"" + pathStr + "\".", cyclePath.map(function (fieldObj) {
+          context.reportError("Cannot reference Input Object \"".concat(fieldType.name, "\" within itself through a series of non-null fields: \"").concat(pathStr, "\"."), cyclePath.map(function (fieldObj) {
             return fieldObj.astNode;
           }));
         }
@@ -22639,45 +22551,48 @@ function createInputObjectCircularRefsValidator(context) {
   }
 }
 
+function getAllNodes(object) {
+  var astNode = object.astNode,
+      extensionASTNodes = object.extensionASTNodes;
+  return astNode ? extensionASTNodes ? [astNode].concat(extensionASTNodes) : [astNode] : extensionASTNodes !== null && extensionASTNodes !== void 0 ? extensionASTNodes : [];
+}
+
+function getAllSubNodes(object, getter) {
+  var subNodes = [];
+
+  for (var _i32 = 0, _getAllNodes2 = getAllNodes(object); _i32 < _getAllNodes2.length; _i32++) {
+    var _getter;
+
+    var node = _getAllNodes2[_i32]; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
+
+    subNodes = subNodes.concat((_getter = getter(node)) !== null && _getter !== void 0 ? _getter : []);
+  }
+
+  return subNodes;
+}
+
 function getAllImplementsInterfaceNodes(type, iface) {
-  var astNode = type.astNode,
-      extensionASTNodes = type.extensionASTNodes;
-  var nodes = astNode != null ? [astNode].concat(extensionASTNodes) : extensionASTNodes; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-  return nodes.flatMap(function (typeNode) {
-    var _typeNode$interfaces;
-
-    return (
-      /* c8 ignore next */
-      (_typeNode$interfaces = typeNode.interfaces) !== null && _typeNode$interfaces !== void 0 ? _typeNode$interfaces : []
-    );
+  return getAllSubNodes(type, function (typeNode) {
+    return typeNode.interfaces;
   }).filter(function (ifaceNode) {
     return ifaceNode.name.value === iface.name;
   });
 }
 
 function getUnionMemberTypeNodes(union, typeName) {
-  var astNode = union.astNode,
-      extensionASTNodes = union.extensionASTNodes;
-  var nodes = astNode != null ? [astNode].concat(extensionASTNodes) : extensionASTNodes; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-  return nodes.flatMap(function (unionNode) {
-    var _unionNode$types;
-
-    return (
-      /* c8 ignore next */
-      (_unionNode$types = unionNode.types) !== null && _unionNode$types !== void 0 ? _unionNode$types : []
-    );
+  return getAllSubNodes(union, function (unionNode) {
+    return unionNode.types;
   }).filter(function (typeNode) {
     return typeNode.name.value === typeName;
   });
 }
 
 function getDeprecatedDirectiveNode(definitionNode) {
-  var _definitionNode$direc;
+  var _definitionNode$direc; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
+
 
   return definitionNode === null || definitionNode === void 0 ? void 0 : (_definitionNode$direc = definitionNode.directives) === null || _definitionNode$direc === void 0 ? void 0 : _definitionNode$direc.find(function (node) {
-    return node.name.value === _directives_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLDeprecatedDirective.name;
+    return node.name.value === _directives_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLDeprecatedDirective.name;
   });
 }
 
@@ -22695,15 +22610,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TypeInfo": function() { return /* binding */ TypeInfo; },
 /* harmony export */   "visitWithTypeInfo": function() { return /* binding */ visitWithTypeInfo; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../polyfills/find.mjs */ "./node_modules/graphql/polyfills/find.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _language_ast_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../language/ast.mjs */ "./node_modules/graphql/language/ast.mjs");
-/* harmony import */ var _language_visitor_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../language/visitor.mjs */ "./node_modules/graphql/language/visitor.mjs");
+/* harmony import */ var _language_ast_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../language/ast.mjs */ "./node_modules/graphql/language/ast.mjs");
+/* harmony import */ var _language_visitor_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../language/visitor.mjs */ "./node_modules/graphql/language/visitor.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-/* harmony import */ var _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../type/introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
+/* harmony import */ var _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../type/introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
 /* harmony import */ var _typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./typeFromAST.mjs */ "./node_modules/graphql/utilities/typeFromAST.mjs");
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 
 
@@ -22717,15 +22630,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * AST during a recursive descent by calling `enter(node)` and `leave(node)`.
  */
 
-var TypeInfo = /*#__PURE__*/function (_Symbol$toStringTag) {
-  function TypeInfo(schema,
-  /**
-   * Initial type may be provided in rare cases to facilitate traversals
-   *  beginning somewhere other than documents.
-   */
-  initialType,
-  /** @deprecated will be removed in 17.0.0 */
-  getFieldDefFn) {
+var TypeInfo = /*#__PURE__*/function () {
+  function TypeInfo(schema, // NOTE: this experimental optional second parameter is only needed in order
+  // to support non-spec-compliant code bases. You should never need to use it.
+  // It may disappear in the future.
+  getFieldDefFn, // Initial type may be provided in rare cases to facilitate traversals
+  // beginning somewhere other than documents.
+  initialType) {
     this._schema = schema;
     this._typeStack = [];
     this._parentTypeStack = [];
@@ -22803,7 +22714,7 @@ var TypeInfo = /*#__PURE__*/function (_Symbol$toStringTag) {
   };
 
   _proto.enter = function enter(node) {
-    var schema = this._schema; // Note: many of the types below are explicitly typed as "unknown" to drop
+    var schema = this._schema; // Note: many of the types below are explicitly typed as "mixed" to drop
     // any assumptions of a valid schema to ensure runtime types are properly
     // checked before continuing since TypeInfo is used as part of validation
     // which occurs before guarantees of schema and document validity.
@@ -22845,9 +22756,23 @@ var TypeInfo = /*#__PURE__*/function (_Symbol$toStringTag) {
 
       case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.OPERATION_DEFINITION:
         {
-          var rootType = schema.getRootType(node.operation);
+          var type;
 
-          this._typeStack.push((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isObjectType)(rootType) ? rootType : undefined);
+          switch (node.operation) {
+            case 'query':
+              type = schema.getQueryType();
+              break;
+
+            case 'mutation':
+              type = schema.getMutationType();
+              break;
+
+            case 'subscription':
+              type = schema.getSubscriptionType();
+              break;
+          }
+
+          this._typeStack.push((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isObjectType)(type) ? type : undefined);
 
           break;
         }
@@ -22881,7 +22806,7 @@ var TypeInfo = /*#__PURE__*/function (_Symbol$toStringTag) {
           var fieldOrDirective = (_this$getDirective = this.getDirective()) !== null && _this$getDirective !== void 0 ? _this$getDirective : this.getFieldDef();
 
           if (fieldOrDirective) {
-            argDef = fieldOrDirective.args.find(function (arg) {
+            argDef = (0,_polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(fieldOrDirective.args, function (arg) {
               return arg.name === node.name.value;
             });
 
@@ -22944,9 +22869,6 @@ var TypeInfo = /*#__PURE__*/function (_Symbol$toStringTag) {
           this._enumValue = enumValue;
           break;
         }
-
-      default: // Ignore other nodes
-
     }
   };
 
@@ -23000,21 +22922,11 @@ var TypeInfo = /*#__PURE__*/function (_Symbol$toStringTag) {
       case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.ENUM:
         this._enumValue = null;
         break;
-
-      default: // Ignore other nodes
-
     }
   };
 
-  _createClass(TypeInfo, [{
-    key: _Symbol$toStringTag,
-    get: function get() {
-      return 'TypeInfo';
-    }
-  }]);
-
   return TypeInfo;
-}(Symbol.toStringTag);
+}();
 /**
  * Not exactly the same as the executor's definition of getFieldDef, in this
  * statically evaluated environment we do not always have an Object type,
@@ -23024,16 +22936,16 @@ var TypeInfo = /*#__PURE__*/function (_Symbol$toStringTag) {
 function getFieldDef(schema, parentType, fieldNode) {
   var name = fieldNode.name.value;
 
-  if (name === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_3__.SchemaMetaFieldDef.name && schema.getQueryType() === parentType) {
-    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_3__.SchemaMetaFieldDef;
+  if (name === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_4__.SchemaMetaFieldDef.name && schema.getQueryType() === parentType) {
+    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_4__.SchemaMetaFieldDef;
   }
 
-  if (name === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_3__.TypeMetaFieldDef.name && schema.getQueryType() === parentType) {
-    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_3__.TypeMetaFieldDef;
+  if (name === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_4__.TypeMetaFieldDef.name && schema.getQueryType() === parentType) {
+    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_4__.TypeMetaFieldDef;
   }
 
-  if (name === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_3__.TypeNameMetaFieldDef.name && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isCompositeType)(parentType)) {
-    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_3__.TypeNameMetaFieldDef;
+  if (name === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_4__.TypeNameMetaFieldDef.name && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isCompositeType)(parentType)) {
+    return _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_4__.TypeNameMetaFieldDef;
   }
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isObjectType)(parentType) || (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isInterfaceType)(parentType)) {
@@ -23048,22 +22960,19 @@ function getFieldDef(schema, parentType, fieldNode) {
 
 function visitWithTypeInfo(typeInfo, visitor) {
   return {
-    enter: function enter() {
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      var node = args[0];
+    enter: function enter(node) {
       typeInfo.enter(node);
-      var fn = (0,_language_visitor_mjs__WEBPACK_IMPORTED_MODULE_4__.getEnterLeaveForKind)(visitor, node.kind).enter;
+      var fn = (0,_language_visitor_mjs__WEBPACK_IMPORTED_MODULE_5__.getVisitFn)(visitor, node.kind,
+      /* isLeaving */
+      false);
 
       if (fn) {
-        var result = fn.apply(visitor, args);
+        var result = fn.apply(visitor, arguments);
 
         if (result !== undefined) {
           typeInfo.leave(node);
 
-          if ((0,_language_ast_mjs__WEBPACK_IMPORTED_MODULE_5__.isNode)(result)) {
+          if ((0,_language_ast_mjs__WEBPACK_IMPORTED_MODULE_6__.isNode)(result)) {
             typeInfo.enter(result);
           }
         }
@@ -23071,23 +22980,68 @@ function visitWithTypeInfo(typeInfo, visitor) {
         return result;
       }
     },
-    leave: function leave() {
-      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      var node = args[0];
-      var fn = (0,_language_visitor_mjs__WEBPACK_IMPORTED_MODULE_4__.getEnterLeaveForKind)(visitor, node.kind).leave;
+    leave: function leave(node) {
+      var fn = (0,_language_visitor_mjs__WEBPACK_IMPORTED_MODULE_5__.getVisitFn)(visitor, node.kind,
+      /* isLeaving */
+      true);
       var result;
 
       if (fn) {
-        result = fn.apply(visitor, args);
+        result = fn.apply(visitor, arguments);
       }
 
       typeInfo.leave(node);
       return result;
     }
   };
+}
+
+/***/ }),
+
+/***/ "./node_modules/graphql/utilities/assertValidName.mjs":
+/*!************************************************************!*\
+  !*** ./node_modules/graphql/utilities/assertValidName.mjs ***!
+  \************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "assertValidName": function() { return /* binding */ assertValidName; },
+/* harmony export */   "isValidNameError": function() { return /* binding */ isValidNameError; }
+/* harmony export */ });
+/* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
+
+
+var NAME_RX = /^[_a-zA-Z][_a-zA-Z0-9]*$/;
+/**
+ * Upholds the spec rules about naming.
+ */
+
+function assertValidName(name) {
+  var error = isValidNameError(name);
+
+  if (error) {
+    throw error;
+  }
+
+  return name;
+}
+/**
+ * Returns an Error if a name is invalid.
+ */
+
+function isValidNameError(name) {
+  typeof name === 'string' || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(0, 'Expected name to be a string.');
+
+  if (name.length > 1 && name[0] === '_' && name[1] === '_') {
+    return new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Name \"".concat(name, "\" must not begin with \"__\", which is reserved by GraphQL introspection."));
+  }
+
+  if (!NAME_RX.test(name)) {
+    return new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Names must match /^[_a-zA-Z][_a-zA-Z0-9]*$/ but \"".concat(name, "\" does not."));
+  }
 }
 
 /***/ }),
@@ -23103,18 +23057,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "astFromValue": function() { return /* binding */ astFromValue; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
+/* harmony import */ var _polyfills_isFinite_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../polyfills/isFinite.mjs */ "./node_modules/graphql/polyfills/isFinite.mjs");
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
 /* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
-/* harmony import */ var _jsutils_isIterableObject_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/isIterableObject.mjs */ "./node_modules/graphql/jsutils/isIterableObject.mjs");
+/* harmony import */ var _jsutils_safeArrayFrom_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/safeArrayFrom.mjs */ "./node_modules/graphql/jsutils/safeArrayFrom.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _type_scalars_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../type/scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
+/* harmony import */ var _type_scalars_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../type/scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -23140,7 +23092,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * | Boolean       | Boolean              |
  * | String        | String / Enum Value  |
  * | Number        | Int / Float          |
- * | Unknown       | Enum Value           |
+ * | Mixed         | Enum Value           |
  * | null          | NullValue            |
  *
  */
@@ -23172,12 +23124,13 @@ function astFromValue(value, type) {
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isListType)(type)) {
     var itemType = type.ofType;
+    var items = (0,_jsutils_safeArrayFrom_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(value);
 
-    if ((0,_jsutils_isIterableObject_mjs__WEBPACK_IMPORTED_MODULE_2__.isIterableObject)(value)) {
+    if (items != null) {
       var valuesNodes = [];
 
-      for (var _iterator = _createForOfIteratorHelperLoose(value), _step; !(_step = _iterator()).done;) {
-        var item = _step.value;
+      for (var _i2 = 0; _i2 < items.length; _i2++) {
+        var item = items[_i2];
         var itemNode = astFromValue(item, itemType);
 
         if (itemNode != null) {
@@ -23197,14 +23150,14 @@ function astFromValue(value, type) {
 
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isInputObjectType)(type)) {
-    if (!(0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_3__.isObjectLike)(value)) {
+    if (!(0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(value)) {
       return null;
     }
 
     var fieldNodes = [];
 
-    for (var _i = 0, _Object$values = Object.values(type.getFields()); _i < _Object$values.length; _i++) {
-      var field = _Object$values[_i];
+    for (var _i4 = 0, _objectValues2 = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_4__["default"])(type.getFields()); _i4 < _objectValues2.length; _i4++) {
+      var field = _objectValues2[_i4];
       var fieldValue = astFromValue(value[field.name], field.type);
 
       if (fieldValue) {
@@ -23223,7 +23176,8 @@ function astFromValue(value, type) {
       kind: _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.OBJECT,
       fields: fieldNodes
     };
-  }
+  } // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2618')
+
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isLeafType)(type)) {
     // Since value is an internally represented value, it must be serialized
@@ -23243,7 +23197,7 @@ function astFromValue(value, type) {
     } // JavaScript numbers can be Int or Float values.
 
 
-    if (typeof serialized === 'number' && Number.isFinite(serialized)) {
+    if (typeof serialized === 'number' && (0,_polyfills_isFinite_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(serialized)) {
       var stringNum = String(serialized);
       return integerStringRegExp.test(stringNum) ? {
         kind: _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.INT,
@@ -23264,7 +23218,7 @@ function astFromValue(value, type) {
       } // ID types can use Int literals.
 
 
-      if (type === _type_scalars_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLID && integerStringRegExp.test(serialized)) {
+      if (type === _type_scalars_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLID && integerStringRegExp.test(serialized)) {
         return {
           kind: _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.INT,
           value: serialized
@@ -23277,13 +23231,11 @@ function astFromValue(value, type) {
       };
     }
 
-    throw new TypeError("Cannot convert value to AST: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(serialized) + ".");
-  }
-  /* c8 ignore next 3 */
-  // Not reachable, all possible types have been considered.
+    throw new TypeError("Cannot convert value to AST: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(serialized), "."));
+  } // istanbul ignore next (Not reachable. All possible input types have been considered)
 
 
-   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_6__.invariant)(false, 'Unexpected input type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(type));
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(0, 'Unexpected input type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(type));
 }
 /**
  * IntValue:
@@ -23314,14 +23266,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _type_schema_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../type/schema.mjs */ "./node_modules/graphql/type/schema.mjs");
 /* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
 /* harmony import */ var _extendSchema_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./extendSchema.mjs */ "./node_modules/graphql/utilities/extendSchema.mjs");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 
@@ -23333,15 +23277,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * This takes the ast of a schema document produced by the parse function in
  * src/language/parser.js.
  *
- * If no schema definition is provided, then it will look for types named Query,
- * Mutation and Subscription.
+ * If no schema definition is provided, then it will look for types named Query
+ * and Mutation.
  *
  * Given that AST it constructs a GraphQLSchema. The resulting schema
  * has no resolve methods, so execution will use default resolvers.
+ *
+ * Accepts options as a second argument:
+ *
+ *    - commentDescriptions:
+ *        Provide true to use preceding comments as the description.
+ *
  */
 
 function buildASTSchema(documentAST, options) {
-  documentAST != null && documentAST.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.DOCUMENT || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_1__.devAssert)(false, 'Must provide valid Document AST.');
+  documentAST != null && documentAST.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.DOCUMENT || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(0, 'Must provide valid Document AST.');
 
   if ((options === null || options === void 0 ? void 0 : options.assumeValid) !== true && (options === null || options === void 0 ? void 0 : options.assumeValidSDL) !== true) {
     (0,_validation_validate_mjs__WEBPACK_IMPORTED_MODULE_2__.assertValidSDL)(documentAST);
@@ -23351,46 +23301,52 @@ function buildASTSchema(documentAST, options) {
     description: undefined,
     types: [],
     directives: [],
-    extensions: Object.create(null),
+    extensions: undefined,
     extensionASTNodes: [],
     assumeValid: false
   };
   var config = (0,_extendSchema_mjs__WEBPACK_IMPORTED_MODULE_3__.extendSchemaImpl)(emptySchemaConfig, documentAST, options);
 
   if (config.astNode == null) {
-    for (var _iterator = _createForOfIteratorHelperLoose(config.types), _step; !(_step = _iterator()).done;) {
-      var type = _step.value;
+    for (var _i2 = 0, _config$types2 = config.types; _i2 < _config$types2.length; _i2++) {
+      var type = _config$types2[_i2];
 
       switch (type.name) {
         // Note: While this could make early assertions to get the correctly
         // typed values below, that would throw immediately while type system
         // validation with validateSchema() will produce more actionable results.
         case 'Query':
-          // @ts-expect-error validated in `validateSchema`
           config.query = type;
           break;
 
         case 'Mutation':
-          // @ts-expect-error validated in `validateSchema`
           config.mutation = type;
           break;
 
         case 'Subscription':
-          // @ts-expect-error validated in `validateSchema`
           config.subscription = type;
           break;
       }
     }
   }
 
-  var directives = [].concat(config.directives, _type_directives_mjs__WEBPACK_IMPORTED_MODULE_4__.specifiedDirectives.filter(function (stdDirective) {
-    return config.directives.every(function (directive) {
+  var directives = config.directives; // If specified directives were not explicitly declared, add them.
+
+  var _loop = function _loop(_i4) {
+    var stdDirective = _type_directives_mjs__WEBPACK_IMPORTED_MODULE_4__.specifiedDirectives[_i4];
+
+    if (directives.every(function (directive) {
       return directive.name !== stdDirective.name;
-    });
-  }));
-  return new _type_schema_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLSchema(_extends({}, config, {
-    directives: directives
-  }));
+    })) {
+      directives.push(stdDirective);
+    }
+  };
+
+  for (var _i4 = 0; _i4 < _type_directives_mjs__WEBPACK_IMPORTED_MODULE_4__.specifiedDirectives.length; _i4++) {
+    _loop(_i4);
+  }
+
+  return new _type_schema_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLSchema(config);
 }
 /**
  * A helper function to build a GraphQLSchema directly from a source
@@ -23400,9 +23356,12 @@ function buildASTSchema(documentAST, options) {
 function buildSchema(source, options) {
   var document = (0,_language_parser_mjs__WEBPACK_IMPORTED_MODULE_6__.parse)(source, {
     noLocation: options === null || options === void 0 ? void 0 : options.noLocation,
-    allowLegacyFragmentVariables: options === null || options === void 0 ? void 0 : options.allowLegacyFragmentVariables
+    allowLegacySDLEmptyFields: options === null || options === void 0 ? void 0 : options.allowLegacySDLEmptyFields,
+    allowLegacySDLImplementsInterfaces: options === null || options === void 0 ? void 0 : options.allowLegacySDLImplementsInterfaces,
+    experimentalFragmentVariables: options === null || options === void 0 ? void 0 : options.experimentalFragmentVariables
   });
   return buildASTSchema(document, {
+    commentDescriptions: options === null || options === void 0 ? void 0 : options.commentDescriptions,
     assumeValidSDL: options === null || options === void 0 ? void 0 : options.assumeValidSDL,
     assumeValid: options === null || options === void 0 ? void 0 : options.assumeValid
   });
@@ -23421,17 +23380,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "buildClientSchema": function() { return /* binding */ buildClientSchema; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
 /* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
 /* harmony import */ var _jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/keyValMap.mjs */ "./node_modules/graphql/jsutils/keyValMap.mjs");
 /* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
-/* harmony import */ var _language_parser_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../language/parser.mjs */ "./node_modules/graphql/language/parser.mjs");
+/* harmony import */ var _language_parser_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../language/parser.mjs */ "./node_modules/graphql/language/parser.mjs");
 /* harmony import */ var _type_schema_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../type/schema.mjs */ "./node_modules/graphql/type/schema.mjs");
-/* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
+/* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
 /* harmony import */ var _type_scalars_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../type/scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
 /* harmony import */ var _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../type/introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
-/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-/* harmony import */ var _valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./valueFromAST.mjs */ "./node_modules/graphql/utilities/valueFromAST.mjs");
+/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+/* harmony import */ var _valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./valueFromAST.mjs */ "./node_modules/graphql/utilities/valueFromAST.mjs");
+
 
 
 
@@ -23457,18 +23418,18 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 function buildClientSchema(introspection, options) {
-  (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_0__.isObjectLike)(introspection) && (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_0__.isObjectLike)(introspection.__schema) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_1__.devAssert)(false, "Invalid or incomplete introspection result. Ensure that you are passing \"data\" property of introspection response and no \"errors\" was returned alongside: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(introspection) + "."); // Get the schema from the introspection result.
+  (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(introspection) && (0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(introspection.__schema) || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(0, "Invalid or incomplete introspection result. Ensure that you are passing \"data\" property of introspection response and no \"errors\" was returned alongside: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(introspection), ".")); // Get the schema from the introspection result.
 
   var schemaIntrospection = introspection.__schema; // Iterate through all types, getting the type definition for each.
 
-  var typeMap = (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__.keyValMap)(schemaIntrospection.types, function (typeIntrospection) {
+  var typeMap = (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(schemaIntrospection.types, function (typeIntrospection) {
     return typeIntrospection.name;
   }, function (typeIntrospection) {
     return buildType(typeIntrospection);
   }); // Include standard types only if they are used.
 
-  for (var _i = 0, _arr = [].concat(_type_scalars_mjs__WEBPACK_IMPORTED_MODULE_4__.specifiedScalarTypes, _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_5__.introspectionTypes); _i < _arr.length; _i++) {
-    var stdType = _arr[_i];
+  for (var _i2 = 0, _ref2 = [].concat(_type_scalars_mjs__WEBPACK_IMPORTED_MODULE_4__.specifiedScalarTypes, _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_5__.introspectionTypes); _i2 < _ref2.length; _i2++) {
+    var stdType = _ref2[_i2];
 
     if (typeMap[stdType.name]) {
       typeMap[stdType.name] = stdType;
@@ -23488,7 +23449,7 @@ function buildClientSchema(introspection, options) {
     query: queryType,
     mutation: mutationType,
     subscription: subscriptionType,
-    types: Object.values(typeMap),
+    types: (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(typeMap),
     directives: directives,
     assumeValid: options === null || options === void 0 ? void 0 : options.assumeValid
   }); // Given a type reference in introspection, return the GraphQLType instance.
@@ -23502,7 +23463,7 @@ function buildClientSchema(introspection, options) {
         throw new Error('Decorated type deeper than introspection query.');
       }
 
-      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLList(getType(itemRef));
+      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLList(getType(itemRef));
     }
 
     if (typeRef.kind === _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_5__.TypeKind.NON_NULL) {
@@ -23513,7 +23474,7 @@ function buildClientSchema(introspection, options) {
       }
 
       var nullableType = getType(nullableRef);
-      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLNonNull((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.assertNullableType)(nullableType));
+      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLNonNull((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.assertNullableType)(nullableType));
     }
 
     return getNamedType(typeRef);
@@ -23523,33 +23484,30 @@ function buildClientSchema(introspection, options) {
     var typeName = typeRef.name;
 
     if (!typeName) {
-      throw new Error("Unknown type reference: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(typeRef) + ".");
+      throw new Error("Unknown type reference: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(typeRef), "."));
     }
 
     var type = typeMap[typeName];
 
     if (!type) {
-      throw new Error("Invalid or incomplete schema, unknown type: " + typeName + ". Ensure that a full introspection query is used in order to build a client schema.");
+      throw new Error("Invalid or incomplete schema, unknown type: ".concat(typeName, ". Ensure that a full introspection query is used in order to build a client schema."));
     }
 
     return type;
   }
 
   function getObjectType(typeRef) {
-    return (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.assertObjectType)(getNamedType(typeRef));
+    return (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.assertObjectType)(getNamedType(typeRef));
   }
 
   function getInterfaceType(typeRef) {
-    return (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.assertInterfaceType)(getNamedType(typeRef));
+    return (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.assertInterfaceType)(getNamedType(typeRef));
   } // Given a type's introspection result, construct the correct
   // GraphQLType instance.
 
 
   function buildType(type) {
-    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     if (type != null && type.name != null && type.kind != null) {
-      // FIXME: Properly type IntrospectionType, it's a breaking change so fix in v17
-      // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
       switch (type.kind) {
         case _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_5__.TypeKind.SCALAR:
           return buildScalarDef(type);
@@ -23571,15 +23529,15 @@ function buildClientSchema(introspection, options) {
       }
     }
 
-    var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(type);
-    throw new Error("Invalid or incomplete introspection result. Ensure that a full introspection query is used in order to build a client schema: " + typeStr + ".");
+    var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(type);
+    throw new Error("Invalid or incomplete introspection result. Ensure that a full introspection query is used in order to build a client schema: ".concat(typeStr, "."));
   }
 
   function buildScalarDef(scalarIntrospection) {
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLScalarType({
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLScalarType({
       name: scalarIntrospection.name,
       description: scalarIntrospection.description,
-      specifiedByURL: scalarIntrospection.specifiedByURL
+      specifiedByUrl: scalarIntrospection.specifiedByUrl
     });
   }
 
@@ -23591,15 +23549,15 @@ function buildClientSchema(introspection, options) {
     }
 
     if (!implementingIntrospection.interfaces) {
-      var implementingIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(implementingIntrospection);
-      throw new Error("Introspection result missing interfaces: " + implementingIntrospectionStr + ".");
+      var implementingIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(implementingIntrospection);
+      throw new Error("Introspection result missing interfaces: ".concat(implementingIntrospectionStr, "."));
     }
 
     return implementingIntrospection.interfaces.map(getInterfaceType);
   }
 
   function buildObjectDef(objectIntrospection) {
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLObjectType({
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLObjectType({
       name: objectIntrospection.name,
       description: objectIntrospection.description,
       interfaces: function interfaces() {
@@ -23612,7 +23570,7 @@ function buildClientSchema(introspection, options) {
   }
 
   function buildInterfaceDef(interfaceIntrospection) {
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLInterfaceType({
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLInterfaceType({
       name: interfaceIntrospection.name,
       description: interfaceIntrospection.description,
       interfaces: function interfaces() {
@@ -23626,11 +23584,11 @@ function buildClientSchema(introspection, options) {
 
   function buildUnionDef(unionIntrospection) {
     if (!unionIntrospection.possibleTypes) {
-      var unionIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(unionIntrospection);
-      throw new Error("Introspection result missing possibleTypes: " + unionIntrospectionStr + ".");
+      var unionIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(unionIntrospection);
+      throw new Error("Introspection result missing possibleTypes: ".concat(unionIntrospectionStr, "."));
     }
 
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLUnionType({
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLUnionType({
       name: unionIntrospection.name,
       description: unionIntrospection.description,
       types: function types() {
@@ -23641,14 +23599,14 @@ function buildClientSchema(introspection, options) {
 
   function buildEnumDef(enumIntrospection) {
     if (!enumIntrospection.enumValues) {
-      var enumIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(enumIntrospection);
-      throw new Error("Introspection result missing enumValues: " + enumIntrospectionStr + ".");
+      var enumIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(enumIntrospection);
+      throw new Error("Introspection result missing enumValues: ".concat(enumIntrospectionStr, "."));
     }
 
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLEnumType({
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLEnumType({
       name: enumIntrospection.name,
       description: enumIntrospection.description,
-      values: (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__.keyValMap)(enumIntrospection.enumValues, function (valueIntrospection) {
+      values: (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(enumIntrospection.enumValues, function (valueIntrospection) {
         return valueIntrospection.name;
       }, function (valueIntrospection) {
         return {
@@ -23661,11 +23619,11 @@ function buildClientSchema(introspection, options) {
 
   function buildInputObjectDef(inputObjectIntrospection) {
     if (!inputObjectIntrospection.inputFields) {
-      var inputObjectIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(inputObjectIntrospection);
-      throw new Error("Introspection result missing inputFields: " + inputObjectIntrospectionStr + ".");
+      var inputObjectIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(inputObjectIntrospection);
+      throw new Error("Introspection result missing inputFields: ".concat(inputObjectIntrospectionStr, "."));
     }
 
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLInputObjectType({
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.GraphQLInputObjectType({
       name: inputObjectIntrospection.name,
       description: inputObjectIntrospection.description,
       fields: function fields() {
@@ -23676,10 +23634,10 @@ function buildClientSchema(introspection, options) {
 
   function buildFieldDefMap(typeIntrospection) {
     if (!typeIntrospection.fields) {
-      throw new Error("Introspection result missing fields: " + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(typeIntrospection) + ".");
+      throw new Error("Introspection result missing fields: ".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(typeIntrospection), "."));
     }
 
-    return (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__.keyValMap)(typeIntrospection.fields, function (fieldIntrospection) {
+    return (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(typeIntrospection.fields, function (fieldIntrospection) {
       return fieldIntrospection.name;
     }, buildField);
   }
@@ -23687,14 +23645,14 @@ function buildClientSchema(introspection, options) {
   function buildField(fieldIntrospection) {
     var type = getType(fieldIntrospection.type);
 
-    if (!(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isOutputType)(type)) {
-      var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(type);
-      throw new Error("Introspection must provide output type for fields, but received: " + typeStr + ".");
+    if (!(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isOutputType)(type)) {
+      var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(type);
+      throw new Error("Introspection must provide output type for fields, but received: ".concat(typeStr, "."));
     }
 
     if (!fieldIntrospection.args) {
-      var fieldIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(fieldIntrospection);
-      throw new Error("Introspection result missing field args: " + fieldIntrospectionStr + ".");
+      var fieldIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(fieldIntrospection);
+      throw new Error("Introspection result missing field args: ".concat(fieldIntrospectionStr, "."));
     }
 
     return {
@@ -23706,7 +23664,7 @@ function buildClientSchema(introspection, options) {
   }
 
   function buildInputValueDefMap(inputValueIntrospections) {
-    return (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__.keyValMap)(inputValueIntrospections, function (inputValue) {
+    return (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(inputValueIntrospections, function (inputValue) {
       return inputValue.name;
     }, buildInputValue);
   }
@@ -23714,12 +23672,12 @@ function buildClientSchema(introspection, options) {
   function buildInputValue(inputValueIntrospection) {
     var type = getType(inputValueIntrospection.type);
 
-    if (!(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_7__.isInputType)(type)) {
-      var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(type);
-      throw new Error("Introspection must provide input type for arguments, but received: " + typeStr + ".");
+    if (!(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_8__.isInputType)(type)) {
+      var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(type);
+      throw new Error("Introspection must provide input type for arguments, but received: ".concat(typeStr, "."));
     }
 
-    var defaultValue = inputValueIntrospection.defaultValue != null ? (0,_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_8__.valueFromAST)((0,_language_parser_mjs__WEBPACK_IMPORTED_MODULE_9__.parseValue)(inputValueIntrospection.defaultValue), type) : undefined;
+    var defaultValue = inputValueIntrospection.defaultValue != null ? (0,_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_9__.valueFromAST)((0,_language_parser_mjs__WEBPACK_IMPORTED_MODULE_10__.parseValue)(inputValueIntrospection.defaultValue), type) : undefined;
     return {
       description: inputValueIntrospection.description,
       type: type,
@@ -23730,17 +23688,17 @@ function buildClientSchema(introspection, options) {
 
   function buildDirective(directiveIntrospection) {
     if (!directiveIntrospection.args) {
-      var directiveIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(directiveIntrospection);
-      throw new Error("Introspection result missing directive args: " + directiveIntrospectionStr + ".");
+      var directiveIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(directiveIntrospection);
+      throw new Error("Introspection result missing directive args: ".concat(directiveIntrospectionStr, "."));
     }
 
     if (!directiveIntrospection.locations) {
-      var _directiveIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(directiveIntrospection);
+      var _directiveIntrospectionStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(directiveIntrospection);
 
-      throw new Error("Introspection result missing directive locations: " + _directiveIntrospectionStr + ".");
+      throw new Error("Introspection result missing directive locations: ".concat(_directiveIntrospectionStr, "."));
     }
 
-    return new _type_directives_mjs__WEBPACK_IMPORTED_MODULE_10__.GraphQLDirective({
+    return new _type_directives_mjs__WEBPACK_IMPORTED_MODULE_11__.GraphQLDirective({
       name: directiveIntrospection.name,
       description: directiveIntrospection.description,
       isRepeatable: directiveIntrospection.isRepeatable,
@@ -23763,16 +23721,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "coerceInputValue": function() { return /* binding */ coerceInputValue; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
 /* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
-/* harmony import */ var _jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/didYouMean.mjs */ "./node_modules/graphql/jsutils/didYouMean.mjs");
+/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
+/* harmony import */ var _jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../jsutils/didYouMean.mjs */ "./node_modules/graphql/jsutils/didYouMean.mjs");
 /* harmony import */ var _jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../jsutils/isObjectLike.mjs */ "./node_modules/graphql/jsutils/isObjectLike.mjs");
-/* harmony import */ var _jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../jsutils/suggestionList.mjs */ "./node_modules/graphql/jsutils/suggestionList.mjs");
+/* harmony import */ var _jsutils_safeArrayFrom_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/safeArrayFrom.mjs */ "./node_modules/graphql/jsutils/safeArrayFrom.mjs");
+/* harmony import */ var _jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/suggestionList.mjs */ "./node_modules/graphql/jsutils/suggestionList.mjs");
 /* harmony import */ var _jsutils_printPathArray_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/printPathArray.mjs */ "./node_modules/graphql/jsutils/printPathArray.mjs");
 /* harmony import */ var _jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/Path.mjs */ "./node_modules/graphql/jsutils/Path.mjs");
-/* harmony import */ var _jsutils_isIterableObject_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/isIterableObject.mjs */ "./node_modules/graphql/jsutils/isIterableObject.mjs");
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+
 
 
 
@@ -23787,19 +23747,16 @@ __webpack_require__.r(__webpack_exports__);
  * Coerces a JavaScript value given a GraphQL Input Type.
  */
 
-function coerceInputValue(inputValue, type, onError) {
-  if (onError === void 0) {
-    onError = defaultOnError;
-  }
-
-  return coerceInputValueImpl(inputValue, type, onError, undefined);
+function coerceInputValue(inputValue, type) {
+  var onError = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultOnError;
+  return coerceInputValueImpl(inputValue, type, onError);
 }
 
 function defaultOnError(path, invalidValue, error) {
-  var errorPrefix = 'Invalid value ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(invalidValue);
+  var errorPrefix = 'Invalid value ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(invalidValue);
 
   if (path.length > 0) {
-    errorPrefix += " at \"value" + (0,_jsutils_printPathArray_mjs__WEBPACK_IMPORTED_MODULE_1__.printPathArray)(path) + "\"";
+    errorPrefix += " at \"value".concat((0,_jsutils_printPathArray_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(path), "\"");
   }
 
   error.message = errorPrefix + ': ' + error.message;
@@ -23812,7 +23769,7 @@ function coerceInputValueImpl(inputValue, type, onError, path) {
       return coerceInputValueImpl(inputValue, type.ofType, onError, path);
     }
 
-    onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected non-nullable type \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type) + "\" not to be null."));
+    onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected non-nullable type \"".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type), "\" not to be null.")));
     return;
   }
 
@@ -23823,12 +23780,13 @@ function coerceInputValueImpl(inputValue, type, onError, path) {
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isListType)(type)) {
     var itemType = type.ofType;
+    var coercedList = (0,_jsutils_safeArrayFrom_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(inputValue, function (itemValue, index) {
+      var itemPath = (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.addPath)(path, index, undefined);
+      return coerceInputValueImpl(itemValue, itemType, onError, itemPath);
+    });
 
-    if ((0,_jsutils_isIterableObject_mjs__WEBPACK_IMPORTED_MODULE_5__.isIterableObject)(inputValue)) {
-      return Array.from(inputValue, function (itemValue, index) {
-        var itemPath = (0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.addPath)(path, index, undefined);
-        return coerceInputValueImpl(itemValue, itemType, onError, itemPath);
-      });
+    if (coercedList != null) {
+      return coercedList;
     } // Lists accept a non-list value as a list of one.
 
 
@@ -23836,24 +23794,24 @@ function coerceInputValueImpl(inputValue, type, onError, path) {
   }
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isInputObjectType)(type)) {
-    if (!(0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_6__.isObjectLike)(inputValue)) {
-      onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected type \"" + type.name + "\" to be an object."));
+    if (!(0,_jsutils_isObjectLike_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(inputValue)) {
+      onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected type \"".concat(type.name, "\" to be an object.")));
       return;
     }
 
     var coercedValue = {};
     var fieldDefs = type.getFields();
 
-    for (var _i = 0, _Object$values = Object.values(fieldDefs); _i < _Object$values.length; _i++) {
-      var field = _Object$values[_i];
+    for (var _i2 = 0, _objectValues2 = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(fieldDefs); _i2 < _objectValues2.length; _i2++) {
+      var field = _objectValues2[_i2];
       var fieldValue = inputValue[field.name];
 
       if (fieldValue === undefined) {
         if (field.defaultValue !== undefined) {
           coercedValue[field.name] = field.defaultValue;
         } else if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(field.type)) {
-          var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(field.type);
-          onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Field \"" + field.name + "\" of required type \"" + typeStr + "\" was not provided."));
+          var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(field.type);
+          onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Field \"".concat(field.name, "\" of required type \"").concat(typeStr, "\" was not provided.")));
         }
 
         continue;
@@ -23863,17 +23821,18 @@ function coerceInputValueImpl(inputValue, type, onError, path) {
     } // Ensure every provided field is defined.
 
 
-    for (var _i2 = 0, _Object$keys = Object.keys(inputValue); _i2 < _Object$keys.length; _i2++) {
-      var fieldName = _Object$keys[_i2];
+    for (var _i4 = 0, _Object$keys2 = Object.keys(inputValue); _i4 < _Object$keys2.length; _i4++) {
+      var fieldName = _Object$keys2[_i4];
 
       if (!fieldDefs[fieldName]) {
-        var suggestions = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_7__.suggestionList)(fieldName, Object.keys(type.getFields()));
-        onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Field \"" + fieldName + "\" is not defined by type \"" + type.name + "\"." + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_8__.didYouMean)(suggestions)));
+        var suggestions = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(fieldName, Object.keys(type.getFields()));
+        onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Field \"".concat(fieldName, "\" is not defined by type \"").concat(type.name, "\".") + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_9__["default"])(suggestions)));
       }
     }
 
     return coercedValue;
-  }
+  } // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2618')
+
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isLeafType)(type)) {
     var parseResult; // Scalars and Enums determine if a input value is valid via parseValue(),
@@ -23886,23 +23845,21 @@ function coerceInputValueImpl(inputValue, type, onError, path) {
       if (error instanceof _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError) {
         onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, error);
       } else {
-        onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected type \"" + type.name + "\". " + error.message, undefined, undefined, undefined, undefined, error));
+        onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected type \"".concat(type.name, "\". ") + error.message, undefined, undefined, undefined, undefined, error));
       }
 
       return;
     }
 
     if (parseResult === undefined) {
-      onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected type \"" + type.name + "\"."));
+      onError((0,_jsutils_Path_mjs__WEBPACK_IMPORTED_MODULE_3__.pathToArray)(path), inputValue, new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected type \"".concat(type.name, "\".")));
     }
 
     return parseResult;
-  }
-  /* c8 ignore next 3 */
-  // Not reachable, all possible types have been considered.
+  } // istanbul ignore next (Not reachable. All possible input types have been considered)
 
 
-   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_9__.invariant)(false, 'Unexpected input type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__.inspect)(type));
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_10__["default"])(0, 'Unexpected input type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(type));
 }
 
 /***/ }),
@@ -23918,30 +23875,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "concatAST": function() { return /* binding */ concatAST; }
 /* harmony export */ });
-/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
 /**
  * Provided a collection of ASTs, presumably each from different files,
  * concatenate the ASTs together into batched AST, useful for validating many
  * GraphQL source files which together represent one conceptual application.
  */
-
 function concatAST(documents) {
   var definitions = [];
 
-  for (var _iterator = _createForOfIteratorHelperLoose(documents), _step; !(_step = _iterator()).done;) {
-    var doc = _step.value;
-    definitions.push.apply(definitions, doc.definitions);
+  for (var _i2 = 0; _i2 < documents.length; _i2++) {
+    var doc = documents[_i2];
+    definitions = definitions.concat(doc.definitions);
   }
 
   return {
-    kind: _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.DOCUMENT,
+    kind: 'Document',
     definitions: definitions
   };
 }
@@ -23958,30 +23906,78 @@ function concatAST(documents) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "extendSchema": function() { return /* binding */ extendSchema; },
-/* harmony export */   "extendSchemaImpl": function() { return /* binding */ extendSchemaImpl; }
+/* harmony export */   "extendSchemaImpl": function() { return /* binding */ extendSchemaImpl; },
+/* harmony export */   "getDescription": function() { return /* binding */ getDescription; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
-/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../jsutils/mapValue.mjs */ "./node_modules/graphql/jsutils/mapValue.mjs");
-/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
+/* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../jsutils/mapValue.mjs */ "./node_modules/graphql/jsutils/mapValue.mjs");
+/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
 /* harmony import */ var _jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/devAssert.mjs */ "./node_modules/graphql/jsutils/devAssert.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
+/* harmony import */ var _language_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../language/tokenKind.mjs */ "./node_modules/graphql/language/tokenKind.mjs");
+/* harmony import */ var _language_blockString_mjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../language/blockString.mjs */ "./node_modules/graphql/language/blockString.mjs");
 /* harmony import */ var _language_predicates_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../language/predicates.mjs */ "./node_modules/graphql/language/predicates.mjs");
 /* harmony import */ var _validation_validate_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../validation/validate.mjs */ "./node_modules/graphql/validation/validate.mjs");
-/* harmony import */ var _execution_values_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../execution/values.mjs */ "./node_modules/graphql/execution/values.mjs");
+/* harmony import */ var _execution_values_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../execution/values.mjs */ "./node_modules/graphql/execution/values.mjs");
 /* harmony import */ var _type_schema_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../type/schema.mjs */ "./node_modules/graphql/type/schema.mjs");
-/* harmony import */ var _type_scalars_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../type/scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
-/* harmony import */ var _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../type/introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
-/* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
-/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-/* harmony import */ var _valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./valueFromAST.mjs */ "./node_modules/graphql/utilities/valueFromAST.mjs");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+/* harmony import */ var _type_scalars_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../type/scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
+/* harmony import */ var _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../type/introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
+/* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
+/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+/* harmony import */ var _valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./valueFromAST.mjs */ "./node_modules/graphql/utilities/valueFromAST.mjs");
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
 
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+  return keys;
+}
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+
+
 
 
 
@@ -24009,11 +24005,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *
  * This algorithm copies the provided schema, applying extensions while
  * producing the copy. The original schema remains unaltered.
+ *
+ * Accepts options as a third argument:
+ *
+ *    - commentDescriptions:
+ *        Provide true to use preceding comments as the description.
+ *
  */
 
 function extendSchema(schema, documentAST, options) {
   (0,_type_schema_mjs__WEBPACK_IMPORTED_MODULE_0__.assertSchema)(schema);
-  documentAST != null && documentAST.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.DOCUMENT || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, 'Must provide valid Document AST.');
+  documentAST != null && documentAST.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.DOCUMENT || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(0, 'Must provide valid Document AST.');
 
   if ((options === null || options === void 0 ? void 0 : options.assumeValid) !== true && (options === null || options === void 0 ? void 0 : options.assumeValidSDL) !== true) {
     (0,_validation_validate_mjs__WEBPACK_IMPORTED_MODULE_3__.assertValidSDLExtension)(documentAST, schema);
@@ -24040,8 +24042,8 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
   var schemaExtensions = [];
 
-  for (var _iterator = _createForOfIteratorHelperLoose(documentAST.definitions), _step; !(_step = _iterator()).done;) {
-    var def = _step.value;
+  for (var _i2 = 0, _documentAST$definiti2 = documentAST.definitions; _i2 < _documentAST$definiti2.length; _i2++) {
+    var def = _documentAST$definiti2[_i2];
 
     if (def.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.SCHEMA_DEFINITION) {
       schemaDef = def;
@@ -24066,34 +24068,33 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
   var typeMap = Object.create(null);
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(schemaConfig.types), _step2; !(_step2 = _iterator2()).done;) {
-    var existingType = _step2.value;
+  for (var _i4 = 0, _schemaConfig$types2 = schemaConfig.types; _i4 < _schemaConfig$types2.length; _i4++) {
+    var existingType = _schemaConfig$types2[_i4];
     typeMap[existingType.name] = extendNamedType(existingType);
   }
 
-  for (var _i = 0, _typeDefs = typeDefs; _i < _typeDefs.length; _i++) {
-    var typeNode = _typeDefs[_i];
-
+  for (var _i6 = 0; _i6 < typeDefs.length; _i6++) {
     var _stdTypeMap$name;
 
+    var typeNode = typeDefs[_i6];
     var name = typeNode.name.value;
     typeMap[name] = (_stdTypeMap$name = stdTypeMap[name]) !== null && _stdTypeMap$name !== void 0 ? _stdTypeMap$name : buildType(typeNode);
   }
 
-  var operationTypes = _extends({
+  var operationTypes = _objectSpread(_objectSpread({
     // Get the extended root operation types.
     query: schemaConfig.query && replaceNamedType(schemaConfig.query),
     mutation: schemaConfig.mutation && replaceNamedType(schemaConfig.mutation),
     subscription: schemaConfig.subscription && replaceNamedType(schemaConfig.subscription)
-  }, schemaDef && getOperationTypes([schemaDef]), getOperationTypes(schemaExtensions)); // Then produce and return a Schema config with these types.
+  }, schemaDef && getOperationTypes([schemaDef])), getOperationTypes(schemaExtensions)); // Then produce and return a Schema config with these types.
 
 
-  return _extends({
+  return _objectSpread(_objectSpread({
     description: (_schemaDef = schemaDef) === null || _schemaDef === void 0 ? void 0 : (_schemaDef$descriptio = _schemaDef.description) === null || _schemaDef$descriptio === void 0 ? void 0 : _schemaDef$descriptio.value
-  }, operationTypes, {
-    types: Object.values(typeMap),
+  }, operationTypes), {}, {
+    types: (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(typeMap),
     directives: [].concat(schemaConfig.directives.map(replaceDirective), directiveDefs.map(buildDirective)),
-    extensions: Object.create(null),
+    extensions: undefined,
     astNode: (_schemaDef2 = schemaDef) !== null && _schemaDef2 !== void 0 ? _schemaDef2 : schemaConfig.astNode,
     extensionASTNodes: schemaConfig.extensionASTNodes.concat(schemaExtensions),
     assumeValid: (_options$assumeValid = options === null || options === void 0 ? void 0 : options.assumeValid) !== null && _options$assumeValid !== void 0 ? _options$assumeValid : false
@@ -24101,16 +24102,15 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
   // this scope and have access to the schema, cache, and newly defined types.
 
   function replaceType(type) {
-    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isListType)(type)) {
-      // @ts-expect-error
-      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLList(replaceType(type.ofType));
+    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.isListType)(type)) {
+      // $FlowFixMe[incompatible-return]
+      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLList(replaceType(type.ofType));
     }
 
-    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isNonNullType)(type)) {
-      // @ts-expect-error
-      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLNonNull(replaceType(type.ofType));
-    } // @ts-expect-error FIXME
-
+    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.isNonNullType)(type)) {
+      // $FlowFixMe[incompatible-return]
+      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLNonNull(replaceType(type.ofType));
+    }
 
     return replaceNamedType(type);
   }
@@ -24124,45 +24124,44 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
   function replaceDirective(directive) {
     var config = directive.toConfig();
-    return new _type_directives_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLDirective(_extends({}, config, {
-      args: (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(config.args, extendArg)
+    return new _type_directives_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLDirective(_objectSpread(_objectSpread({}, config), {}, {
+      args: (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(config.args, extendArg)
     }));
   }
 
   function extendNamedType(type) {
-    if ((0,_type_introspection_mjs__WEBPACK_IMPORTED_MODULE_8__.isIntrospectionType)(type) || (0,_type_scalars_mjs__WEBPACK_IMPORTED_MODULE_9__.isSpecifiedScalarType)(type)) {
+    if ((0,_type_introspection_mjs__WEBPACK_IMPORTED_MODULE_9__.isIntrospectionType)(type) || (0,_type_scalars_mjs__WEBPACK_IMPORTED_MODULE_10__.isSpecifiedScalarType)(type)) {
       // Builtin types are not extended.
       return type;
     }
 
-    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isScalarType)(type)) {
+    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.isScalarType)(type)) {
       return extendScalarType(type);
     }
 
-    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isObjectType)(type)) {
+    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.isObjectType)(type)) {
       return extendObjectType(type);
     }
 
-    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isInterfaceType)(type)) {
+    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.isInterfaceType)(type)) {
       return extendInterfaceType(type);
     }
 
-    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isUnionType)(type)) {
+    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.isUnionType)(type)) {
       return extendUnionType(type);
     }
 
-    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isEnumType)(type)) {
+    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.isEnumType)(type)) {
       return extendEnumType(type);
-    }
+    } // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2618')
 
-    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isInputObjectType)(type)) {
+
+    if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.isInputObjectType)(type)) {
       return extendInputObjectType(type);
-    }
-    /* c8 ignore next 3 */
-    // Not reachable, all possible type definition nodes have been considered.
+    } // istanbul ignore next (Not reachable. All possible types have been considered)
 
 
-     false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_10__.invariant)(false, 'Unexpected type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_11__.inspect)(type));
+     false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_11__["default"])(0, 'Unexpected type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_12__["default"])(type));
   }
 
   function extendInputObjectType(type) {
@@ -24170,13 +24169,13 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
     var config = type.toConfig();
     var extensions = (_typeExtensionsMap$co = typeExtensionsMap[config.name]) !== null && _typeExtensionsMap$co !== void 0 ? _typeExtensionsMap$co : [];
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLInputObjectType(_extends({}, config, {
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLInputObjectType(_objectSpread(_objectSpread({}, config), {}, {
       fields: function fields() {
-        return _extends({}, (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(config.fields, function (field) {
-          return _extends({}, field, {
+        return _objectSpread(_objectSpread({}, (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(config.fields, function (field) {
+          return _objectSpread(_objectSpread({}, field), {}, {
             type: replaceType(field.type)
           });
-        }), buildInputFieldMap(extensions));
+        })), buildInputFieldMap(extensions));
       },
       extensionASTNodes: config.extensionASTNodes.concat(extensions)
     }));
@@ -24187,8 +24186,8 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
     var config = type.toConfig();
     var extensions = (_typeExtensionsMap$ty = typeExtensionsMap[type.name]) !== null && _typeExtensionsMap$ty !== void 0 ? _typeExtensionsMap$ty : [];
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLEnumType(_extends({}, config, {
-      values: _extends({}, config.values, buildEnumValueMap(extensions)),
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLEnumType(_objectSpread(_objectSpread({}, config), {}, {
+      values: _objectSpread(_objectSpread({}, config.values), buildEnumValueMap(extensions)),
       extensionASTNodes: config.extensionASTNodes.concat(extensions)
     }));
   }
@@ -24198,18 +24197,17 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
     var config = type.toConfig();
     var extensions = (_typeExtensionsMap$co2 = typeExtensionsMap[config.name]) !== null && _typeExtensionsMap$co2 !== void 0 ? _typeExtensionsMap$co2 : [];
-    var specifiedByURL = config.specifiedByURL;
+    var specifiedByUrl = config.specifiedByUrl;
 
-    for (var _iterator3 = _createForOfIteratorHelperLoose(extensions), _step3; !(_step3 = _iterator3()).done;) {
-      var extensionNode = _step3.value;
+    for (var _i8 = 0; _i8 < extensions.length; _i8++) {
+      var _getSpecifiedByUrl;
 
-      var _getSpecifiedByURL;
-
-      specifiedByURL = (_getSpecifiedByURL = getSpecifiedByURL(extensionNode)) !== null && _getSpecifiedByURL !== void 0 ? _getSpecifiedByURL : specifiedByURL;
+      var extensionNode = extensions[_i8];
+      specifiedByUrl = (_getSpecifiedByUrl = getSpecifiedByUrl(extensionNode)) !== null && _getSpecifiedByUrl !== void 0 ? _getSpecifiedByUrl : specifiedByUrl;
     }
 
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLScalarType(_extends({}, config, {
-      specifiedByURL: specifiedByURL,
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLScalarType(_objectSpread(_objectSpread({}, config), {}, {
+      specifiedByUrl: specifiedByUrl,
       extensionASTNodes: config.extensionASTNodes.concat(extensions)
     }));
   }
@@ -24219,12 +24217,12 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
     var config = type.toConfig();
     var extensions = (_typeExtensionsMap$co3 = typeExtensionsMap[config.name]) !== null && _typeExtensionsMap$co3 !== void 0 ? _typeExtensionsMap$co3 : [];
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLObjectType(_extends({}, config, {
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLObjectType(_objectSpread(_objectSpread({}, config), {}, {
       interfaces: function interfaces() {
         return [].concat(type.getInterfaces().map(replaceNamedType), buildInterfaces(extensions));
       },
       fields: function fields() {
-        return _extends({}, (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(config.fields, extendField), buildFieldMap(extensions));
+        return _objectSpread(_objectSpread({}, (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(config.fields, extendField)), buildFieldMap(extensions));
       },
       extensionASTNodes: config.extensionASTNodes.concat(extensions)
     }));
@@ -24235,12 +24233,12 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
     var config = type.toConfig();
     var extensions = (_typeExtensionsMap$co4 = typeExtensionsMap[config.name]) !== null && _typeExtensionsMap$co4 !== void 0 ? _typeExtensionsMap$co4 : [];
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLInterfaceType(_extends({}, config, {
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLInterfaceType(_objectSpread(_objectSpread({}, config), {}, {
       interfaces: function interfaces() {
         return [].concat(type.getInterfaces().map(replaceNamedType), buildInterfaces(extensions));
       },
       fields: function fields() {
-        return _extends({}, (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(config.fields, extendField), buildFieldMap(extensions));
+        return _objectSpread(_objectSpread({}, (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(config.fields, extendField)), buildFieldMap(extensions));
       },
       extensionASTNodes: config.extensionASTNodes.concat(extensions)
     }));
@@ -24251,7 +24249,7 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
     var config = type.toConfig();
     var extensions = (_typeExtensionsMap$co5 = typeExtensionsMap[config.name]) !== null && _typeExtensionsMap$co5 !== void 0 ? _typeExtensionsMap$co5 : [];
-    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLUnionType(_extends({}, config, {
+    return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLUnionType(_objectSpread(_objectSpread({}, config), {}, {
       types: function types() {
         return [].concat(type.getTypes().map(replaceNamedType), buildUnionTypes(extensions));
       },
@@ -24260,14 +24258,15 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
   }
 
   function extendField(field) {
-    return _extends({}, field, {
+    return _objectSpread(_objectSpread({}, field), {}, {
       type: replaceType(field.type),
-      args: field.args && (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_7__.mapValue)(field.args, extendArg)
+      // $FlowFixMe[incompatible-call]
+      args: (0,_jsutils_mapValue_mjs__WEBPACK_IMPORTED_MODULE_8__["default"])(field.args, extendArg)
     });
   }
 
   function extendArg(arg) {
-    return _extends({}, arg, {
+    return _objectSpread(_objectSpread({}, arg), {}, {
       type: replaceType(arg.type)
     });
   }
@@ -24275,25 +24274,21 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
   function getOperationTypes(nodes) {
     var opTypes = {};
 
-    for (var _iterator4 = _createForOfIteratorHelperLoose(nodes), _step4; !(_step4 = _iterator4()).done;) {
-      var node = _step4.value;
+    for (var _i10 = 0; _i10 < nodes.length; _i10++) {
+      var _node$operationTypes;
 
-      var _node$operationTypes; // FIXME: https://github.com/graphql/graphql-js/issues/2203
+      var node = nodes[_i10]; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
+      var operationTypesNodes = (_node$operationTypes = node.operationTypes) !== null && _node$operationTypes !== void 0 ? _node$operationTypes : [];
 
-      var operationTypesNodes =
-      /* c8 ignore next */
-      (_node$operationTypes = node.operationTypes) !== null && _node$operationTypes !== void 0 ? _node$operationTypes : [];
-
-      for (var _iterator5 = _createForOfIteratorHelperLoose(operationTypesNodes), _step5; !(_step5 = _iterator5()).done;) {
-        var operationType = _step5.value;
-        // Note: While this could make early assertions to get the correctly
-        // typed values below, that would throw immediately while type system
-        // validation with validateSchema() will produce more actionable results.
-        // @ts-expect-error
+      for (var _i12 = 0; _i12 < operationTypesNodes.length; _i12++) {
+        var operationType = operationTypesNodes[_i12];
         opTypes[operationType.operation] = getNamedType(operationType.type);
       }
-    }
+    } // Note: While this could make early assertions to get the correctly
+    // typed values below, that would throw immediately while type system
+    // validation with validateSchema() will produce more actionable results.
+
 
     return opTypes;
   }
@@ -24305,7 +24300,7 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
     var type = (_stdTypeMap$name2 = stdTypeMap[name]) !== null && _stdTypeMap$name2 !== void 0 ? _stdTypeMap$name2 : typeMap[name];
 
     if (type === undefined) {
-      throw new Error("Unknown type: \"" + name + "\".");
+      throw new Error("Unknown type: \"".concat(name, "\"."));
     }
 
     return type;
@@ -24313,27 +24308,25 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
   function getWrappedType(node) {
     if (node.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.LIST_TYPE) {
-      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLList(getWrappedType(node.type));
+      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLList(getWrappedType(node.type));
     }
 
     if (node.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.NON_NULL_TYPE) {
-      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLNonNull(getWrappedType(node.type));
+      return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLNonNull(getWrappedType(node.type));
     }
 
     return getNamedType(node);
   }
 
   function buildDirective(node) {
-    var _node$description;
-
-    return new _type_directives_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLDirective({
+    var locations = node.locations.map(function (_ref) {
+      var value = _ref.value;
+      return value;
+    });
+    return new _type_directives_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLDirective({
       name: node.name.value,
-      description: (_node$description = node.description) === null || _node$description === void 0 ? void 0 : _node$description.value,
-      // @ts-expect-error
-      locations: node.locations.map(function (_ref) {
-        var value = _ref.value;
-        return value;
-      }),
+      description: getDescription(node, options),
+      locations: locations,
       isRepeatable: node.repeatable,
       args: buildArgumentMap(node.arguments),
       astNode: node
@@ -24343,27 +24336,21 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
   function buildFieldMap(nodes) {
     var fieldConfigMap = Object.create(null);
 
-    for (var _iterator6 = _createForOfIteratorHelperLoose(nodes), _step6; !(_step6 = _iterator6()).done;) {
-      var node = _step6.value;
+    for (var _i14 = 0; _i14 < nodes.length; _i14++) {
+      var _node$fields;
 
-      var _node$fields; // FIXME: https://github.com/graphql/graphql-js/issues/2203
+      var node = nodes[_i14]; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
+      var nodeFields = (_node$fields = node.fields) !== null && _node$fields !== void 0 ? _node$fields : [];
 
-      var nodeFields =
-      /* c8 ignore next */
-      (_node$fields = node.fields) !== null && _node$fields !== void 0 ? _node$fields : [];
-
-      for (var _iterator7 = _createForOfIteratorHelperLoose(nodeFields), _step7; !(_step7 = _iterator7()).done;) {
-        var field = _step7.value;
-
-        var _field$description;
-
+      for (var _i16 = 0; _i16 < nodeFields.length; _i16++) {
+        var field = nodeFields[_i16];
         fieldConfigMap[field.name.value] = {
           // Note: While this could make assertions to get the correctly typed
           // value, that would throw immediately while type system validation
           // with validateSchema() will produce more actionable results.
           type: getWrappedType(field.type),
-          description: (_field$description = field.description) === null || _field$description === void 0 ? void 0 : _field$description.value,
+          description: getDescription(field, options),
           args: buildArgumentMap(field.arguments),
           deprecationReason: getDeprecationReason(field),
           astNode: field
@@ -24375,25 +24362,20 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
   }
 
   function buildArgumentMap(args) {
-    // FIXME: https://github.com/graphql/graphql-js/issues/2203
-    var argsNodes =
-    /* c8 ignore next */
-    args !== null && args !== void 0 ? args : [];
+    // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
+    var argsNodes = args !== null && args !== void 0 ? args : [];
     var argConfigMap = Object.create(null);
 
-    for (var _iterator8 = _createForOfIteratorHelperLoose(argsNodes), _step8; !(_step8 = _iterator8()).done;) {
-      var arg = _step8.value;
-
-      var _arg$description; // Note: While this could make assertions to get the correctly typed
+    for (var _i18 = 0; _i18 < argsNodes.length; _i18++) {
+      var arg = argsNodes[_i18]; // Note: While this could make assertions to get the correctly typed
       // value, that would throw immediately while type system validation
       // with validateSchema() will produce more actionable results.
-
 
       var type = getWrappedType(arg.type);
       argConfigMap[arg.name.value] = {
         type: type,
-        description: (_arg$description = arg.description) === null || _arg$description === void 0 ? void 0 : _arg$description.value,
-        defaultValue: (0,_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_12__.valueFromAST)(arg.defaultValue, type),
+        description: getDescription(arg, options),
+        defaultValue: (0,_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_13__.valueFromAST)(arg.defaultValue, type),
         deprecationReason: getDeprecationReason(arg),
         astNode: arg
       };
@@ -24405,29 +24387,23 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
   function buildInputFieldMap(nodes) {
     var inputFieldMap = Object.create(null);
 
-    for (var _iterator9 = _createForOfIteratorHelperLoose(nodes), _step9; !(_step9 = _iterator9()).done;) {
-      var node = _step9.value;
+    for (var _i20 = 0; _i20 < nodes.length; _i20++) {
+      var _node$fields2;
 
-      var _node$fields2; // FIXME: https://github.com/graphql/graphql-js/issues/2203
+      var node = nodes[_i20]; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
+      var fieldsNodes = (_node$fields2 = node.fields) !== null && _node$fields2 !== void 0 ? _node$fields2 : [];
 
-      var fieldsNodes =
-      /* c8 ignore next */
-      (_node$fields2 = node.fields) !== null && _node$fields2 !== void 0 ? _node$fields2 : [];
-
-      for (var _iterator10 = _createForOfIteratorHelperLoose(fieldsNodes), _step10; !(_step10 = _iterator10()).done;) {
-        var field = _step10.value;
-
-        var _field$description2; // Note: While this could make assertions to get the correctly typed
+      for (var _i22 = 0; _i22 < fieldsNodes.length; _i22++) {
+        var field = fieldsNodes[_i22]; // Note: While this could make assertions to get the correctly typed
         // value, that would throw immediately while type system validation
         // with validateSchema() will produce more actionable results.
-
 
         var type = getWrappedType(field.type);
         inputFieldMap[field.name.value] = {
           type: type,
-          description: (_field$description2 = field.description) === null || _field$description2 === void 0 ? void 0 : _field$description2.value,
-          defaultValue: (0,_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_12__.valueFromAST)(field.defaultValue, type),
+          description: getDescription(field, options),
+          defaultValue: (0,_valueFromAST_mjs__WEBPACK_IMPORTED_MODULE_13__.valueFromAST)(field.defaultValue, type),
           deprecationReason: getDeprecationReason(field),
           astNode: field
         };
@@ -24440,23 +24416,17 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
   function buildEnumValueMap(nodes) {
     var enumValueMap = Object.create(null);
 
-    for (var _iterator11 = _createForOfIteratorHelperLoose(nodes), _step11; !(_step11 = _iterator11()).done;) {
-      var node = _step11.value;
+    for (var _i24 = 0; _i24 < nodes.length; _i24++) {
+      var _node$values;
 
-      var _node$values; // FIXME: https://github.com/graphql/graphql-js/issues/2203
+      var node = nodes[_i24]; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
+      var valuesNodes = (_node$values = node.values) !== null && _node$values !== void 0 ? _node$values : [];
 
-      var valuesNodes =
-      /* c8 ignore next */
-      (_node$values = node.values) !== null && _node$values !== void 0 ? _node$values : [];
-
-      for (var _iterator12 = _createForOfIteratorHelperLoose(valuesNodes), _step12; !(_step12 = _iterator12()).done;) {
-        var value = _step12.value;
-
-        var _value$description;
-
+      for (var _i26 = 0; _i26 < valuesNodes.length; _i26++) {
+        var value = valuesNodes[_i26];
         enumValueMap[value.name.value] = {
-          description: (_value$description = value.description) === null || _value$description === void 0 ? void 0 : _value$description.value,
+          description: getDescription(value, options),
           deprecationReason: getDeprecationReason(value),
           astNode: value
         };
@@ -24467,52 +24437,66 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
   }
 
   function buildInterfaces(nodes) {
-    // Note: While this could make assertions to get the correctly typed
-    // values below, that would throw immediately while type system
-    // validation with validateSchema() will produce more actionable results.
-    // @ts-expect-error
-    return nodes.flatMap( // FIXME: https://github.com/graphql/graphql-js/issues/2203
-    function (node) {
-      var _node$interfaces$map, _node$interfaces;
+    var interfaces = [];
 
-      return (
-        /* c8 ignore next */
-        (_node$interfaces$map = (_node$interfaces = node.interfaces) === null || _node$interfaces === void 0 ? void 0 : _node$interfaces.map(getNamedType)) !== null && _node$interfaces$map !== void 0 ? _node$interfaces$map : []
-      );
-    });
+    for (var _i28 = 0; _i28 < nodes.length; _i28++) {
+      var _node$interfaces;
+
+      var node = nodes[_i28]; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
+
+      var interfacesNodes = (_node$interfaces = node.interfaces) !== null && _node$interfaces !== void 0 ? _node$interfaces : [];
+
+      for (var _i30 = 0; _i30 < interfacesNodes.length; _i30++) {
+        var type = interfacesNodes[_i30]; // Note: While this could make assertions to get the correctly typed
+        // values below, that would throw immediately while type system
+        // validation with validateSchema() will produce more actionable
+        // results.
+
+        interfaces.push(getNamedType(type));
+      }
+    }
+
+    return interfaces;
   }
 
   function buildUnionTypes(nodes) {
-    // Note: While this could make assertions to get the correctly typed
-    // values below, that would throw immediately while type system
-    // validation with validateSchema() will produce more actionable results.
-    // @ts-expect-error
-    return nodes.flatMap( // FIXME: https://github.com/graphql/graphql-js/issues/2203
-    function (node) {
-      var _node$types$map, _node$types;
+    var types = [];
 
-      return (
-        /* c8 ignore next */
-        (_node$types$map = (_node$types = node.types) === null || _node$types === void 0 ? void 0 : _node$types.map(getNamedType)) !== null && _node$types$map !== void 0 ? _node$types$map : []
-      );
-    });
+    for (var _i32 = 0; _i32 < nodes.length; _i32++) {
+      var _node$types;
+
+      var node = nodes[_i32]; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
+
+      var typeNodes = (_node$types = node.types) !== null && _node$types !== void 0 ? _node$types : [];
+
+      for (var _i34 = 0; _i34 < typeNodes.length; _i34++) {
+        var type = typeNodes[_i34]; // Note: While this could make assertions to get the correctly typed
+        // values below, that would throw immediately while type system
+        // validation with validateSchema() will produce more actionable
+        // results.
+
+        types.push(getNamedType(type));
+      }
+    }
+
+    return types;
   }
 
   function buildType(astNode) {
     var _typeExtensionsMap$na;
 
     var name = astNode.name.value;
-    var extensionASTNodes = (_typeExtensionsMap$na = typeExtensionsMap[name]) !== null && _typeExtensionsMap$na !== void 0 ? _typeExtensionsMap$na : [];
+    var description = getDescription(astNode, options);
+    var extensionNodes = (_typeExtensionsMap$na = typeExtensionsMap[name]) !== null && _typeExtensionsMap$na !== void 0 ? _typeExtensionsMap$na : [];
 
     switch (astNode.kind) {
       case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.OBJECT_TYPE_DEFINITION:
         {
-          var _astNode$description;
-
+          var extensionASTNodes = extensionNodes;
           var allNodes = [astNode].concat(extensionASTNodes);
-          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLObjectType({
+          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLObjectType({
             name: name,
-            description: (_astNode$description = astNode.description) === null || _astNode$description === void 0 ? void 0 : _astNode$description.value,
+            description: description,
             interfaces: function interfaces() {
               return buildInterfaces(allNodes);
             },
@@ -24526,13 +24510,13 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
 
       case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.INTERFACE_TYPE_DEFINITION:
         {
-          var _astNode$description2;
+          var _extensionASTNodes = extensionNodes;
 
-          var _allNodes = [astNode].concat(extensionASTNodes);
+          var _allNodes = [astNode].concat(_extensionASTNodes);
 
-          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLInterfaceType({
+          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLInterfaceType({
             name: name,
-            description: (_astNode$description2 = astNode.description) === null || _astNode$description2 === void 0 ? void 0 : _astNode$description2.value,
+            description: description,
             interfaces: function interfaces() {
               return buildInterfaces(_allNodes);
             },
@@ -24540,75 +24524,77 @@ function extendSchemaImpl(schemaConfig, documentAST, options) {
               return buildFieldMap(_allNodes);
             },
             astNode: astNode,
-            extensionASTNodes: extensionASTNodes
+            extensionASTNodes: _extensionASTNodes
           });
         }
 
       case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.ENUM_TYPE_DEFINITION:
         {
-          var _astNode$description3;
+          var _extensionASTNodes2 = extensionNodes;
 
-          var _allNodes2 = [astNode].concat(extensionASTNodes);
+          var _allNodes2 = [astNode].concat(_extensionASTNodes2);
 
-          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLEnumType({
+          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLEnumType({
             name: name,
-            description: (_astNode$description3 = astNode.description) === null || _astNode$description3 === void 0 ? void 0 : _astNode$description3.value,
+            description: description,
             values: buildEnumValueMap(_allNodes2),
             astNode: astNode,
-            extensionASTNodes: extensionASTNodes
+            extensionASTNodes: _extensionASTNodes2
           });
         }
 
       case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.UNION_TYPE_DEFINITION:
         {
-          var _astNode$description4;
+          var _extensionASTNodes3 = extensionNodes;
 
-          var _allNodes3 = [astNode].concat(extensionASTNodes);
+          var _allNodes3 = [astNode].concat(_extensionASTNodes3);
 
-          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLUnionType({
+          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLUnionType({
             name: name,
-            description: (_astNode$description4 = astNode.description) === null || _astNode$description4 === void 0 ? void 0 : _astNode$description4.value,
+            description: description,
             types: function types() {
               return buildUnionTypes(_allNodes3);
             },
             astNode: astNode,
-            extensionASTNodes: extensionASTNodes
+            extensionASTNodes: _extensionASTNodes3
           });
         }
 
       case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.SCALAR_TYPE_DEFINITION:
         {
-          var _astNode$description5;
-
-          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLScalarType({
+          var _extensionASTNodes4 = extensionNodes;
+          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLScalarType({
             name: name,
-            description: (_astNode$description5 = astNode.description) === null || _astNode$description5 === void 0 ? void 0 : _astNode$description5.value,
-            specifiedByURL: getSpecifiedByURL(astNode),
+            description: description,
+            specifiedByUrl: getSpecifiedByUrl(astNode),
             astNode: astNode,
-            extensionASTNodes: extensionASTNodes
+            extensionASTNodes: _extensionASTNodes4
           });
         }
 
       case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.INPUT_OBJECT_TYPE_DEFINITION:
         {
-          var _astNode$description6;
+          var _extensionASTNodes5 = extensionNodes;
 
-          var _allNodes4 = [astNode].concat(extensionASTNodes);
+          var _allNodes4 = [astNode].concat(_extensionASTNodes5);
 
-          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLInputObjectType({
+          return new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLInputObjectType({
             name: name,
-            description: (_astNode$description6 = astNode.description) === null || _astNode$description6 === void 0 ? void 0 : _astNode$description6.value,
+            description: description,
             fields: function fields() {
               return buildInputFieldMap(_allNodes4);
             },
             astNode: astNode,
-            extensionASTNodes: extensionASTNodes
+            extensionASTNodes: _extensionASTNodes5
           });
         }
-    }
+    } // istanbul ignore next (Not reachable. All possible type definition nodes have been considered)
+
+
+     false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_11__["default"])(0, 'Unexpected type definition node: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_12__["default"])(astNode));
   }
 }
-var stdTypeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_13__.keyMap)([].concat(_type_scalars_mjs__WEBPACK_IMPORTED_MODULE_9__.specifiedScalarTypes, _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_8__.introspectionTypes), function (type) {
+var stdTypeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_14__["default"])(_type_scalars_mjs__WEBPACK_IMPORTED_MODULE_10__.specifiedScalarTypes.concat(_type_introspection_mjs__WEBPACK_IMPORTED_MODULE_9__.introspectionTypes), function (type) {
   return type.name;
 });
 /**
@@ -24617,19 +24603,61 @@ var stdTypeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_13__.keyMap)([]
  */
 
 function getDeprecationReason(node) {
-  var deprecated = (0,_execution_values_mjs__WEBPACK_IMPORTED_MODULE_14__.getDirectiveValues)(_type_directives_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLDeprecatedDirective, node); // @ts-expect-error validated by `getDirectiveValues`
-
+  var deprecated = (0,_execution_values_mjs__WEBPACK_IMPORTED_MODULE_15__.getDirectiveValues)(_type_directives_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLDeprecatedDirective, node);
   return deprecated === null || deprecated === void 0 ? void 0 : deprecated.reason;
 }
 /**
- * Given a scalar node, returns the string value for the specifiedByURL.
+ * Given a scalar node, returns the string value for the specifiedByUrl.
  */
 
 
-function getSpecifiedByURL(node) {
-  var specifiedBy = (0,_execution_values_mjs__WEBPACK_IMPORTED_MODULE_14__.getDirectiveValues)(_type_directives_mjs__WEBPACK_IMPORTED_MODULE_6__.GraphQLSpecifiedByDirective, node); // @ts-expect-error validated by `getDirectiveValues`
-
+function getSpecifiedByUrl(node) {
+  var specifiedBy = (0,_execution_values_mjs__WEBPACK_IMPORTED_MODULE_15__.getDirectiveValues)(_type_directives_mjs__WEBPACK_IMPORTED_MODULE_7__.GraphQLSpecifiedByDirective, node);
   return specifiedBy === null || specifiedBy === void 0 ? void 0 : specifiedBy.url;
+}
+/**
+ * Given an ast node, returns its string description.
+ * @deprecated: provided to ease adoption and will be removed in v16.
+ *
+ * Accepts options as a second argument:
+ *
+ *    - commentDescriptions:
+ *        Provide true to use preceding comments as the description.
+ *
+ */
+
+
+function getDescription(node, options) {
+  if (node.description) {
+    return node.description.value;
+  }
+
+  if ((options === null || options === void 0 ? void 0 : options.commentDescriptions) === true) {
+    var rawValue = getLeadingCommentBlock(node);
+
+    if (rawValue !== undefined) {
+      return (0,_language_blockString_mjs__WEBPACK_IMPORTED_MODULE_16__.dedentBlockStringValue)('\n' + rawValue);
+    }
+  }
+}
+
+function getLeadingCommentBlock(node) {
+  var loc = node.loc;
+
+  if (!loc) {
+    return;
+  }
+
+  var comments = [];
+  var token = loc.startToken.prev;
+
+  while (token != null && token.kind === _language_tokenKind_mjs__WEBPACK_IMPORTED_MODULE_17__.TokenKind.COMMENT && token.next && token.prev && token.line + 1 === token.next.line && token.line !== token.prev.line) {
+    var value = String(token.value);
+    comments.push(value);
+    token = token.prev;
+  }
+
+  return comments.length > 0 ? comments.reverse().join('\n') : undefined;
 }
 
 /***/ }),
@@ -24646,12 +24674,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getOperationAST": function() { return /* binding */ getOperationAST; }
 /* harmony export */ });
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 /**
  * Returns an operation AST given a document AST and optionally an operation
@@ -24662,8 +24684,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function getOperationAST(documentAST, operationName) {
   var operation = null;
 
-  for (var _iterator = _createForOfIteratorHelperLoose(documentAST.definitions), _step; !(_step = _iterator()).done;) {
-    var definition = _step.value;
+  for (var _i2 = 0, _documentAST$definiti2 = documentAST.definitions; _i2 < _documentAST$definiti2.length; _i2++) {
+    var definition = _documentAST$definiti2[_i2];
 
     if (definition.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.OPERATION_DEFINITION) {
       var _definition$name;
@@ -24703,8 +24725,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /**
  * Extracts the root type of the operation from the schema.
- *
- * @deprecated Please use `GraphQLSchema.getRootType` instead. Will be removed in v17
  */
 
 function getOperationRootType(schema, operation) {
@@ -24875,8 +24895,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "typeFromAST": function() { return /* binding */ typeFromAST; }
 /* harmony export */ });
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+
+
 
 
 /**
@@ -24887,24 +24911,29 @@ __webpack_require__.r(__webpack_exports__);
  * found in the schema, then undefined will be returned.
  */
 
+/* eslint-disable no-redeclare */
+
 function typeFromAST(schema, typeNode) {
-  switch (typeNode.kind) {
-    case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.LIST_TYPE:
-      {
-        var innerType = typeFromAST(schema, typeNode.type);
-        return innerType && new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLList(innerType);
-      }
+  /* eslint-enable no-redeclare */
+  var innerType;
 
-    case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.NON_NULL_TYPE:
-      {
-        var _innerType = typeFromAST(schema, typeNode.type);
-
-        return _innerType && new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLNonNull(_innerType);
-      }
-
-    case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.NAMED_TYPE:
-      return schema.getType(typeNode.name.value);
+  if (typeNode.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.LIST_TYPE) {
+    innerType = typeFromAST(schema, typeNode.type);
+    return innerType && new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLList(innerType);
   }
+
+  if (typeNode.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.NON_NULL_TYPE) {
+    innerType = typeFromAST(schema, typeNode.type);
+    return innerType && new _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLNonNull(innerType);
+  } // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2618')
+
+
+  if (typeNode.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.NAMED_TYPE) {
+    return schema.getType(typeNode.name.value);
+  } // istanbul ignore next (Not reachable. All possible type nodes have been considered)
+
+
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(0, 'Unexpected type node: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(typeNode));
 }
 
 /***/ }),
@@ -24920,16 +24949,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "valueFromAST": function() { return /* binding */ valueFromAST; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
 /* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
-/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -24952,7 +24977,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * | Boolean              | Boolean       |
  * | String               | String        |
  * | Int / Float          | Number        |
- * | Enum Value           | Unknown       |
+ * | Enum Value           | Mixed         |
  * | NullValue            | null          |
  *
  */
@@ -25003,8 +25028,8 @@ function valueFromAST(valueNode, type, variables) {
     if (valueNode.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.LIST) {
       var coercedValues = [];
 
-      for (var _iterator = _createForOfIteratorHelperLoose(valueNode.values), _step; !(_step = _iterator()).done;) {
-        var itemNode = _step.value;
+      for (var _i2 = 0, _valueNode$values2 = valueNode.values; _i2 < _valueNode$values2.length; _i2++) {
+        var itemNode = _valueNode$values2[_i2];
 
         if (isMissingVariable(itemNode, variables)) {
           // If an array contains a missing variable, it is either coerced to
@@ -25043,12 +25068,12 @@ function valueFromAST(valueNode, type, variables) {
     }
 
     var coercedObj = Object.create(null);
-    var fieldNodes = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_2__.keyMap)(valueNode.fields, function (field) {
+    var fieldNodes = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(valueNode.fields, function (field) {
       return field.name.value;
     });
 
-    for (var _i = 0, _Object$values = Object.values(type.getFields()); _i < _Object$values.length; _i++) {
-      var field = _Object$values[_i];
+    for (var _i4 = 0, _objectValues2 = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(type.getFields()); _i4 < _objectValues2.length; _i4++) {
+      var field = _objectValues2[_i4];
       var fieldNode = fieldNodes[field.name];
 
       if (!fieldNode || isMissingVariable(fieldNode.value, variables)) {
@@ -25071,7 +25096,8 @@ function valueFromAST(valueNode, type, variables) {
     }
 
     return coercedObj;
-  }
+  } // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2618')
+
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isLeafType)(type)) {
     // Scalars and Enums fulfill parsing a literal value via parseLiteral().
@@ -25090,12 +25116,10 @@ function valueFromAST(valueNode, type, variables) {
     }
 
     return result;
-  }
-  /* c8 ignore next 3 */
-  // Not reachable, all possible input types have been considered.
+  } // istanbul ignore next (Not reachable. All possible input types have been considered)
 
 
-   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__.invariant)(false, 'Unexpected input type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_4__.inspect)(type));
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_4__["default"])(0, 'Unexpected input type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(type));
 } // Returns true if the provided valueNode is a variable which is not defined
 // in the set of variables.
 
@@ -25116,8 +25140,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "valueFromASTUntyped": function() { return /* binding */ valueFromASTUntyped; }
 /* harmony export */ });
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
 /* harmony import */ var _jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/keyValMap.mjs */ "./node_modules/graphql/jsutils/keyValMap.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
+
+
 
 
 /**
@@ -25159,7 +25187,7 @@ function valueFromASTUntyped(valueNode, variables) {
       });
 
     case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.OBJECT:
-      return (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_1__.keyValMap)(valueNode.fields, function (field) {
+      return (0,_jsutils_keyValMap_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(valueNode.fields, function (field) {
         return field.name.value;
       }, function (field) {
         return valueFromASTUntyped(field.value, variables);
@@ -25167,7 +25195,10 @@ function valueFromASTUntyped(valueNode, variables) {
 
     case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.VARIABLE:
       return variables === null || variables === void 0 ? void 0 : variables[valueNode.name.value];
-  }
+  } // istanbul ignore next (Not reachable. All possible value nodes have been considered)
+
+
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(0, 'Unexpected value node: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(valueNode));
 }
 
 /***/ }),
@@ -25188,19 +25219,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
 /* harmony import */ var _language_visitor_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../language/visitor.mjs */ "./node_modules/graphql/language/visitor.mjs");
 /* harmony import */ var _utilities_TypeInfo_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/TypeInfo.mjs */ "./node_modules/graphql/utilities/TypeInfo.mjs");
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  subClass.__proto__ = superClass;
+}
 
 
 
@@ -25211,7 +25234,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  * validation rule.
  */
 
-var ASTValidationContext = /*#__PURE__*/function (_Symbol$toStringTag) {
+var ASTValidationContext = /*#__PURE__*/function () {
   function ASTValidationContext(ast, onError) {
     this._ast = ast;
     this._fragments = undefined;
@@ -25231,22 +25254,16 @@ var ASTValidationContext = /*#__PURE__*/function (_Symbol$toStringTag) {
   };
 
   _proto.getFragment = function getFragment(name) {
-    var fragments;
+    var fragments = this._fragments;
 
-    if (this._fragments) {
-      fragments = this._fragments;
-    } else {
-      fragments = Object.create(null);
-
-      for (var _iterator = _createForOfIteratorHelperLoose(this.getDocument().definitions), _step; !(_step = _iterator()).done;) {
-        var defNode = _step.value;
-
-        if (defNode.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.FRAGMENT_DEFINITION) {
-          fragments[defNode.name.value] = defNode;
+    if (!fragments) {
+      this._fragments = fragments = this.getDocument().definitions.reduce(function (frags, statement) {
+        if (statement.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.FRAGMENT_DEFINITION) {
+          frags[statement.name.value] = statement;
         }
-      }
 
-      this._fragments = fragments;
+        return frags;
+      }, Object.create(null));
     }
 
     return fragments[name];
@@ -25258,11 +25275,12 @@ var ASTValidationContext = /*#__PURE__*/function (_Symbol$toStringTag) {
     if (!spreads) {
       spreads = [];
       var setsToVisit = [node];
-      var set;
 
-      while (set = setsToVisit.pop()) {
-        for (var _iterator2 = _createForOfIteratorHelperLoose(set.selections), _step2; !(_step2 = _iterator2()).done;) {
-          var selection = _step2.value;
+      while (setsToVisit.length !== 0) {
+        var set = setsToVisit.pop();
+
+        for (var _i2 = 0, _set$selections2 = set.selections; _i2 < _set$selections2.length; _i2++) {
+          var selection = _set$selections2[_i2];
 
           if (selection.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.FRAGMENT_SPREAD) {
             spreads.push(selection);
@@ -25285,11 +25303,12 @@ var ASTValidationContext = /*#__PURE__*/function (_Symbol$toStringTag) {
       fragments = [];
       var collectedNames = Object.create(null);
       var nodesToVisit = [operation.selectionSet];
-      var node;
 
-      while (node = nodesToVisit.pop()) {
-        for (var _iterator3 = _createForOfIteratorHelperLoose(this.getFragmentSpreads(node)), _step3; !(_step3 = _iterator3()).done;) {
-          var spread = _step3.value;
+      while (nodesToVisit.length !== 0) {
+        var node = nodesToVisit.pop();
+
+        for (var _i4 = 0, _this$getFragmentSpre2 = this.getFragmentSpreads(node); _i4 < _this$getFragmentSpre2.length; _i4++) {
+          var spread = _this$getFragmentSpre2[_i4];
           var fragName = spread.name.value;
 
           if (collectedNames[fragName] !== true) {
@@ -25310,16 +25329,9 @@ var ASTValidationContext = /*#__PURE__*/function (_Symbol$toStringTag) {
     return fragments;
   };
 
-  _createClass(ASTValidationContext, [{
-    key: _Symbol$toStringTag,
-    get: function get() {
-      return 'ASTValidationContext';
-    }
-  }]);
-
   return ASTValidationContext;
-}(Symbol.toStringTag);
-var SDLValidationContext = /*#__PURE__*/function (_ASTValidationContext, _Symbol$toStringTag2) {
+}();
+var SDLValidationContext = /*#__PURE__*/function (_ASTValidationContext) {
   _inheritsLoose(SDLValidationContext, _ASTValidationContext);
 
   function SDLValidationContext(ast, schema, onError) {
@@ -25336,16 +25348,9 @@ var SDLValidationContext = /*#__PURE__*/function (_ASTValidationContext, _Symbol
     return this._schema;
   };
 
-  _createClass(SDLValidationContext, [{
-    key: _Symbol$toStringTag2,
-    get: function get() {
-      return 'SDLValidationContext';
-    }
-  }]);
-
   return SDLValidationContext;
-}(ASTValidationContext, Symbol.toStringTag);
-var ValidationContext = /*#__PURE__*/function (_ASTValidationContext2, _Symbol$toStringTag3) {
+}(ASTValidationContext);
+var ValidationContext = /*#__PURE__*/function (_ASTValidationContext2) {
   _inheritsLoose(ValidationContext, _ASTValidationContext2);
 
   function ValidationContext(schema, ast, typeInfo, onError) {
@@ -25397,8 +25402,8 @@ var ValidationContext = /*#__PURE__*/function (_ASTValidationContext2, _Symbol$t
     if (!usages) {
       usages = this.getVariableUsages(operation);
 
-      for (var _iterator4 = _createForOfIteratorHelperLoose(this.getRecursivelyReferencedFragments(operation)), _step4; !(_step4 = _iterator4()).done;) {
-        var frag = _step4.value;
+      for (var _i6 = 0, _this$getRecursivelyR2 = this.getRecursivelyReferencedFragments(operation); _i6 < _this$getRecursivelyR2.length; _i6++) {
+        var frag = _this$getRecursivelyR2[_i6];
         usages = usages.concat(this.getVariableUsages(frag));
       }
 
@@ -25440,15 +25445,8 @@ var ValidationContext = /*#__PURE__*/function (_ASTValidationContext2, _Symbol$t
     return this._typeInfo.getEnumValue();
   };
 
-  _createClass(ValidationContext, [{
-    key: _Symbol$toStringTag3,
-    get: function get() {
-      return 'ValidationContext';
-    }
-  }]);
-
   return ValidationContext;
-}(ASTValidationContext, Symbol.toStringTag);
+}(ASTValidationContext);
 
 /***/ }),
 
@@ -25466,12 +25464,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
 /* harmony import */ var _language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../language/predicates.mjs */ "./node_modules/graphql/language/predicates.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 
@@ -25480,19 +25472,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *
  * A GraphQL document is only valid for execution if all definitions are either
  * operation or fragment definitions.
- *
- * See https://spec.graphql.org/draft/#sec-Executable-Definitions
  */
 
 function ExecutableDefinitionsRule(context) {
   return {
     Document: function Document(node) {
-      for (var _iterator = _createForOfIteratorHelperLoose(node.definitions), _step; !(_step = _iterator()).done;) {
-        var definition = _step.value;
+      for (var _i2 = 0, _node$definitions2 = node.definitions; _i2 < _node$definitions2.length; _i2++) {
+        var definition = _node$definitions2[_i2];
 
         if (!(0,_language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__.isExecutableDefinitionNode)(definition)) {
           var defName = definition.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.SCHEMA_DEFINITION || definition.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.SCHEMA_EXTENSION ? 'schema' : '"' + definition.name.value + '"';
-          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("The " + defName + " definition is not executable.", definition));
+          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("The ".concat(defName, " definition is not executable."), definition));
         }
       }
 
@@ -25514,16 +25504,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "FieldsOnCorrectTypeRule": function() { return /* binding */ FieldsOnCorrectTypeRule; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_arrayFrom_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../polyfills/arrayFrom.mjs */ "./node_modules/graphql/polyfills/arrayFrom.mjs");
 /* harmony import */ var _jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsutils/didYouMean.mjs */ "./node_modules/graphql/jsutils/didYouMean.mjs");
-/* harmony import */ var _jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../jsutils/suggestionList.mjs */ "./node_modules/graphql/jsutils/suggestionList.mjs");
-/* harmony import */ var _jsutils_naturalCompare_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../jsutils/naturalCompare.mjs */ "./node_modules/graphql/jsutils/naturalCompare.mjs");
+/* harmony import */ var _jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../jsutils/suggestionList.mjs */ "./node_modules/graphql/jsutils/suggestionList.mjs");
+/* harmony import */ var _jsutils_naturalCompare_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../jsutils/naturalCompare.mjs */ "./node_modules/graphql/jsutils/naturalCompare.mjs");
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -25535,8 +25521,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *
  * A GraphQL document is only valid if all fields selected are defined by the
  * parent type, or are an allowed meta field such as __typename.
- *
- * See https://spec.graphql.org/draft/#sec-Field-Selections
  */
 
 function FieldsOnCorrectTypeRule(context) {
@@ -25552,14 +25536,14 @@ function FieldsOnCorrectTypeRule(context) {
           var schema = context.getSchema();
           var fieldName = node.name.value; // First determine if there are any suggested types to condition on.
 
-          var suggestion = (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_0__.didYouMean)('to use an inline fragment on', getSuggestedTypeNames(schema, type, fieldName)); // If there are no suggested types, then perhaps this was a typo?
+          var suggestion = (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])('to use an inline fragment on', getSuggestedTypeNames(schema, type, fieldName)); // If there are no suggested types, then perhaps this was a typo?
 
           if (suggestion === '') {
-            suggestion = (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_0__.didYouMean)(getSuggestedFieldNames(type, fieldName));
+            suggestion = (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(getSuggestedFieldNames(type, fieldName));
           } // Report an error, including helpful suggestions.
 
 
-          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Cannot query field \"" + fieldName + "\" on type \"" + type.name + "\"." + suggestion, node));
+          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Cannot query field \"".concat(fieldName, "\" on type \"").concat(type.name, "\".") + suggestion, node));
         }
       }
     }
@@ -25580,8 +25564,8 @@ function getSuggestedTypeNames(schema, type, fieldName) {
   var suggestedTypes = new Set();
   var usageCount = Object.create(null);
 
-  for (var _iterator = _createForOfIteratorHelperLoose(schema.getPossibleTypes(type)), _step; !(_step = _iterator()).done;) {
-    var possibleType = _step.value;
+  for (var _i2 = 0, _schema$getPossibleTy2 = schema.getPossibleTypes(type); _i2 < _schema$getPossibleTy2.length; _i2++) {
+    var possibleType = _schema$getPossibleTy2[_i2];
 
     if (!possibleType.getFields()[fieldName]) {
       continue;
@@ -25591,10 +25575,10 @@ function getSuggestedTypeNames(schema, type, fieldName) {
     suggestedTypes.add(possibleType);
     usageCount[possibleType.name] = 1;
 
-    for (var _iterator2 = _createForOfIteratorHelperLoose(possibleType.getInterfaces()), _step2; !(_step2 = _iterator2()).done;) {
-      var possibleInterface = _step2.value;
-
+    for (var _i4 = 0, _possibleType$getInte2 = possibleType.getInterfaces(); _i4 < _possibleType$getInte2.length; _i4++) {
       var _usageCount$possibleI;
+
+      var possibleInterface = _possibleType$getInte2[_i4];
 
       if (!possibleInterface.getFields()[fieldName]) {
         continue;
@@ -25606,7 +25590,7 @@ function getSuggestedTypeNames(schema, type, fieldName) {
     }
   }
 
-  return [].concat(suggestedTypes).sort(function (typeA, typeB) {
+  return (0,_polyfills_arrayFrom_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(suggestedTypes).sort(function (typeA, typeB) {
     // Suggest both interface and object types based on how common they are.
     var usageCountDiff = usageCount[typeB.name] - usageCount[typeA.name];
 
@@ -25623,7 +25607,7 @@ function getSuggestedTypeNames(schema, type, fieldName) {
       return 1;
     }
 
-    return (0,_jsutils_naturalCompare_mjs__WEBPACK_IMPORTED_MODULE_3__.naturalCompare)(typeA.name, typeB.name);
+    return (0,_jsutils_naturalCompare_mjs__WEBPACK_IMPORTED_MODULE_4__["default"])(typeA.name, typeB.name);
   }).map(function (x) {
     return x.name;
   });
@@ -25637,7 +25621,7 @@ function getSuggestedTypeNames(schema, type, fieldName) {
 function getSuggestedFieldNames(type, fieldName) {
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectType)(type) || (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isInterfaceType)(type)) {
     var possibleFieldNames = Object.keys(type.getFields());
-    return (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_4__.suggestionList)(fieldName, possibleFieldNames);
+    return (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(fieldName, possibleFieldNames);
   } // Otherwise, must be a Union type, which does not define fields.
 
 
@@ -25671,8 +25655,6 @@ __webpack_require__.r(__webpack_exports__);
  * Fragments use a type condition to determine if they apply, since fragments
  * can only be spread into a composite type (object, interface, or union), the
  * type condition must also be a composite type.
- *
- * See https://spec.graphql.org/draft/#sec-Fragments-On-Composite-Types
  */
 
 function FragmentsOnCompositeTypesRule(context) {
@@ -25685,7 +25667,7 @@ function FragmentsOnCompositeTypesRule(context) {
 
         if (type && !(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isCompositeType)(type)) {
           var typeStr = (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_2__.print)(typeCondition);
-          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Fragment cannot condition on non composite type \"" + typeStr + "\".", typeCondition));
+          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Fragment cannot condition on non composite type \"".concat(typeStr, "\"."), typeCondition));
         }
       }
     },
@@ -25694,7 +25676,7 @@ function FragmentsOnCompositeTypesRule(context) {
 
       if (type && !(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isCompositeType)(type)) {
         var typeStr = (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_2__.print)(node.typeCondition);
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Fragment \"" + node.name.value + "\" cannot condition on non composite type \"" + typeStr + "\".", node.typeCondition));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Fragment \"".concat(node.name.value, "\" cannot condition on non composite type \"").concat(typeStr, "\"."), node.typeCondition));
       }
     }
   };
@@ -25719,13 +25701,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
 /* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+  return keys;
+}
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
 
 
 
@@ -25737,13 +25760,10 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
  *
  * A GraphQL field is only valid if all supplied arguments are defined by
  * that field.
- *
- * See https://spec.graphql.org/draft/#sec-Argument-Names
- * See https://spec.graphql.org/draft/#sec-Directives-Are-In-Valid-Locations
  */
 
 function KnownArgumentNamesRule(context) {
-  return _extends({}, KnownArgumentNamesOnDirectivesRule(context), {
+  return _objectSpread(_objectSpread({}, KnownArgumentNamesOnDirectivesRule(context)), {}, {
     Argument: function Argument(argNode) {
       var argDef = context.getArgument();
       var fieldDef = context.getFieldDef();
@@ -25754,8 +25774,8 @@ function KnownArgumentNamesRule(context) {
         var knownArgsNames = fieldDef.args.map(function (arg) {
           return arg.name;
         });
-        var suggestions = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_0__.suggestionList)(argName, knownArgsNames);
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Unknown argument \"" + argName + "\" on field \"" + parentType.name + "." + fieldDef.name + "\"." + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_2__.didYouMean)(suggestions), argNode));
+        var suggestions = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(argName, knownArgsNames);
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Unknown argument \"".concat(argName, "\" on field \"").concat(parentType.name, ".").concat(fieldDef.name, "\".") + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(suggestions), argNode));
       }
     }
   });
@@ -25769,8 +25789,8 @@ function KnownArgumentNamesOnDirectivesRule(context) {
   var schema = context.getSchema();
   var definedDirectives = schema ? schema.getDirectives() : _type_directives_mjs__WEBPACK_IMPORTED_MODULE_3__.specifiedDirectives;
 
-  for (var _iterator = _createForOfIteratorHelperLoose(definedDirectives), _step; !(_step = _iterator()).done;) {
-    var directive = _step.value;
+  for (var _i2 = 0; _i2 < definedDirectives.length; _i2++) {
+    var directive = definedDirectives[_i2];
     directiveArgs[directive.name] = directive.args.map(function (arg) {
       return arg.name;
     });
@@ -25778,13 +25798,11 @@ function KnownArgumentNamesOnDirectivesRule(context) {
 
   var astDefinitions = context.getDocument().definitions;
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(astDefinitions), _step2; !(_step2 = _iterator2()).done;) {
-    var def = _step2.value;
+  for (var _i4 = 0; _i4 < astDefinitions.length; _i4++) {
+    var def = astDefinitions[_i4];
 
     if (def.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.DIRECTIVE_DEFINITION) {
-      var _def$arguments; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-      /* c8 ignore next */
+      var _def$arguments; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
 
       var argsNodes = (_def$arguments = def.arguments) !== null && _def$arguments !== void 0 ? _def$arguments : [];
@@ -25800,13 +25818,13 @@ function KnownArgumentNamesOnDirectivesRule(context) {
       var knownArgs = directiveArgs[directiveName];
 
       if (directiveNode.arguments && knownArgs) {
-        for (var _iterator3 = _createForOfIteratorHelperLoose(directiveNode.arguments), _step3; !(_step3 = _iterator3()).done;) {
-          var argNode = _step3.value;
+        for (var _i6 = 0, _directiveNode$argume2 = directiveNode.arguments; _i6 < _directiveNode$argume2.length; _i6++) {
+          var argNode = _directiveNode$argume2[_i6];
           var argName = argNode.name.value;
 
-          if (!knownArgs.includes(argName)) {
-            var suggestions = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_0__.suggestionList)(argName, knownArgs);
-            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Unknown argument \"" + argName + "\" on directive \"@" + directiveName + "\"." + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_2__.didYouMean)(suggestions), argNode));
+          if (knownArgs.indexOf(argName) === -1) {
+            var suggestions = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(argName, knownArgs);
+            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Unknown argument \"".concat(argName, "\" on directive \"@").concat(directiveName, "\".") + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(suggestions), argNode));
           }
         }
       }
@@ -25833,16 +25851,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _language_ast_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../language/ast.mjs */ "./node_modules/graphql/language/ast.mjs");
 /* harmony import */ var _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../language/directiveLocation.mjs */ "./node_modules/graphql/language/directiveLocation.mjs");
 /* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
 
 
 
@@ -25854,8 +25864,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *
  * A GraphQL document is only valid if all `@directives` are known by the
  * schema and legally positioned.
- *
- * See https://spec.graphql.org/draft/#sec-Directives-Are-Defined
  */
 
 function KnownDirectivesRule(context) {
@@ -25863,15 +25871,15 @@ function KnownDirectivesRule(context) {
   var schema = context.getSchema();
   var definedDirectives = schema ? schema.getDirectives() : _type_directives_mjs__WEBPACK_IMPORTED_MODULE_0__.specifiedDirectives;
 
-  for (var _iterator = _createForOfIteratorHelperLoose(definedDirectives), _step; !(_step = _iterator()).done;) {
-    var directive = _step.value;
+  for (var _i2 = 0; _i2 < definedDirectives.length; _i2++) {
+    var directive = definedDirectives[_i2];
     locationsMap[directive.name] = directive.locations;
   }
 
   var astDefinitions = context.getDocument().definitions;
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(astDefinitions), _step2; !(_step2 = _iterator2()).done;) {
-    var def = _step2.value;
+  for (var _i4 = 0; _i4 < astDefinitions.length; _i4++) {
+    var def = astDefinitions[_i4];
 
     if (def.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.DIRECTIVE_DEFINITION) {
       locationsMap[def.name.value] = def.locations.map(function (name) {
@@ -25886,14 +25894,14 @@ function KnownDirectivesRule(context) {
       var locations = locationsMap[name];
 
       if (!locations) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Unknown directive \"@" + name + "\".", node));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Unknown directive \"@".concat(name, "\"."), node));
         return;
       }
 
       var candidateLocation = getDirectiveLocationForASTPath(ancestors);
 
-      if (candidateLocation && !locations.includes(candidateLocation)) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Directive \"@" + name + "\" may not be used on " + candidateLocation + ".", node));
+      if (candidateLocation && locations.indexOf(candidateLocation) === -1) {
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Directive \"@".concat(name, "\" may not be used on ").concat(candidateLocation, "."), node));
       }
     }
   };
@@ -25901,7 +25909,7 @@ function KnownDirectivesRule(context) {
 
 function getDirectiveLocationForASTPath(ancestors) {
   var appliedTo = ancestors[ancestors.length - 1];
-  'kind' in appliedTo || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__.invariant)(false);
+  !Array.isArray(appliedTo) || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0);
 
   switch (appliedTo.kind) {
     case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.OPERATION_DEFINITION:
@@ -25959,29 +25967,25 @@ function getDirectiveLocationForASTPath(ancestors) {
     case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.INPUT_VALUE_DEFINITION:
       {
         var parentNode = ancestors[ancestors.length - 3];
-        'kind' in parentNode || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__.invariant)(false);
         return parentNode.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.INPUT_OBJECT_TYPE_DEFINITION ? _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_4__.DirectiveLocation.INPUT_FIELD_DEFINITION : _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_4__.DirectiveLocation.ARGUMENT_DEFINITION;
       }
-    // Not reachable, all possible types have been considered.
-
-    /* c8 ignore next */
-
-    default:
-       false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__.invariant)(false, 'Unexpected kind: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__.inspect)(appliedTo.kind));
   }
 }
 
 function getDirectiveLocationForOperation(operation) {
   switch (operation) {
-    case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_6__.OperationTypeNode.QUERY:
+    case 'query':
       return _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_4__.DirectiveLocation.QUERY;
 
-    case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_6__.OperationTypeNode.MUTATION:
+    case 'mutation':
       return _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_4__.DirectiveLocation.MUTATION;
 
-    case _language_ast_mjs__WEBPACK_IMPORTED_MODULE_6__.OperationTypeNode.SUBSCRIPTION:
+    case 'subscription':
       return _language_directiveLocation_mjs__WEBPACK_IMPORTED_MODULE_4__.DirectiveLocation.SUBSCRIPTION;
-  }
+  } // istanbul ignore next (Not reachable. All possible types have been considered)
+
+
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(0, 'Unexpected operation: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(operation));
 }
 
 /***/ }),
@@ -26004,8 +26008,6 @@ __webpack_require__.r(__webpack_exports__);
  *
  * A GraphQL document is only valid if all `...Fragment` fragment spreads refer
  * to fragments defined in the same document.
- *
- * See https://spec.graphql.org/draft/#sec-Fragment-spread-target-defined
  */
 
 function KnownFragmentNamesRule(context) {
@@ -26015,7 +26017,7 @@ function KnownFragmentNamesRule(context) {
       var fragment = context.getFragment(fragmentName);
 
       if (!fragment) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Unknown fragment \"" + fragmentName + "\".", node.name));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Unknown fragment \"".concat(fragmentName, "\"."), node.name));
       }
     }
   };
@@ -26040,12 +26042,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../language/predicates.mjs */ "./node_modules/graphql/language/predicates.mjs");
 /* harmony import */ var _type_scalars_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../type/scalars.mjs */ "./node_modules/graphql/type/scalars.mjs");
 /* harmony import */ var _type_introspection_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../type/introspection.mjs */ "./node_modules/graphql/type/introspection.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 
@@ -26057,8 +26053,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *
  * A GraphQL document is only valid if referenced types (specifically
  * variable definitions and fragment conditions) are defined by the type schema.
- *
- * See https://spec.graphql.org/draft/#sec-Fragment-Spread-Type-Existence
  */
 
 function KnownTypeNamesRule(context) {
@@ -26066,15 +26060,15 @@ function KnownTypeNamesRule(context) {
   var existingTypesMap = schema ? schema.getTypeMap() : Object.create(null);
   var definedTypes = Object.create(null);
 
-  for (var _iterator = _createForOfIteratorHelperLoose(context.getDocument().definitions), _step; !(_step = _iterator()).done;) {
-    var def = _step.value;
+  for (var _i2 = 0, _context$getDocument$2 = context.getDocument().definitions; _i2 < _context$getDocument$2.length; _i2++) {
+    var def = _context$getDocument$2[_i2];
 
     if ((0,_language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__.isTypeDefinitionNode)(def)) {
       definedTypes[def.name.value] = true;
     }
   }
 
-  var typeNames = [].concat(Object.keys(existingTypesMap), Object.keys(definedTypes));
+  var typeNames = Object.keys(existingTypesMap).concat(Object.keys(definedTypes));
   return {
     NamedType: function NamedType(node, _1, parent, _2, ancestors) {
       var typeName = node.name.value;
@@ -26085,12 +26079,12 @@ function KnownTypeNamesRule(context) {
         var definitionNode = (_ancestors$ = ancestors[2]) !== null && _ancestors$ !== void 0 ? _ancestors$ : parent;
         var isSDL = definitionNode != null && isSDLNode(definitionNode);
 
-        if (isSDL && standardTypeNames.includes(typeName)) {
+        if (isSDL && isStandardTypeName(typeName)) {
           return;
         }
 
-        var suggestedTypes = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_1__.suggestionList)(typeName, isSDL ? standardTypeNames.concat(typeNames) : typeNames);
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Unknown type \"" + typeName + "\"." + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_3__.didYouMean)(suggestedTypes), node));
+        var suggestedTypes = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(typeName, isSDL ? standardTypeNames.concat(typeNames) : typeNames);
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Unknown type \"".concat(typeName, "\".") + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(suggestedTypes), node));
       }
     }
   };
@@ -26099,8 +26093,12 @@ var standardTypeNames = [].concat(_type_scalars_mjs__WEBPACK_IMPORTED_MODULE_4__
   return type.name;
 });
 
+function isStandardTypeName(typeName) {
+  return standardTypeNames.indexOf(typeName) !== -1;
+}
+
 function isSDLNode(value) {
-  return 'kind' in value && ((0,_language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__.isTypeSystemDefinitionNode)(value) || (0,_language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__.isTypeSystemExtensionNode)(value));
+  return !Array.isArray(value) && ((0,_language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__.isTypeSystemDefinitionNode)(value) || (0,_language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__.isTypeSystemExtensionNode)(value));
 }
 
 /***/ }),
@@ -26125,8 +26123,6 @@ __webpack_require__.r(__webpack_exports__);
  *
  * A GraphQL document is only valid if when it contains an anonymous operation
  * (the query short-hand) that it contains only that one operation definition.
- *
- * See https://spec.graphql.org/draft/#sec-Lone-Anonymous-Operation
  */
 
 function LoneAnonymousOperationRule(context) {
@@ -26202,21 +26198,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "NoFragmentCyclesRule": function() { return /* binding */ NoFragmentCyclesRule; }
 /* harmony export */ });
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
-/**
- * No fragment cycles
- *
- * The graph of fragment spreads must not form any cycles including spreading itself.
- * Otherwise an operation could infinitely spread or infinitely execute on cycles in the underlying data.
- *
- * See https://spec.graphql.org/draft/#sec-Fragment-spreads-must-not-form-cycles
- */
 
 function NoFragmentCyclesRule(context) {
   // Tracks already visited fragments to maintain O(N) and to ensure that cycles
@@ -26253,8 +26234,8 @@ function NoFragmentCyclesRule(context) {
 
     spreadPathIndexByName[fragmentName] = spreadPath.length;
 
-    for (var _iterator = _createForOfIteratorHelperLoose(spreadNodes), _step; !(_step = _iterator()).done;) {
-      var spreadNode = _step.value;
+    for (var _i2 = 0; _i2 < spreadNodes.length; _i2++) {
+      var spreadNode = spreadNodes[_i2];
       var spreadName = spreadNode.name.value;
       var cycleIndex = spreadPathIndexByName[spreadName];
       spreadPath.push(spreadNode);
@@ -26270,7 +26251,7 @@ function NoFragmentCyclesRule(context) {
         var viaPath = cyclePath.slice(0, -1).map(function (s) {
           return '"' + s.name.value + '"';
         }).join(', ');
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Cannot spread fragment \"" + spreadName + "\" within itself" + (viaPath !== '' ? " via " + viaPath + "." : '.'), cyclePath));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Cannot spread fragment \"".concat(spreadName, "\" within itself") + (viaPath !== '' ? " via ".concat(viaPath, ".") : '.'), cyclePath));
       }
 
       spreadPath.pop();
@@ -26294,20 +26275,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "NoUndefinedVariablesRule": function() { return /* binding */ NoUndefinedVariablesRule; }
 /* harmony export */ });
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 /**
  * No undefined variables
  *
  * A GraphQL operation is only valid if all variables encountered, both directly
  * and via fragment spreads, are defined by that operation.
- *
- * See https://spec.graphql.org/draft/#sec-All-Variable-Uses-Defined
  */
 
 function NoUndefinedVariablesRule(context) {
@@ -26320,12 +26293,13 @@ function NoUndefinedVariablesRule(context) {
       leave: function leave(operation) {
         var usages = context.getRecursiveVariableUsages(operation);
 
-        for (var _iterator = _createForOfIteratorHelperLoose(usages), _step; !(_step = _iterator()).done;) {
-          var node = _step.value.node;
+        for (var _i2 = 0; _i2 < usages.length; _i2++) {
+          var _ref2 = usages[_i2];
+          var node = _ref2.node;
           var varName = node.name.value;
 
           if (variableNameDefined[varName] !== true) {
-            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError(operation.name ? "Variable \"$" + varName + "\" is not defined by operation \"" + operation.name.value + "\"." : "Variable \"$" + varName + "\" is not defined.", [node, operation]));
+            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError(operation.name ? "Variable \"$".concat(varName, "\" is not defined by operation \"").concat(operation.name.value, "\".") : "Variable \"$".concat(varName, "\" is not defined."), [node, operation]));
           }
         }
       }
@@ -26350,20 +26324,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "NoUnusedFragmentsRule": function() { return /* binding */ NoUnusedFragmentsRule; }
 /* harmony export */ });
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 /**
  * No unused fragments
  *
  * A GraphQL document is only valid if all fragment definitions are spread
  * within operations, or spread within other fragments spread within operations.
- *
- * See https://spec.graphql.org/draft/#sec-Fragments-Must-Be-Used
  */
 
 function NoUnusedFragmentsRule(context) {
@@ -26382,21 +26348,21 @@ function NoUnusedFragmentsRule(context) {
       leave: function leave() {
         var fragmentNameUsed = Object.create(null);
 
-        for (var _iterator = _createForOfIteratorHelperLoose(operationDefs), _step; !(_step = _iterator()).done;) {
-          var operation = _step.value;
+        for (var _i2 = 0; _i2 < operationDefs.length; _i2++) {
+          var operation = operationDefs[_i2];
 
-          for (var _iterator3 = _createForOfIteratorHelperLoose(context.getRecursivelyReferencedFragments(operation)), _step3; !(_step3 = _iterator3()).done;) {
-            var fragment = _step3.value;
+          for (var _i4 = 0, _context$getRecursive2 = context.getRecursivelyReferencedFragments(operation); _i4 < _context$getRecursive2.length; _i4++) {
+            var fragment = _context$getRecursive2[_i4];
             fragmentNameUsed[fragment.name.value] = true;
           }
         }
 
-        for (var _iterator2 = _createForOfIteratorHelperLoose(fragmentDefs), _step2; !(_step2 = _iterator2()).done;) {
-          var fragmentDef = _step2.value;
+        for (var _i6 = 0; _i6 < fragmentDefs.length; _i6++) {
+          var fragmentDef = fragmentDefs[_i6];
           var fragName = fragmentDef.name.value;
 
           if (fragmentNameUsed[fragName] !== true) {
-            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Fragment \"" + fragName + "\" is never used.", fragmentDef));
+            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Fragment \"".concat(fragName, "\" is never used."), fragmentDef));
           }
         }
       }
@@ -26418,20 +26384,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "NoUnusedVariablesRule": function() { return /* binding */ NoUnusedVariablesRule; }
 /* harmony export */ });
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 /**
  * No unused variables
  *
  * A GraphQL operation is only valid if all variables defined by an operation
  * are used, either directly or within a spread fragment.
- *
- * See https://spec.graphql.org/draft/#sec-All-Variables-Used
  */
 
 function NoUnusedVariablesRule(context) {
@@ -26445,17 +26403,18 @@ function NoUnusedVariablesRule(context) {
         var variableNameUsed = Object.create(null);
         var usages = context.getRecursiveVariableUsages(operation);
 
-        for (var _iterator = _createForOfIteratorHelperLoose(usages), _step; !(_step = _iterator()).done;) {
-          var node = _step.value.node;
+        for (var _i2 = 0; _i2 < usages.length; _i2++) {
+          var _ref2 = usages[_i2];
+          var node = _ref2.node;
           variableNameUsed[node.name.value] = true;
         }
 
-        for (var _iterator2 = _createForOfIteratorHelperLoose(variableDefs), _step2; !(_step2 = _iterator2()).done;) {
-          var variableDef = _step2.value;
+        for (var _i4 = 0, _variableDefs2 = variableDefs; _i4 < _variableDefs2.length; _i4++) {
+          var variableDef = _variableDefs2[_i4];
           var variableName = variableDef.variable.name.value;
 
           if (variableNameUsed[variableName] !== true) {
-            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError(operation.name ? "Variable \"$" + variableName + "\" is never used in operation \"" + operation.name.value + "\"." : "Variable \"$" + variableName + "\" is never used.", variableDef));
+            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError(operation.name ? "Variable \"$".concat(variableName, "\" is never used in operation \"").concat(operation.name.value, "\".") : "Variable \"$".concat(variableName, "\" is never used."), variableDef));
           }
         }
       }
@@ -26479,17 +26438,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "OverlappingFieldsCanBeMergedRule": function() { return /* binding */ OverlappingFieldsCanBeMergedRule; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../polyfills/find.mjs */ "./node_modules/graphql/polyfills/find.mjs");
+/* harmony import */ var _polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../polyfills/objectEntries.mjs */ "./node_modules/graphql/polyfills/objectEntries.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
-/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-/* harmony import */ var _utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utilities/typeFromAST.mjs */ "./node_modules/graphql/utilities/typeFromAST.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
+/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
+/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+/* harmony import */ var _utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utilities/typeFromAST.mjs */ "./node_modules/graphql/utilities/typeFromAST.mjs");
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -26503,7 +26460,7 @@ function reasonMessage(reason) {
     return reason.map(function (_ref) {
       var responseName = _ref[0],
           subReason = _ref[1];
-      return "subfields \"" + responseName + "\" conflict because " + reasonMessage(subReason);
+      return "subfields \"".concat(responseName, "\" conflict because ") + reasonMessage(subReason);
     }).join(' and ');
   }
 
@@ -26515,8 +26472,6 @@ function reasonMessage(reason) {
  * A selection set is only valid if all fields (including spreading any
  * fragments) either correspond to distinct response names or can be merged
  * without ambiguity.
- *
- * See https://spec.graphql.org/draft/#sec-Field-Selection-Merging
  */
 
 
@@ -26533,15 +26488,15 @@ function OverlappingFieldsCanBeMergedRule(context) {
     SelectionSet: function SelectionSet(selectionSet) {
       var conflicts = findConflictsWithinSelectionSet(context, cachedFieldsAndFragmentNames, comparedFragmentPairs, context.getParentType(), selectionSet);
 
-      for (var _iterator = _createForOfIteratorHelperLoose(conflicts), _step; !(_step = _iterator()).done;) {
-        var _step$value = _step.value,
-            _step$value$ = _step$value[0],
-            responseName = _step$value$[0],
-            reason = _step$value$[1],
-            fields1 = _step$value[1],
-            fields2 = _step$value[2];
+      for (var _i2 = 0; _i2 < conflicts.length; _i2++) {
+        var _ref3 = conflicts[_i2];
+        var _ref2$ = _ref3[0];
+        var responseName = _ref2$[0];
+        var reason = _ref2$[1];
+        var fields1 = _ref3[1];
+        var fields2 = _ref3[2];
         var reasonMsg = reasonMessage(reason);
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Fields \"" + responseName + "\" conflict because " + reasonMsg + ". Use different aliases on the fields to fetch both if this was intentional.", fields1.concat(fields2)));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Fields \"".concat(responseName, "\" conflict because ").concat(reasonMsg, ". Use different aliases on the fields to fetch both if this was intentional."), fields1.concat(fields2)));
       }
     }
   };
@@ -26644,7 +26599,7 @@ function collectConflictsBetweenFieldsAndFragment(context, conflicts, cachedFiel
 
   var _getReferencedFieldsA = getReferencedFieldsAndFragmentNames(context, cachedFieldsAndFragmentNames, fragment),
       fieldMap2 = _getReferencedFieldsA[0],
-      referencedFragmentNames = _getReferencedFieldsA[1]; // Do not compare a fragment's fieldMap to itself.
+      fragmentNames2 = _getReferencedFieldsA[1]; // Do not compare a fragment's fieldMap to itself.
 
 
   if (fieldMap === fieldMap2) {
@@ -26656,9 +26611,8 @@ function collectConflictsBetweenFieldsAndFragment(context, conflicts, cachedFiel
   collectConflictsBetween(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap, fieldMap2); // (E) Then collect any conflicts between the provided collection of fields
   // and any fragment names found in the given fragment.
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(referencedFragmentNames), _step2; !(_step2 = _iterator2()).done;) {
-    var referencedFragmentName = _step2.value;
-    collectConflictsBetweenFieldsAndFragment(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap, referencedFragmentName);
+  for (var i = 0; i < fragmentNames2.length; i++) {
+    collectConflictsBetweenFieldsAndFragment(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap, fragmentNames2[i]);
   }
 } // Collect all conflicts found between two fragments, including via spreading in
 // any nested fragments.
@@ -26685,27 +26639,25 @@ function collectConflictsBetweenFragments(context, conflicts, cachedFieldsAndFra
 
   var _getReferencedFieldsA2 = getReferencedFieldsAndFragmentNames(context, cachedFieldsAndFragmentNames, fragment1),
       fieldMap1 = _getReferencedFieldsA2[0],
-      referencedFragmentNames1 = _getReferencedFieldsA2[1];
+      fragmentNames1 = _getReferencedFieldsA2[1];
 
   var _getReferencedFieldsA3 = getReferencedFieldsAndFragmentNames(context, cachedFieldsAndFragmentNames, fragment2),
       fieldMap2 = _getReferencedFieldsA3[0],
-      referencedFragmentNames2 = _getReferencedFieldsA3[1]; // (F) First, collect all conflicts between these two collections of fields
+      fragmentNames2 = _getReferencedFieldsA3[1]; // (F) First, collect all conflicts between these two collections of fields
   // (not including any nested fragments).
 
 
   collectConflictsBetween(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap1, fieldMap2); // (G) Then collect conflicts between the first fragment and any nested
   // fragments spread in the second fragment.
 
-  for (var _iterator3 = _createForOfIteratorHelperLoose(referencedFragmentNames2), _step3; !(_step3 = _iterator3()).done;) {
-    var referencedFragmentName2 = _step3.value;
-    collectConflictsBetweenFragments(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fragmentName1, referencedFragmentName2);
+  for (var j = 0; j < fragmentNames2.length; j++) {
+    collectConflictsBetweenFragments(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fragmentName1, fragmentNames2[j]);
   } // (G) Then collect conflicts between the second fragment and any nested
   // fragments spread in the first fragment.
 
 
-  for (var _iterator4 = _createForOfIteratorHelperLoose(referencedFragmentNames1), _step4; !(_step4 = _iterator4()).done;) {
-    var referencedFragmentName1 = _step4.value;
-    collectConflictsBetweenFragments(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, referencedFragmentName1, fragmentName2);
+  for (var i = 0; i < fragmentNames1.length; i++) {
+    collectConflictsBetweenFragments(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fragmentNames1[i], fragmentName2);
   }
 } // Find all conflicts found between two selection sets, including those found
 // via spreading in fragments. Called when determining if conflicts exist
@@ -26727,27 +26679,26 @@ function findConflictsBetweenSubSelectionSets(context, cachedFieldsAndFragmentNa
   collectConflictsBetween(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap1, fieldMap2); // (I) Then collect conflicts between the first collection of fields and
   // those referenced by each fragment name associated with the second.
 
-  for (var _iterator5 = _createForOfIteratorHelperLoose(fragmentNames2), _step5; !(_step5 = _iterator5()).done;) {
-    var fragmentName2 = _step5.value;
-    collectConflictsBetweenFieldsAndFragment(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap1, fragmentName2);
+  if (fragmentNames2.length !== 0) {
+    for (var j = 0; j < fragmentNames2.length; j++) {
+      collectConflictsBetweenFieldsAndFragment(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap1, fragmentNames2[j]);
+    }
   } // (I) Then collect conflicts between the second collection of fields and
   // those referenced by each fragment name associated with the first.
 
 
-  for (var _iterator6 = _createForOfIteratorHelperLoose(fragmentNames1), _step6; !(_step6 = _iterator6()).done;) {
-    var fragmentName1 = _step6.value;
-    collectConflictsBetweenFieldsAndFragment(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap2, fragmentName1);
+  if (fragmentNames1.length !== 0) {
+    for (var i = 0; i < fragmentNames1.length; i++) {
+      collectConflictsBetweenFieldsAndFragment(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fieldMap2, fragmentNames1[i]);
+    }
   } // (J) Also collect conflicts between any fragment names by the first and
   // fragment names by the second. This compares each item in the first set of
   // names to each item in the second set of names.
 
 
-  for (var _iterator7 = _createForOfIteratorHelperLoose(fragmentNames1), _step7; !(_step7 = _iterator7()).done;) {
-    var _fragmentName = _step7.value;
-
-    for (var _iterator8 = _createForOfIteratorHelperLoose(fragmentNames2), _step8; !(_step8 = _iterator8()).done;) {
-      var _fragmentName2 = _step8.value;
-      collectConflictsBetweenFragments(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, _fragmentName, _fragmentName2);
+  for (var _i3 = 0; _i3 < fragmentNames1.length; _i3++) {
+    for (var _j = 0; _j < fragmentNames2.length; _j++) {
+      collectConflictsBetweenFragments(context, conflicts, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, fragmentNames1[_i3], fragmentNames2[_j]);
     }
   }
 
@@ -26760,14 +26711,13 @@ function collectConflictsWithin(context, conflicts, cachedFieldsAndFragmentNames
   // name and the value at that key is a list of all fields which provide that
   // response name. For every response name, if there are multiple fields, they
   // must be compared to find a potential conflict.
-  for (var _i = 0, _Object$entries = Object.entries(fieldMap); _i < _Object$entries.length; _i++) {
-    var _Object$entries$_i = _Object$entries[_i],
-        responseName = _Object$entries$_i[0],
-        fields = _Object$entries$_i[1];
-
-    // This compares every field in the list to every other field in this list
+  for (var _i5 = 0, _objectEntries2 = (0,_polyfills_objectEntries_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(fieldMap); _i5 < _objectEntries2.length; _i5++) {
+    var _ref5 = _objectEntries2[_i5];
+    var responseName = _ref5[0];
+    var fields = _ref5[1]; // This compares every field in the list to every other field in this list
     // (except to itself). If the list only has one item, nothing needs to
     // be compared.
+
     if (fields.length > 1) {
       for (var i = 0; i < fields.length; i++) {
         for (var j = i + 1; j < fields.length; j++) {
@@ -26794,19 +26744,16 @@ function collectConflictsBetween(context, conflicts, cachedFieldsAndFragmentName
   // response name. For any response name which appears in both provided field
   // maps, each field from the first field map must be compared to every field
   // in the second field map to find potential conflicts.
-  for (var _i2 = 0, _Object$entries2 = Object.entries(fieldMap1); _i2 < _Object$entries2.length; _i2++) {
-    var _Object$entries2$_i = _Object$entries2[_i2],
-        responseName = _Object$entries2$_i[0],
-        fields1 = _Object$entries2$_i[1];
+  for (var _i7 = 0, _Object$keys2 = Object.keys(fieldMap1); _i7 < _Object$keys2.length; _i7++) {
+    var responseName = _Object$keys2[_i7];
     var fields2 = fieldMap2[responseName];
 
     if (fields2) {
-      for (var _iterator9 = _createForOfIteratorHelperLoose(fields1), _step9; !(_step9 = _iterator9()).done;) {
-        var field1 = _step9.value;
+      var fields1 = fieldMap1[responseName];
 
-        for (var _iterator10 = _createForOfIteratorHelperLoose(fields2), _step10; !(_step10 = _iterator10()).done;) {
-          var field2 = _step10.value;
-          var conflict = findConflict(context, cachedFieldsAndFragmentNames, comparedFragmentPairs, parentFieldsAreMutuallyExclusive, responseName, field1, field2);
+      for (var i = 0; i < fields1.length; i++) {
+        for (var j = 0; j < fields2.length; j++) {
+          var conflict = findConflict(context, cachedFieldsAndFragmentNames, comparedFragmentPairs, parentFieldsAreMutuallyExclusive, responseName, fields1[i], fields2[j]);
 
           if (conflict) {
             conflicts.push(conflict);
@@ -26834,7 +26781,7 @@ function findConflict(context, cachedFieldsAndFragmentNames, comparedFragmentPai
   // in the current state of the schema, then perhaps in some future version,
   // thus may not safely diverge.
 
-  var areMutuallyExclusive = parentFieldsAreMutuallyExclusive || parentType1 !== parentType2 && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isObjectType)(parentType1) && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isObjectType)(parentType2);
+  var areMutuallyExclusive = parentFieldsAreMutuallyExclusive || parentType1 !== parentType2 && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectType)(parentType1) && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectType)(parentType2);
 
   if (!areMutuallyExclusive) {
     var _node1$arguments, _node2$arguments; // Two aliases must refer to the same field.
@@ -26844,16 +26791,13 @@ function findConflict(context, cachedFieldsAndFragmentNames, comparedFragmentPai
     var name2 = node2.name.value;
 
     if (name1 !== name2) {
-      return [[responseName, "\"" + name1 + "\" and \"" + name2 + "\" are different fields"], [node1], [node2]];
-    } // FIXME https://github.com/graphql/graphql-js/issues/2203
+      return [[responseName, "\"".concat(name1, "\" and \"").concat(name2, "\" are different fields")], [node1], [node2]];
+    } // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
 
-    var args1 =
-    /* c8 ignore next */
-    (_node1$arguments = node1.arguments) !== null && _node1$arguments !== void 0 ? _node1$arguments : [];
-    var args2 =
-    /* c8 ignore next */
-    (_node2$arguments = node2.arguments) !== null && _node2$arguments !== void 0 ? _node2$arguments : []; // Two field calls must have the same arguments.
+    var args1 = (_node1$arguments = node1.arguments) !== null && _node1$arguments !== void 0 ? _node1$arguments : []; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
+
+    var args2 = (_node2$arguments = node2.arguments) !== null && _node2$arguments !== void 0 ? _node2$arguments : []; // Two field calls must have the same arguments.
 
     if (!sameArguments(args1, args2)) {
       return [[responseName, 'they have differing arguments'], [node1], [node2]];
@@ -26865,7 +26809,7 @@ function findConflict(context, cachedFieldsAndFragmentNames, comparedFragmentPai
   var type2 = def2 === null || def2 === void 0 ? void 0 : def2.type;
 
   if (type1 && type2 && doTypesConflict(type1, type2)) {
-    return [[responseName, "they return conflicting types \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(type1) + "\" and \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(type2) + "\""], [node1], [node2]];
+    return [[responseName, "they return conflicting types \"".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(type1), "\" and \"").concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(type2), "\"")], [node1], [node2]];
   } // Collect and compare sub-fields. Use the same "visited fragment names" list
   // for both collections so fields in a fragment reference are never
   // compared to themselves.
@@ -26875,7 +26819,7 @@ function findConflict(context, cachedFieldsAndFragmentNames, comparedFragmentPai
   var selectionSet2 = node2.selectionSet;
 
   if (selectionSet1 && selectionSet2) {
-    var conflicts = findConflictsBetweenSubSelectionSets(context, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.getNamedType)(type1), selectionSet1, (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.getNamedType)(type2), selectionSet2);
+    var conflicts = findConflictsBetweenSubSelectionSets(context, cachedFieldsAndFragmentNames, comparedFragmentPairs, areMutuallyExclusive, (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.getNamedType)(type1), selectionSet1, (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.getNamedType)(type2), selectionSet2);
     return subfieldConflicts(conflicts, responseName, node1, node2);
   }
 }
@@ -26886,7 +26830,7 @@ function sameArguments(arguments1, arguments2) {
   }
 
   return arguments1.every(function (argument1) {
-    var argument2 = arguments2.find(function (argument) {
+    var argument2 = (0,_polyfills_find_mjs__WEBPACK_IMPORTED_MODULE_4__["default"])(arguments2, function (argument) {
       return argument.name.value === argument1.name.value;
     });
 
@@ -26899,30 +26843,30 @@ function sameArguments(arguments1, arguments2) {
 }
 
 function sameValue(value1, value2) {
-  return (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_3__.print)(value1) === (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_3__.print)(value2);
+  return (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__.print)(value1) === (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_5__.print)(value2);
 } // Two types conflict if both types could not apply to a value simultaneously.
 // Composite types are ignored as their individual field types will be compared
 // later recursively. However List and Non-Null types must match.
 
 
 function doTypesConflict(type1, type2) {
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isListType)(type1)) {
-    return (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isListType)(type2) ? doTypesConflict(type1.ofType, type2.ofType) : true;
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isListType)(type1)) {
+    return (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isListType)(type2) ? doTypesConflict(type1.ofType, type2.ofType) : true;
   }
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isListType)(type2)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isListType)(type2)) {
     return true;
   }
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isNonNullType)(type1)) {
-    return (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isNonNullType)(type2) ? doTypesConflict(type1.ofType, type2.ofType) : true;
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(type1)) {
+    return (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(type2) ? doTypesConflict(type1.ofType, type2.ofType) : true;
   }
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isNonNullType)(type2)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isNonNullType)(type2)) {
     return true;
   }
 
-  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isLeafType)(type1) || (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isLeafType)(type2)) {
+  if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isLeafType)(type1) || (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isLeafType)(type2)) {
     return type1 !== type2;
   }
 
@@ -26935,18 +26879,17 @@ function doTypesConflict(type1, type2) {
 function getFieldsAndFragmentNames(context, cachedFieldsAndFragmentNames, parentType, selectionSet) {
   var cached = cachedFieldsAndFragmentNames.get(selectionSet);
 
-  if (cached) {
-    return cached;
+  if (!cached) {
+    var nodeAndDefs = Object.create(null);
+    var fragmentNames = Object.create(null);
+
+    _collectFieldsAndFragmentNames(context, parentType, selectionSet, nodeAndDefs, fragmentNames);
+
+    cached = [nodeAndDefs, Object.keys(fragmentNames)];
+    cachedFieldsAndFragmentNames.set(selectionSet, cached);
   }
 
-  var nodeAndDefs = Object.create(null);
-  var fragmentNames = Object.create(null);
-
-  _collectFieldsAndFragmentNames(context, parentType, selectionSet, nodeAndDefs, fragmentNames);
-
-  var result = [nodeAndDefs, Object.keys(fragmentNames)];
-  cachedFieldsAndFragmentNames.set(selectionSet, result);
-  return result;
+  return cached;
 } // Given a reference to a fragment, return the represented collection of fields
 // as well as a list of nested fragment names referenced via fragment spreads.
 
@@ -26959,21 +26902,21 @@ function getReferencedFieldsAndFragmentNames(context, cachedFieldsAndFragmentNam
     return cached;
   }
 
-  var fragmentType = (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_4__.typeFromAST)(context.getSchema(), fragment.typeCondition);
+  var fragmentType = (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_6__.typeFromAST)(context.getSchema(), fragment.typeCondition);
   return getFieldsAndFragmentNames(context, cachedFieldsAndFragmentNames, fragmentType, fragment.selectionSet);
 }
 
 function _collectFieldsAndFragmentNames(context, parentType, selectionSet, nodeAndDefs, fragmentNames) {
-  for (var _iterator11 = _createForOfIteratorHelperLoose(selectionSet.selections), _step11; !(_step11 = _iterator11()).done;) {
-    var selection = _step11.value;
+  for (var _i9 = 0, _selectionSet$selecti2 = selectionSet.selections; _i9 < _selectionSet$selecti2.length; _i9++) {
+    var selection = _selectionSet$selecti2[_i9];
 
     switch (selection.kind) {
-      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_5__.Kind.FIELD:
+      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_7__.Kind.FIELD:
         {
           var fieldName = selection.name.value;
           var fieldDef = void 0;
 
-          if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isObjectType)(parentType) || (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isInterfaceType)(parentType)) {
+          if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isObjectType)(parentType) || (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_2__.isInterfaceType)(parentType)) {
             fieldDef = parentType.getFields()[fieldName];
           }
 
@@ -26987,14 +26930,14 @@ function _collectFieldsAndFragmentNames(context, parentType, selectionSet, nodeA
           break;
         }
 
-      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_5__.Kind.FRAGMENT_SPREAD:
+      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_7__.Kind.FRAGMENT_SPREAD:
         fragmentNames[selection.name.value] = true;
         break;
 
-      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_5__.Kind.INLINE_FRAGMENT:
+      case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_7__.Kind.INLINE_FRAGMENT:
         {
           var typeCondition = selection.typeCondition;
-          var inlineFragmentType = typeCondition ? (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_4__.typeFromAST)(context.getSchema(), typeCondition) : parentType;
+          var inlineFragmentType = typeCondition ? (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_6__.typeFromAST)(context.getSchema(), typeCondition) : parentType;
 
           _collectFieldsAndFragmentNames(context, inlineFragmentType, selection.selectionSet, nodeAndDefs, fragmentNames);
 
@@ -27008,61 +26951,64 @@ function _collectFieldsAndFragmentNames(context, parentType, selectionSet, nodeA
 
 function subfieldConflicts(conflicts, responseName, node1, node2) {
   if (conflicts.length > 0) {
-    return [[responseName, conflicts.map(function (_ref2) {
-      var reason = _ref2[0];
+    return [[responseName, conflicts.map(function (_ref6) {
+      var reason = _ref6[0];
       return reason;
-    })], [node1].concat(conflicts.map(function (_ref3) {
-      var fields1 = _ref3[1];
-      return fields1;
-    }).flat()), [node2].concat(conflicts.map(function (_ref4) {
-      var fields2 = _ref4[2];
-      return fields2;
-    }).flat())];
+    })], conflicts.reduce(function (allFields, _ref7) {
+      var fields1 = _ref7[1];
+      return allFields.concat(fields1);
+    }, [node1]), conflicts.reduce(function (allFields, _ref8) {
+      var fields2 = _ref8[2];
+      return allFields.concat(fields2);
+    }, [node2])];
   }
 }
 /**
- * A way to keep track of pairs of things when the ordering of the pair does not matter.
+ * A way to keep track of pairs of things when the ordering of the pair does
+ * not matter. We do this by maintaining a sort of double adjacency sets.
  */
 
 
 var PairSet = /*#__PURE__*/function () {
   function PairSet() {
-    this._data = new Map();
+    this._data = Object.create(null);
   }
 
   var _proto = PairSet.prototype;
 
   _proto.has = function has(a, b, areMutuallyExclusive) {
-    var _this$_data$get;
-
-    var _ref5 = a < b ? [a, b] : [b, a],
-        key1 = _ref5[0],
-        key2 = _ref5[1];
-
-    var result = (_this$_data$get = this._data.get(key1)) === null || _this$_data$get === void 0 ? void 0 : _this$_data$get.get(key2);
+    var first = this._data[a];
+    var result = first && first[b];
 
     if (result === undefined) {
       return false;
-    } // areMutuallyExclusive being false is a superset of being true, hence if
-    // we want to know if this PairSet "has" these two with no exclusivity,
-    // we have to ensure it was added as such.
+    } // areMutuallyExclusive being false is a superset of being true,
+    // hence if we want to know if this PairSet "has" these two with no
+    // exclusivity, we have to ensure it was added as such.
 
 
-    return areMutuallyExclusive ? true : areMutuallyExclusive === result;
+    if (areMutuallyExclusive === false) {
+      return result === false;
+    }
+
+    return true;
   };
 
   _proto.add = function add(a, b, areMutuallyExclusive) {
-    var _ref6 = a < b ? [a, b] : [b, a],
-        key1 = _ref6[0],
-        key2 = _ref6[1];
+    this._pairSetAdd(a, b, areMutuallyExclusive);
 
-    var map = this._data.get(key1);
+    this._pairSetAdd(b, a, areMutuallyExclusive);
+  };
 
-    if (map === undefined) {
-      this._data.set(key1, new Map([[key2, areMutuallyExclusive]]));
-    } else {
-      map.set(key2, areMutuallyExclusive);
+  _proto._pairSetAdd = function _pairSetAdd(a, b, areMutuallyExclusive) {
+    var map = this._data[a];
+
+    if (!map) {
+      map = Object.create(null);
+      this._data[a] = map;
     }
+
+    map[b] = areMutuallyExclusive;
   };
 
   return PairSet;
@@ -27106,9 +27052,9 @@ function PossibleFragmentSpreadsRule(context) {
       var parentType = context.getParentType();
 
       if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isCompositeType)(fragType) && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isCompositeType)(parentType) && !(0,_utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_1__.doTypesOverlap)(context.getSchema(), fragType, parentType)) {
-        var parentTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(parentType);
-        var fragTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(fragType);
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Fragment cannot be spread here as objects of type \"" + parentTypeStr + "\" can never be of type \"" + fragTypeStr + "\".", node));
+        var parentTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(parentType);
+        var fragTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(fragType);
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Fragment cannot be spread here as objects of type \"".concat(parentTypeStr, "\" can never be of type \"").concat(fragTypeStr, "\"."), node));
       }
     },
     FragmentSpread: function FragmentSpread(node) {
@@ -27117,9 +27063,9 @@ function PossibleFragmentSpreadsRule(context) {
       var parentType = context.getParentType();
 
       if (fragType && parentType && !(0,_utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_1__.doTypesOverlap)(context.getSchema(), fragType, parentType)) {
-        var parentTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(parentType);
-        var fragTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(fragType);
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Fragment \"" + fragName + "\" cannot be spread here as objects of type \"" + parentTypeStr + "\" can never be of type \"" + fragTypeStr + "\".", node));
+        var parentTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(parentType);
+        var fragTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(fragType);
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Fragment \"".concat(fragName, "\" cannot be spread here as objects of type \"").concat(parentTypeStr, "\" can never be of type \"").concat(fragTypeStr, "\"."), node));
       }
     }
   };
@@ -27160,13 +27106,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
 var _defKindToExtKind;
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
 
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+  return obj;
+}
 
 
 
@@ -27186,8 +27139,8 @@ function PossibleTypeExtensionsRule(context) {
   var schema = context.getSchema();
   var definedTypes = Object.create(null);
 
-  for (var _iterator = _createForOfIteratorHelperLoose(context.getDocument().definitions), _step; !(_step = _iterator()).done;) {
-    var def = _step.value;
+  for (var _i2 = 0, _context$getDocument$2 = context.getDocument().definitions; _i2 < _context$getDocument$2.length; _i2++) {
+    var def = _context$getDocument$2[_i2];
 
     if ((0,_language_predicates_mjs__WEBPACK_IMPORTED_MODULE_0__.isTypeDefinitionNode)(def)) {
       definedTypes[def.name.value] = def;
@@ -27218,16 +27171,21 @@ function PossibleTypeExtensionsRule(context) {
     if (expectedKind) {
       if (expectedKind !== node.kind) {
         var kindStr = extensionKindToTypeName(node.kind);
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Cannot extend non-" + kindStr + " type \"" + typeName + "\".", defNode ? [defNode, node] : node));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Cannot extend non-".concat(kindStr, " type \"").concat(typeName, "\"."), defNode ? [defNode, node] : node));
       }
     } else {
-      var allTypeNames = Object.keys(_extends({}, definedTypes, schema === null || schema === void 0 ? void 0 : schema.getTypeMap()));
-      var suggestedTypes = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_2__.suggestionList)(typeName, allTypeNames);
-      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Cannot extend type \"" + typeName + "\" because it is not defined." + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_3__.didYouMean)(suggestedTypes), node.name));
+      var allTypeNames = Object.keys(definedTypes);
+
+      if (schema) {
+        allTypeNames = allTypeNames.concat(Object.keys(schema.getTypeMap()));
+      }
+
+      var suggestedTypes = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(typeName, allTypeNames);
+      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Cannot extend type \"".concat(typeName, "\" because it is not defined.") + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(suggestedTypes), node.name));
     }
   }
 }
-var defKindToExtKind = (_defKindToExtKind = {}, _defKindToExtKind[_language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.SCALAR_TYPE_DEFINITION] = _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.SCALAR_TYPE_EXTENSION, _defKindToExtKind[_language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.OBJECT_TYPE_DEFINITION] = _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.OBJECT_TYPE_EXTENSION, _defKindToExtKind[_language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INTERFACE_TYPE_DEFINITION] = _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INTERFACE_TYPE_EXTENSION, _defKindToExtKind[_language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.UNION_TYPE_DEFINITION] = _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.UNION_TYPE_EXTENSION, _defKindToExtKind[_language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.ENUM_TYPE_DEFINITION] = _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.ENUM_TYPE_EXTENSION, _defKindToExtKind[_language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INPUT_OBJECT_TYPE_DEFINITION] = _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INPUT_OBJECT_TYPE_EXTENSION, _defKindToExtKind);
+var defKindToExtKind = (_defKindToExtKind = {}, _defineProperty(_defKindToExtKind, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.SCALAR_TYPE_DEFINITION, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.SCALAR_TYPE_EXTENSION), _defineProperty(_defKindToExtKind, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.OBJECT_TYPE_DEFINITION, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.OBJECT_TYPE_EXTENSION), _defineProperty(_defKindToExtKind, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INTERFACE_TYPE_DEFINITION, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INTERFACE_TYPE_EXTENSION), _defineProperty(_defKindToExtKind, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.UNION_TYPE_DEFINITION, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.UNION_TYPE_EXTENSION), _defineProperty(_defKindToExtKind, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.ENUM_TYPE_DEFINITION, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.ENUM_TYPE_EXTENSION), _defineProperty(_defKindToExtKind, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INPUT_OBJECT_TYPE_DEFINITION, _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INPUT_OBJECT_TYPE_EXTENSION), _defKindToExtKind);
 
 function typeToExtKind(type) {
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isScalarType)(type)) {
@@ -27248,16 +27206,15 @@ function typeToExtKind(type) {
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isEnumType)(type)) {
     return _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.ENUM_TYPE_EXTENSION;
-  }
+  } // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2618')
+
 
   if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_5__.isInputObjectType)(type)) {
     return _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INPUT_OBJECT_TYPE_EXTENSION;
-  }
-  /* c8 ignore next 3 */
-  // Not reachable. All possible types have been considered
+  } // istanbul ignore next (Not reachable. All possible types have been considered)
 
 
-   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_6__.invariant)(false, 'Unexpected type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_7__.inspect)(type));
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(0, 'Unexpected type: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(type));
 }
 
 function extensionKindToTypeName(kind) {
@@ -27279,13 +27236,10 @@ function extensionKindToTypeName(kind) {
 
     case _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_4__.Kind.INPUT_OBJECT_TYPE_EXTENSION:
       return 'input object';
-    // Not reachable. All possible types have been considered
+  } // istanbul ignore next (Not reachable. All possible types have been considered)
 
-    /* c8 ignore next */
 
-    default:
-       false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_6__.invariant)(false, 'Unexpected kind: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_7__.inspect)(kind));
-  }
+   false || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(0, 'Unexpected kind: ' + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_7__["default"])(kind));
 }
 
 /***/ }),
@@ -27302,20 +27256,61 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ProvidedRequiredArgumentsRule": function() { return /* binding */ ProvidedRequiredArgumentsRule; },
 /* harmony export */   "ProvidedRequiredArgumentsOnDirectivesRule": function() { return /* binding */ ProvidedRequiredArgumentsOnDirectivesRule; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
 /* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
-/* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
-/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+/* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
+/* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+  return keys;
+}
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
 
 
 
@@ -27332,7 +27327,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
  */
 
 function ProvidedRequiredArgumentsRule(context) {
-  return _extends({}, ProvidedRequiredArgumentsOnDirectivesRule(context), {
+  return _objectSpread(_objectSpread({}, ProvidedRequiredArgumentsOnDirectivesRule(context)), {}, {
     Field: {
       // Validate on leave to allow for deeper errors to appear first.
       leave: function leave(fieldNode) {
@@ -27342,21 +27337,21 @@ function ProvidedRequiredArgumentsRule(context) {
 
         if (!fieldDef) {
           return false;
-        }
+        } // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
-        var providedArgs = new Set( // FIXME: https://github.com/graphql/graphql-js/issues/2203
 
-        /* c8 ignore next */
-        (_fieldNode$arguments = fieldNode.arguments) === null || _fieldNode$arguments === void 0 ? void 0 : _fieldNode$arguments.map(function (arg) {
+        var argNodes = (_fieldNode$arguments = fieldNode.arguments) !== null && _fieldNode$arguments !== void 0 ? _fieldNode$arguments : [];
+        var argNodeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(argNodes, function (arg) {
           return arg.name.value;
-        }));
+        });
 
-        for (var _iterator = _createForOfIteratorHelperLoose(fieldDef.args), _step; !(_step = _iterator()).done;) {
-          var argDef = _step.value;
+        for (var _i2 = 0, _fieldDef$args2 = fieldDef.args; _i2 < _fieldDef$args2.length; _i2++) {
+          var argDef = _fieldDef$args2[_i2];
+          var argNode = argNodeMap[argDef.name];
 
-          if (!providedArgs.has(argDef.name) && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isRequiredArgument)(argDef)) {
-            var argTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(argDef.type);
-            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Field \"" + fieldDef.name + "\" argument \"" + argDef.name + "\" of type \"" + argTypeStr + "\" is required, but it was not provided.", fieldNode));
+          if (!argNode && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isRequiredArgument)(argDef)) {
+            var argTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(argDef.type);
+            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Field \"".concat(fieldDef.name, "\" argument \"").concat(argDef.name, "\" of type \"").concat(argTypeStr, "\" is required, but it was not provided."), fieldNode));
           }
         }
       }
@@ -27368,32 +27363,28 @@ function ProvidedRequiredArgumentsRule(context) {
  */
 
 function ProvidedRequiredArgumentsOnDirectivesRule(context) {
-  var _schema$getDirectives;
-
   var requiredArgsMap = Object.create(null);
   var schema = context.getSchema();
-  var definedDirectives = (_schema$getDirectives = schema === null || schema === void 0 ? void 0 : schema.getDirectives()) !== null && _schema$getDirectives !== void 0 ? _schema$getDirectives : _type_directives_mjs__WEBPACK_IMPORTED_MODULE_3__.specifiedDirectives;
+  var definedDirectives = schema ? schema.getDirectives() : _type_directives_mjs__WEBPACK_IMPORTED_MODULE_4__.specifiedDirectives;
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(definedDirectives), _step2; !(_step2 = _iterator2()).done;) {
-    var directive = _step2.value;
-    requiredArgsMap[directive.name] = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_4__.keyMap)(directive.args.filter(_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isRequiredArgument), function (arg) {
+  for (var _i4 = 0; _i4 < definedDirectives.length; _i4++) {
+    var directive = definedDirectives[_i4];
+    requiredArgsMap[directive.name] = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(directive.args.filter(_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isRequiredArgument), function (arg) {
       return arg.name;
     });
   }
 
   var astDefinitions = context.getDocument().definitions;
 
-  for (var _iterator3 = _createForOfIteratorHelperLoose(astDefinitions), _step3; !(_step3 = _iterator3()).done;) {
-    var def = _step3.value;
+  for (var _i6 = 0; _i6 < astDefinitions.length; _i6++) {
+    var def = astDefinitions[_i6];
 
     if (def.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_5__.Kind.DIRECTIVE_DEFINITION) {
-      var _def$arguments; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-      /* c8 ignore next */
+      var _def$arguments; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
 
       var argNodes = (_def$arguments = def.arguments) !== null && _def$arguments !== void 0 ? _def$arguments : [];
-      requiredArgsMap[def.name.value] = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_4__.keyMap)(argNodes.filter(isRequiredArgumentNode), function (arg) {
+      requiredArgsMap[def.name.value] = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(argNodes.filter(isRequiredArgumentNode), function (arg) {
         return arg.name.value;
       });
     }
@@ -27407,24 +27398,22 @@ function ProvidedRequiredArgumentsOnDirectivesRule(context) {
         var requiredArgs = requiredArgsMap[directiveName];
 
         if (requiredArgs) {
-          var _directiveNode$argume; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-          /* c8 ignore next */
+          var _directiveNode$argume; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
 
-          var argNodes = (_directiveNode$argume = directiveNode.arguments) !== null && _directiveNode$argume !== void 0 ? _directiveNode$argume : [];
-          var argNodeMap = new Set(argNodes.map(function (arg) {
+          var _argNodes = (_directiveNode$argume = directiveNode.arguments) !== null && _directiveNode$argume !== void 0 ? _directiveNode$argume : [];
+
+          var argNodeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])(_argNodes, function (arg) {
             return arg.name.value;
-          }));
+          });
 
-          for (var _i = 0, _Object$entries = Object.entries(requiredArgs); _i < _Object$entries.length; _i++) {
-            var _Object$entries$_i = _Object$entries[_i],
-                argName = _Object$entries$_i[0],
-                argDef = _Object$entries$_i[1];
+          for (var _i8 = 0, _Object$keys2 = Object.keys(requiredArgs); _i8 < _Object$keys2.length; _i8++) {
+            var argName = _Object$keys2[_i8];
 
-            if (!argNodeMap.has(argName)) {
-              var argType = (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isType)(argDef.type) ? (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(argDef.type) : (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__.print)(argDef.type);
-              context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Directive \"@" + directiveName + "\" argument \"" + argName + "\" of type \"" + argType + "\" is required, but it was not provided.", directiveNode));
+            if (!argNodeMap[argName]) {
+              var argType = requiredArgs[argName].type;
+              var argTypeStr = (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isType)(argType) ? (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(argType) : (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__.print)(argType);
+              context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Directive \"@".concat(directiveName, "\" argument \"").concat(argName, "\" of type \"").concat(argTypeStr, "\" is required, but it was not provided."), directiveNode));
             }
           }
         }
@@ -27473,15 +27462,15 @@ function ScalarLeafsRule(context) {
         if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isLeafType)((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.getNamedType)(type))) {
           if (selectionSet) {
             var fieldName = node.name.value;
-            var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(type);
-            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Field \"" + fieldName + "\" must not have a selection since type \"" + typeStr + "\" has no subfields.", selectionSet));
+            var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type);
+            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Field \"".concat(fieldName, "\" must not have a selection since type \"").concat(typeStr, "\" has no subfields."), selectionSet));
           }
         } else if (!selectionSet) {
           var _fieldName = node.name.value;
 
-          var _typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(type);
+          var _typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type);
 
-          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Field \"" + _fieldName + "\" of type \"" + _typeStr + "\" must have a selection of subfields. Did you mean \"" + _fieldName + " { ... }\"?", node));
+          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Field \"".concat(_fieldName, "\" of type \"").concat(_typeStr, "\" must have a selection of subfields. Did you mean \"").concat(_fieldName, " { ... }\"?"), node));
         }
       }
     }
@@ -27501,163 +27490,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SingleFieldSubscriptionsRule": function() { return /* binding */ SingleFieldSubscriptionsRule; }
 /* harmony export */ });
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-/* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
-/* harmony import */ var _execution_collectFields_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../execution/collectFields.mjs */ "./node_modules/graphql/execution/collectFields.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
-
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 
 /**
- * Subscriptions must only include a non-introspection field.
+ * Subscriptions must only include one field.
  *
- * A GraphQL subscription is valid only if it contains a single root field and
- * that root field is not an introspection field.
- *
- * See https://spec.graphql.org/draft/#sec-Single-root-field
+ * A GraphQL subscription is valid only if it contains a single root field.
  */
 
 function SingleFieldSubscriptionsRule(context) {
   return {
     OperationDefinition: function OperationDefinition(node) {
       if (node.operation === 'subscription') {
-        var schema = context.getSchema();
-        var subscriptionType = schema.getSubscriptionType();
-
-        if (subscriptionType) {
-          var operationName = node.name ? node.name.value : null;
-          var variableValues = Object.create(null);
-          var document = context.getDocument();
-          var fragments = Object.create(null);
-
-          for (var _iterator = _createForOfIteratorHelperLoose(document.definitions), _step; !(_step = _iterator()).done;) {
-            var definition = _step.value;
-
-            if (definition.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_0__.Kind.FRAGMENT_DEFINITION) {
-              fragments[definition.name.value] = definition;
-            }
-          }
-
-          var fields = (0,_execution_collectFields_mjs__WEBPACK_IMPORTED_MODULE_1__.collectFields)(schema, fragments, variableValues, subscriptionType, node.selectionSet);
-
-          if (fields.size > 1) {
-            var fieldSelectionLists = [].concat(fields.values());
-            var extraFieldSelectionLists = fieldSelectionLists.slice(1);
-            var extraFieldSelections = extraFieldSelectionLists.flat();
-            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError(operationName != null ? "Subscription \"" + operationName + "\" must select only one top level field." : 'Anonymous Subscription must select only one top level field.', extraFieldSelections));
-          }
-
-          for (var _iterator2 = _createForOfIteratorHelperLoose(fields.values()), _step2; !(_step2 = _iterator2()).done;) {
-            var fieldNodes = _step2.value;
-            var field = fieldNodes[0];
-            var fieldName = field.name.value;
-
-            if (fieldName.startsWith('__')) {
-              context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError(operationName != null ? "Subscription \"" + operationName + "\" must not select an introspection top level field." : 'Anonymous Subscription must not select an introspection top level field.', fieldNodes));
-            }
-          }
+        if (node.selectionSet.selections.length !== 1) {
+          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError(node.name ? "Subscription \"".concat(node.name.value, "\" must select only one top level field.") : 'Anonymous Subscription must select only one top level field.', node.selectionSet.selections.slice(1)));
         }
       }
     }
   };
-}
-
-/***/ }),
-
-/***/ "./node_modules/graphql/validation/rules/UniqueArgumentDefinitionNamesRule.mjs":
-/*!*************************************************************************************!*\
-  !*** ./node_modules/graphql/validation/rules/UniqueArgumentDefinitionNamesRule.mjs ***!
-  \*************************************************************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "UniqueArgumentDefinitionNamesRule": function() { return /* binding */ UniqueArgumentDefinitionNamesRule; }
-/* harmony export */ });
-/* harmony import */ var _jsutils_groupBy_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsutils/groupBy.mjs */ "./node_modules/graphql/jsutils/groupBy.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
-
-/**
- * Unique argument definition names
- *
- * A GraphQL Object or Interface type is only valid if all its fields have uniquely named arguments.
- * A GraphQL Directive is only valid if all its arguments are uniquely named.
- */
-
-function UniqueArgumentDefinitionNamesRule(context) {
-  return {
-    DirectiveDefinition: function DirectiveDefinition(directiveNode) {
-      var _directiveNode$argume; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-      /* c8 ignore next */
-
-
-      var argumentNodes = (_directiveNode$argume = directiveNode.arguments) !== null && _directiveNode$argume !== void 0 ? _directiveNode$argume : [];
-      return checkArgUniqueness("@" + directiveNode.name.value, argumentNodes);
-    },
-    InterfaceTypeDefinition: checkArgUniquenessPerField,
-    InterfaceTypeExtension: checkArgUniquenessPerField,
-    ObjectTypeDefinition: checkArgUniquenessPerField,
-    ObjectTypeExtension: checkArgUniquenessPerField
-  };
-
-  function checkArgUniquenessPerField(typeNode) {
-    var _typeNode$fields;
-
-    var typeName = typeNode.name.value; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-    /* c8 ignore next */
-
-    var fieldNodes = (_typeNode$fields = typeNode.fields) !== null && _typeNode$fields !== void 0 ? _typeNode$fields : [];
-
-    for (var _iterator = _createForOfIteratorHelperLoose(fieldNodes), _step; !(_step = _iterator()).done;) {
-      var fieldDef = _step.value;
-
-      var _fieldDef$arguments;
-
-      var fieldName = fieldDef.name.value; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-      /* c8 ignore next */
-
-      var argumentNodes = (_fieldDef$arguments = fieldDef.arguments) !== null && _fieldDef$arguments !== void 0 ? _fieldDef$arguments : [];
-      checkArgUniqueness(typeName + "." + fieldName, argumentNodes);
-    }
-
-    return false;
-  }
-
-  function checkArgUniqueness(parentName, argumentNodes) {
-    var seenArgs = (0,_jsutils_groupBy_mjs__WEBPACK_IMPORTED_MODULE_0__.groupBy)(argumentNodes, function (arg) {
-      return arg.name.value;
-    });
-
-    for (var _iterator2 = _createForOfIteratorHelperLoose(seenArgs), _step2; !(_step2 = _iterator2()).done;) {
-      var _step2$value = _step2.value,
-          argName = _step2$value[0],
-          argNodes = _step2$value[1];
-
-      if (argNodes.length > 1) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Argument \"" + parentName + "(" + argName + ":)\" can only be defined once.", argNodes.map(function (node) {
-          return node.name;
-        })));
-      }
-    }
-
-    return false;
-  }
 }
 
 /***/ }),
@@ -27673,54 +27523,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "UniqueArgumentNamesRule": function() { return /* binding */ UniqueArgumentNamesRule; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_groupBy_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsutils/groupBy.mjs */ "./node_modules/graphql/jsutils/groupBy.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 
 /**
  * Unique argument names
  *
  * A GraphQL field or directive is only valid if all supplied arguments are
  * uniquely named.
- *
- * See https://spec.graphql.org/draft/#sec-Argument-Names
  */
 
 function UniqueArgumentNamesRule(context) {
+  var knownArgNames = Object.create(null);
   return {
-    Field: checkArgUniqueness,
-    Directive: checkArgUniqueness
-  };
+    Field: function Field() {
+      knownArgNames = Object.create(null);
+    },
+    Directive: function Directive() {
+      knownArgNames = Object.create(null);
+    },
+    Argument: function Argument(node) {
+      var argName = node.name.value;
 
-  function checkArgUniqueness(parentNode) {
-    var _parentNode$arguments; // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-    /* c8 ignore next */
-
-
-    var argumentNodes = (_parentNode$arguments = parentNode.arguments) !== null && _parentNode$arguments !== void 0 ? _parentNode$arguments : [];
-    var seenArgs = (0,_jsutils_groupBy_mjs__WEBPACK_IMPORTED_MODULE_0__.groupBy)(argumentNodes, function (arg) {
-      return arg.name.value;
-    });
-
-    for (var _iterator = _createForOfIteratorHelperLoose(seenArgs), _step; !(_step = _iterator()).done;) {
-      var _step$value = _step.value,
-          argName = _step$value[0],
-          argNodes = _step$value[1];
-
-      if (argNodes.length > 1) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("There can be only one argument named \"" + argName + "\".", argNodes.map(function (node) {
-          return node.name;
-        })));
+      if (knownArgNames[argName]) {
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one argument named \"".concat(argName, "\"."), [knownArgNames[argName], node.name]));
+      } else {
+        knownArgNames[argName] = node.name;
       }
+
+      return false;
     }
-  }
+  };
 }
 
 /***/ }),
@@ -27752,12 +27584,12 @@ function UniqueDirectiveNamesRule(context) {
       var directiveName = node.name.value;
 
       if (schema !== null && schema !== void 0 && schema.getDirective(directiveName)) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Directive \"@" + directiveName + "\" already exists in the schema. It cannot be redefined.", node.name));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Directive \"@".concat(directiveName, "\" already exists in the schema. It cannot be redefined."), node.name));
         return;
       }
 
       if (knownDirectiveNames[directiveName]) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one directive named \"@" + directiveName + "\".", [knownDirectiveNames[directiveName], node.name]));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one directive named \"@".concat(directiveName, "\"."), [knownDirectiveNames[directiveName], node.name]));
       } else {
         knownDirectiveNames[directiveName] = node.name;
       }
@@ -27784,12 +27616,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../language/kinds.mjs */ "./node_modules/graphql/language/kinds.mjs");
 /* harmony import */ var _language_predicates_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../language/predicates.mjs */ "./node_modules/graphql/language/predicates.mjs");
 /* harmony import */ var _type_directives_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../type/directives.mjs */ "./node_modules/graphql/type/directives.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 
@@ -27799,8 +27625,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *
  * A GraphQL document is only valid if all non-repeatable directives at
  * a given location are uniquely named.
- *
- * See https://spec.graphql.org/draft/#sec-Directives-Are-Unique-Per-Location
  */
 
 function UniqueDirectivesPerLocationRule(context) {
@@ -27808,15 +27632,15 @@ function UniqueDirectivesPerLocationRule(context) {
   var schema = context.getSchema();
   var definedDirectives = schema ? schema.getDirectives() : _type_directives_mjs__WEBPACK_IMPORTED_MODULE_0__.specifiedDirectives;
 
-  for (var _iterator = _createForOfIteratorHelperLoose(definedDirectives), _step; !(_step = _iterator()).done;) {
-    var directive = _step.value;
+  for (var _i2 = 0; _i2 < definedDirectives.length; _i2++) {
+    var directive = definedDirectives[_i2];
     uniqueDirectiveMap[directive.name] = !directive.isRepeatable;
   }
 
   var astDefinitions = context.getDocument().definitions;
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(astDefinitions), _step2; !(_step2 = _iterator2()).done;) {
-    var def = _step2.value;
+  for (var _i4 = 0; _i4 < astDefinitions.length; _i4++) {
+    var def = astDefinitions[_i4];
 
     if (def.kind === _language_kinds_mjs__WEBPACK_IMPORTED_MODULE_1__.Kind.DIRECTIVE_DEFINITION) {
       uniqueDirectiveMap[def.name.value] = !def.repeatable;
@@ -27830,7 +27654,7 @@ function UniqueDirectivesPerLocationRule(context) {
     // them all, just listen for entering any node, and check to see if it
     // defines any directives.
     enter: function enter(node) {
-      if (!('directives' in node) || !node.directives) {
+      if (node.directives == null) {
         return;
       }
 
@@ -27849,15 +27673,15 @@ function UniqueDirectivesPerLocationRule(context) {
         seenDirectives = Object.create(null);
       }
 
-      for (var _iterator3 = _createForOfIteratorHelperLoose(node.directives), _step3; !(_step3 = _iterator3()).done;) {
-        var directive = _step3.value;
-        var directiveName = directive.name.value;
+      for (var _i6 = 0, _node$directives2 = node.directives; _i6 < _node$directives2.length; _i6++) {
+        var _directive = _node$directives2[_i6];
+        var directiveName = _directive.name.value;
 
         if (uniqueDirectiveMap[directiveName]) {
           if (seenDirectives[directiveName]) {
-            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("The directive \"@" + directiveName + "\" can only be used once at this location.", [seenDirectives[directiveName], directive]));
+            context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("The directive \"@".concat(directiveName, "\" can only be used once at this location."), [seenDirectives[directiveName], _directive]));
           } else {
-            seenDirectives[directiveName] = directive;
+            seenDirectives[directiveName] = _directive;
           }
         }
       }
@@ -27880,12 +27704,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 /**
@@ -27910,23 +27728,21 @@ function UniqueEnumValueNamesRule(context) {
 
     if (!knownValueNames[typeName]) {
       knownValueNames[typeName] = Object.create(null);
-    } // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-    /* c8 ignore next */
+    } // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
 
     var valueNodes = (_node$values = node.values) !== null && _node$values !== void 0 ? _node$values : [];
     var valueNames = knownValueNames[typeName];
 
-    for (var _iterator = _createForOfIteratorHelperLoose(valueNodes), _step; !(_step = _iterator()).done;) {
-      var valueDef = _step.value;
+    for (var _i2 = 0; _i2 < valueNodes.length; _i2++) {
+      var valueDef = valueNodes[_i2];
       var valueName = valueDef.name.value;
       var existingType = existingTypeMap[typeName];
 
       if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isEnumType)(existingType) && existingType.getValue(valueName)) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Enum value \"" + typeName + "." + valueName + "\" already exists in the schema. It cannot also be defined in this type extension.", valueDef.name));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Enum value \"".concat(typeName, ".").concat(valueName, "\" already exists in the schema. It cannot also be defined in this type extension."), valueDef.name));
       } else if (valueNames[valueName]) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Enum value \"" + typeName + "." + valueName + "\" can only be defined once.", [valueNames[valueName], valueDef.name]));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("Enum value \"".concat(typeName, ".").concat(valueName, "\" can only be defined once."), [valueNames[valueName], valueDef.name]));
       } else {
         valueNames[valueName] = valueDef.name;
       }
@@ -27951,12 +27767,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 /**
@@ -27985,22 +27795,20 @@ function UniqueFieldDefinitionNamesRule(context) {
 
     if (!knownFieldNames[typeName]) {
       knownFieldNames[typeName] = Object.create(null);
-    } // FIXME: https://github.com/graphql/graphql-js/issues/2203
-
-    /* c8 ignore next */
+    } // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
 
     var fieldNodes = (_node$fields = node.fields) !== null && _node$fields !== void 0 ? _node$fields : [];
     var fieldNames = knownFieldNames[typeName];
 
-    for (var _iterator = _createForOfIteratorHelperLoose(fieldNodes), _step; !(_step = _iterator()).done;) {
-      var fieldDef = _step.value;
+    for (var _i2 = 0; _i2 < fieldNodes.length; _i2++) {
+      var fieldDef = fieldNodes[_i2];
       var fieldName = fieldDef.name.value;
 
       if (hasField(existingTypeMap[typeName], fieldName)) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Field \"" + typeName + "." + fieldName + "\" already exists in the schema. It cannot also be defined in this type extension.", fieldDef.name));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Field \"".concat(typeName, ".").concat(fieldName, "\" already exists in the schema. It cannot also be defined in this type extension."), fieldDef.name));
       } else if (fieldNames[fieldName]) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Field \"" + typeName + "." + fieldName + "\" can only be defined once.", [fieldNames[fieldName], fieldDef.name]));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Field \"".concat(typeName, ".").concat(fieldName, "\" can only be defined once."), [fieldNames[fieldName], fieldDef.name]));
       } else {
         fieldNames[fieldName] = fieldDef.name;
       }
@@ -28037,8 +27845,6 @@ __webpack_require__.r(__webpack_exports__);
  * Unique fragment names
  *
  * A GraphQL document is only valid if all defined fragments have unique names.
- *
- * See https://spec.graphql.org/draft/#sec-Fragment-Name-Uniqueness
  */
 
 function UniqueFragmentNamesRule(context) {
@@ -28051,7 +27857,7 @@ function UniqueFragmentNamesRule(context) {
       var fragmentName = node.name.value;
 
       if (knownFragmentNames[fragmentName]) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one fragment named \"" + fragmentName + "\".", [knownFragmentNames[fragmentName], node.name]));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one fragment named \"".concat(fragmentName, "\"."), [knownFragmentNames[fragmentName], node.name]));
       } else {
         knownFragmentNames[fragmentName] = node.name;
       }
@@ -28074,17 +27880,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "UniqueInputFieldNamesRule": function() { return /* binding */ UniqueInputFieldNamesRule; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsutils/invariant.mjs */ "./node_modules/graphql/jsutils/invariant.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 
 /**
  * Unique input field names
  *
  * A GraphQL input object value is only valid if all supplied fields are
  * uniquely named.
- *
- * See https://spec.graphql.org/draft/#sec-Input-Object-Field-Uniqueness
  */
 
 function UniqueInputFieldNamesRule(context) {
@@ -28097,16 +27899,14 @@ function UniqueInputFieldNamesRule(context) {
         knownNames = Object.create(null);
       },
       leave: function leave() {
-        var prevKnownNames = knownNameStack.pop();
-        prevKnownNames || (0,_jsutils_invariant_mjs__WEBPACK_IMPORTED_MODULE_0__.invariant)(false);
-        knownNames = prevKnownNames;
+        knownNames = knownNameStack.pop();
       }
     },
     ObjectField: function ObjectField(node) {
       var fieldName = node.name.value;
 
       if (knownNames[fieldName]) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("There can be only one input field named \"" + fieldName + "\".", [knownNames[fieldName], node.name]));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one input field named \"".concat(fieldName, "\"."), [knownNames[fieldName], node.name]));
       } else {
         knownNames[fieldName] = node.name;
       }
@@ -28133,8 +27933,6 @@ __webpack_require__.r(__webpack_exports__);
  * Unique operation names
  *
  * A GraphQL document is only valid if all defined operations have unique names.
- *
- * See https://spec.graphql.org/draft/#sec-Operation-Name-Uniqueness
  */
 
 function UniqueOperationNamesRule(context) {
@@ -28145,7 +27943,7 @@ function UniqueOperationNamesRule(context) {
 
       if (operationName) {
         if (knownOperationNames[operationName.value]) {
-          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one operation named \"" + operationName.value + "\".", [knownOperationNames[operationName.value], operationName]));
+          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one operation named \"".concat(operationName.value, "\"."), [knownOperationNames[operationName.value], operationName]));
         } else {
           knownOperationNames[operationName.value] = operationName;
         }
@@ -28173,12 +27971,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "UniqueOperationTypesRule": function() { return /* binding */ UniqueOperationTypesRule; }
 /* harmony export */ });
 /* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 /**
  * Unique operation types
@@ -28200,22 +27992,20 @@ function UniqueOperationTypesRule(context) {
   };
 
   function checkOperationTypes(node) {
-    var _node$operationTypes; // See: https://github.com/graphql/graphql-js/issues/2203
-
-    /* c8 ignore next */
+    var _node$operationTypes; // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2203')
 
 
     var operationTypesNodes = (_node$operationTypes = node.operationTypes) !== null && _node$operationTypes !== void 0 ? _node$operationTypes : [];
 
-    for (var _iterator = _createForOfIteratorHelperLoose(operationTypesNodes), _step; !(_step = _iterator()).done;) {
-      var operationType = _step.value;
+    for (var _i2 = 0; _i2 < operationTypesNodes.length; _i2++) {
+      var operationType = operationTypesNodes[_i2];
       var operation = operationType.operation;
       var alreadyDefinedOperationType = definedOperationTypes[operation];
 
       if (existingOperationTypes[operation]) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Type for " + operation + " already defined in the schema. It cannot be redefined.", operationType));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Type for ".concat(operation, " already defined in the schema. It cannot be redefined."), operationType));
       } else if (alreadyDefinedOperationType) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one " + operation + " type in schema.", [alreadyDefinedOperationType, operationType]));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one ".concat(operation, " type in schema."), [alreadyDefinedOperationType, operationType]));
       } else {
         definedOperationTypes[operation] = operationType;
       }
@@ -28262,12 +28052,12 @@ function UniqueTypeNamesRule(context) {
     var typeName = node.name.value;
 
     if (schema !== null && schema !== void 0 && schema.getType(typeName)) {
-      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Type \"" + typeName + "\" already exists in the schema. It cannot also be defined in this type definition.", node.name));
+      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("Type \"".concat(typeName, "\" already exists in the schema. It cannot also be defined in this type definition."), node.name));
       return;
     }
 
     if (knownTypeNames[typeName]) {
-      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one type named \"" + typeName + "\".", [knownTypeNames[typeName], node.name]));
+      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one type named \"".concat(typeName, "\"."), [knownTypeNames[typeName], node.name]));
     } else {
       knownTypeNames[typeName] = node.name;
     }
@@ -28289,15 +28079,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "UniqueVariableNamesRule": function() { return /* binding */ UniqueVariableNamesRule; }
 /* harmony export */ });
-/* harmony import */ var _jsutils_groupBy_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsutils/groupBy.mjs */ "./node_modules/graphql/jsutils/groupBy.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
 
 /**
  * Unique variable names
@@ -28306,28 +28088,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  */
 
 function UniqueVariableNamesRule(context) {
+  var knownVariableNames = Object.create(null);
   return {
-    OperationDefinition: function OperationDefinition(operationNode) {
-      var _operationNode$variab; // See: https://github.com/graphql/graphql-js/issues/2203
+    OperationDefinition: function OperationDefinition() {
+      knownVariableNames = Object.create(null);
+    },
+    VariableDefinition: function VariableDefinition(node) {
+      var variableName = node.variable.name.value;
 
-      /* c8 ignore next */
-
-
-      var variableDefinitions = (_operationNode$variab = operationNode.variableDefinitions) !== null && _operationNode$variab !== void 0 ? _operationNode$variab : [];
-      var seenVariableDefinitions = (0,_jsutils_groupBy_mjs__WEBPACK_IMPORTED_MODULE_0__.groupBy)(variableDefinitions, function (node) {
-        return node.variable.name.value;
-      });
-
-      for (var _iterator = _createForOfIteratorHelperLoose(seenVariableDefinitions), _step; !(_step = _iterator()).done;) {
-        var _step$value = _step.value,
-            variableName = _step$value[0],
-            variableNodes = _step$value[1];
-
-        if (variableNodes.length > 1) {
-          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_1__.GraphQLError("There can be only one variable named \"$" + variableName + "\".", variableNodes.map(function (node) {
-            return node.variable.name;
-          })));
-        }
+      if (knownVariableNames[variableName]) {
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_0__.GraphQLError("There can be only one variable named \"$".concat(variableName, "\"."), [knownVariableNames[variableName], node.variable.name]));
+      } else {
+        knownVariableNames[variableName] = node.variable.name;
       }
     }
   };
@@ -28346,13 +28118,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ValuesOfCorrectTypeRule": function() { return /* binding */ ValuesOfCorrectTypeRule; }
 /* harmony export */ });
+/* harmony import */ var _polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../polyfills/objectValues.mjs */ "./node_modules/graphql/polyfills/objectValues.mjs");
 /* harmony import */ var _jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../jsutils/keyMap.mjs */ "./node_modules/graphql/jsutils/keyMap.mjs");
-/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
-/* harmony import */ var _jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../jsutils/didYouMean.mjs */ "./node_modules/graphql/jsutils/didYouMean.mjs");
-/* harmony import */ var _jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../jsutils/suggestionList.mjs */ "./node_modules/graphql/jsutils/suggestionList.mjs");
-/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
-/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
+/* harmony import */ var _jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../jsutils/inspect.mjs */ "./node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../jsutils/didYouMean.mjs */ "./node_modules/graphql/jsutils/didYouMean.mjs");
+/* harmony import */ var _jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../jsutils/suggestionList.mjs */ "./node_modules/graphql/jsutils/suggestionList.mjs");
+/* harmony import */ var _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../error/GraphQLError.mjs */ "./node_modules/graphql/error/GraphQLError.mjs");
+/* harmony import */ var _language_printer_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../language/printer.mjs */ "./node_modules/graphql/language/printer.mjs");
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
+
 
 
 
@@ -28365,8 +28139,6 @@ __webpack_require__.r(__webpack_exports__);
  *
  * A GraphQL document is only valid if all value literals are of the type
  * expected at their position.
- *
- * See https://spec.graphql.org/draft/#sec-Values-of-Correct-Type
  */
 
 function ValuesOfCorrectTypeRule(context) {
@@ -28390,17 +28162,17 @@ function ValuesOfCorrectTypeRule(context) {
       } // Ensure every required field exists.
 
 
-      var fieldNodeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_1__.keyMap)(node.fields, function (field) {
+      var fieldNodeMap = (0,_jsutils_keyMap_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(node.fields, function (field) {
         return field.name.value;
       });
 
-      for (var _i = 0, _Object$values = Object.values(type.getFields()); _i < _Object$values.length; _i++) {
-        var fieldDef = _Object$values[_i];
+      for (var _i2 = 0, _objectValues2 = (0,_polyfills_objectValues_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(type.getFields()); _i2 < _objectValues2.length; _i2++) {
+        var fieldDef = _objectValues2[_i2];
         var fieldNode = fieldNodeMap[fieldDef.name];
 
         if (!fieldNode && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isRequiredInputField)(fieldDef)) {
-          var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(fieldDef.type);
-          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Field \"" + type.name + "." + fieldDef.name + "\" of required type \"" + typeStr + "\" was not provided.", node));
+          var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(fieldDef.type);
+          context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Field \"".concat(type.name, ".").concat(fieldDef.name, "\" of required type \"").concat(typeStr, "\" was not provided."), node));
         }
       }
     },
@@ -28409,15 +28181,15 @@ function ValuesOfCorrectTypeRule(context) {
       var fieldType = context.getInputType();
 
       if (!fieldType && (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isInputObjectType)(parentType)) {
-        var suggestions = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_4__.suggestionList)(node.name.value, Object.keys(parentType.getFields()));
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Field \"" + node.name.value + "\" is not defined by type \"" + parentType.name + "\"." + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_5__.didYouMean)(suggestions), node));
+        var suggestions = (0,_jsutils_suggestionList_mjs__WEBPACK_IMPORTED_MODULE_5__["default"])(node.name.value, Object.keys(parentType.getFields()));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Field \"".concat(node.name.value, "\" is not defined by type \"").concat(parentType.name, "\".") + (0,_jsutils_didYouMean_mjs__WEBPACK_IMPORTED_MODULE_6__["default"])(suggestions), node));
       }
     },
     NullValue: function NullValue(node) {
       var type = context.getInputType();
 
       if ((0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isNonNullType)(type)) {
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Expected value of type \"" + (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(type) + "\", found " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__.print)(node) + ".", node));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected value of type \"".concat((0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(type), "\", found ").concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_7__.print)(node), "."), node));
       }
     },
     EnumValue: function EnumValue(node) {
@@ -28453,8 +28225,8 @@ function isValidValueNode(context, node) {
   var type = (0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.getNamedType)(locationType);
 
   if (!(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_0__.isLeafType)(type)) {
-    var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(locationType);
-    context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Expected value of type \"" + typeStr + "\", found " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__.print)(node) + ".", node));
+    var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(locationType);
+    context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected value of type \"".concat(typeStr, "\", found ").concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_7__.print)(node), "."), node));
     return;
   } // Scalars and Enums determine if a literal value is valid via parseLiteral(),
   // which may throw or return an invalid value to indicate failure.
@@ -28466,17 +28238,17 @@ function isValidValueNode(context, node) {
     );
 
     if (parseResult === undefined) {
-      var _typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(locationType);
+      var _typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(locationType);
 
-      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Expected value of type \"" + _typeStr + "\", found " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__.print)(node) + ".", node));
+      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected value of type \"".concat(_typeStr, "\", found ").concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_7__.print)(node), "."), node));
     }
   } catch (error) {
-    var _typeStr2 = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_2__.inspect)(locationType);
+    var _typeStr2 = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_3__["default"])(locationType);
 
-    if (error instanceof _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError) {
+    if (error instanceof _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError) {
       context.reportError(error);
     } else {
-      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Expected value of type \"" + _typeStr2 + "\", found " + (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_6__.print)(node) + "; " + error.message, node, undefined, undefined, undefined, error));
+      context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__.GraphQLError("Expected value of type \"".concat(_typeStr2, "\", found ").concat((0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_7__.print)(node), "; ") + error.message, node, undefined, undefined, undefined, error));
     }
   }
 }
@@ -28507,8 +28279,6 @@ __webpack_require__.r(__webpack_exports__);
  *
  * A GraphQL operation is only valid if all the variables it defines are of
  * input types (scalar, enum, or input object).
- *
- * See https://spec.graphql.org/draft/#sec-Variables-Are-Input-Types
  */
 
 function VariablesAreInputTypesRule(context) {
@@ -28516,10 +28286,10 @@ function VariablesAreInputTypesRule(context) {
     VariableDefinition: function VariableDefinition(node) {
       var type = (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_0__.typeFromAST)(context.getSchema(), node.type);
 
-      if (type !== undefined && !(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isInputType)(type)) {
+      if (type && !(0,_type_definition_mjs__WEBPACK_IMPORTED_MODULE_1__.isInputType)(type)) {
         var variableName = node.variable.name.value;
         var typeName = (0,_language_printer_mjs__WEBPACK_IMPORTED_MODULE_2__.print)(node.type);
-        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Variable \"$" + variableName + "\" cannot be non-input type \"" + typeName + "\".", node.type));
+        context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_3__.GraphQLError("Variable \"$".concat(variableName, "\" cannot be non-input type \"").concat(typeName, "\"."), node.type));
       }
     }
   };
@@ -28544,12 +28314,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _type_definition_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../type/definition.mjs */ "./node_modules/graphql/type/definition.mjs");
 /* harmony import */ var _utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utilities/typeFromAST.mjs */ "./node_modules/graphql/utilities/typeFromAST.mjs");
 /* harmony import */ var _utilities_typeComparators_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utilities/typeComparators.mjs */ "./node_modules/graphql/utilities/typeComparators.mjs");
-function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 
@@ -28557,11 +28321,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 /**
- * Variables in allowed position
- *
- * Variable usages must be compatible with the arguments they are passed to.
- *
- * See https://spec.graphql.org/draft/#sec-All-Variable-Usages-are-Allowed
+ * Variables passed to field arguments conform to type
  */
 
 function VariablesInAllowedPositionRule(context) {
@@ -28574,11 +28334,11 @@ function VariablesInAllowedPositionRule(context) {
       leave: function leave(operation) {
         var usages = context.getRecursiveVariableUsages(operation);
 
-        for (var _iterator = _createForOfIteratorHelperLoose(usages), _step; !(_step = _iterator()).done;) {
-          var _step$value = _step.value,
-              node = _step$value.node,
-              type = _step$value.type,
-              defaultValue = _step$value.defaultValue;
+        for (var _i2 = 0; _i2 < usages.length; _i2++) {
+          var _ref2 = usages[_i2];
+          var node = _ref2.node;
+          var type = _ref2.type;
+          var defaultValue = _ref2.defaultValue;
           var varName = node.name.value;
           var varDef = varDefMap[varName];
 
@@ -28592,9 +28352,9 @@ function VariablesInAllowedPositionRule(context) {
             var varType = (0,_utilities_typeFromAST_mjs__WEBPACK_IMPORTED_MODULE_0__.typeFromAST)(schema, varDef.type);
 
             if (varType && !allowedVariableUsage(schema, varType, varDef.defaultValue, type, defaultValue)) {
-              var varTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(varType);
-              var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__.inspect)(type);
-              context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Variable \"$" + varName + "\" of type \"" + varTypeStr + "\" used in position expecting type \"" + typeStr + "\".", [varDef, node]));
+              var varTypeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(varType);
+              var typeStr = (0,_jsutils_inspect_mjs__WEBPACK_IMPORTED_MODULE_1__["default"])(type);
+              context.reportError(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_2__.GraphQLError("Variable \"$".concat(varName, "\" of type \"").concat(varTypeStr, "\" used in position expecting type \"").concat(typeStr, "\"."), [varDef, node]));
             }
           }
         }
@@ -28672,9 +28432,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _rules_UniqueTypeNamesRule_mjs__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./rules/UniqueTypeNamesRule.mjs */ "./node_modules/graphql/validation/rules/UniqueTypeNamesRule.mjs");
 /* harmony import */ var _rules_UniqueEnumValueNamesRule_mjs__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./rules/UniqueEnumValueNamesRule.mjs */ "./node_modules/graphql/validation/rules/UniqueEnumValueNamesRule.mjs");
 /* harmony import */ var _rules_UniqueFieldDefinitionNamesRule_mjs__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./rules/UniqueFieldDefinitionNamesRule.mjs */ "./node_modules/graphql/validation/rules/UniqueFieldDefinitionNamesRule.mjs");
-/* harmony import */ var _rules_UniqueArgumentDefinitionNamesRule_mjs__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./rules/UniqueArgumentDefinitionNamesRule.mjs */ "./node_modules/graphql/validation/rules/UniqueArgumentDefinitionNamesRule.mjs");
-/* harmony import */ var _rules_UniqueDirectiveNamesRule_mjs__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./rules/UniqueDirectiveNamesRule.mjs */ "./node_modules/graphql/validation/rules/UniqueDirectiveNamesRule.mjs");
-/* harmony import */ var _rules_PossibleTypeExtensionsRule_mjs__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./rules/PossibleTypeExtensionsRule.mjs */ "./node_modules/graphql/validation/rules/PossibleTypeExtensionsRule.mjs");
+/* harmony import */ var _rules_UniqueDirectiveNamesRule_mjs__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./rules/UniqueDirectiveNamesRule.mjs */ "./node_modules/graphql/validation/rules/UniqueDirectiveNamesRule.mjs");
+/* harmony import */ var _rules_PossibleTypeExtensionsRule_mjs__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./rules/PossibleTypeExtensionsRule.mjs */ "./node_modules/graphql/validation/rules/PossibleTypeExtensionsRule.mjs");
 // Spec Section: "Executable Definitions"
  // Spec Section: "Operation Name Uniqueness"
 
@@ -28735,7 +28494,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 /**
  * This set includes all validation rules defined by the GraphQL spec.
  *
@@ -28748,7 +28506,7 @@ var specifiedRules = Object.freeze([_rules_ExecutableDefinitionsRule_mjs__WEBPAC
  * @internal
  */
 
-var specifiedSDLRules = Object.freeze([_rules_LoneSchemaDefinitionRule_mjs__WEBPACK_IMPORTED_MODULE_26__.LoneSchemaDefinitionRule, _rules_UniqueOperationTypesRule_mjs__WEBPACK_IMPORTED_MODULE_27__.UniqueOperationTypesRule, _rules_UniqueTypeNamesRule_mjs__WEBPACK_IMPORTED_MODULE_28__.UniqueTypeNamesRule, _rules_UniqueEnumValueNamesRule_mjs__WEBPACK_IMPORTED_MODULE_29__.UniqueEnumValueNamesRule, _rules_UniqueFieldDefinitionNamesRule_mjs__WEBPACK_IMPORTED_MODULE_30__.UniqueFieldDefinitionNamesRule, _rules_UniqueArgumentDefinitionNamesRule_mjs__WEBPACK_IMPORTED_MODULE_31__.UniqueArgumentDefinitionNamesRule, _rules_UniqueDirectiveNamesRule_mjs__WEBPACK_IMPORTED_MODULE_32__.UniqueDirectiveNamesRule, _rules_KnownTypeNamesRule_mjs__WEBPACK_IMPORTED_MODULE_4__.KnownTypeNamesRule, _rules_KnownDirectivesRule_mjs__WEBPACK_IMPORTED_MODULE_17__.KnownDirectivesRule, _rules_UniqueDirectivesPerLocationRule_mjs__WEBPACK_IMPORTED_MODULE_18__.UniqueDirectivesPerLocationRule, _rules_PossibleTypeExtensionsRule_mjs__WEBPACK_IMPORTED_MODULE_33__.PossibleTypeExtensionsRule, _rules_KnownArgumentNamesRule_mjs__WEBPACK_IMPORTED_MODULE_19__.KnownArgumentNamesOnDirectivesRule, _rules_UniqueArgumentNamesRule_mjs__WEBPACK_IMPORTED_MODULE_20__.UniqueArgumentNamesRule, _rules_UniqueInputFieldNamesRule_mjs__WEBPACK_IMPORTED_MODULE_25__.UniqueInputFieldNamesRule, _rules_ProvidedRequiredArgumentsRule_mjs__WEBPACK_IMPORTED_MODULE_22__.ProvidedRequiredArgumentsOnDirectivesRule]);
+var specifiedSDLRules = Object.freeze([_rules_LoneSchemaDefinitionRule_mjs__WEBPACK_IMPORTED_MODULE_26__.LoneSchemaDefinitionRule, _rules_UniqueOperationTypesRule_mjs__WEBPACK_IMPORTED_MODULE_27__.UniqueOperationTypesRule, _rules_UniqueTypeNamesRule_mjs__WEBPACK_IMPORTED_MODULE_28__.UniqueTypeNamesRule, _rules_UniqueEnumValueNamesRule_mjs__WEBPACK_IMPORTED_MODULE_29__.UniqueEnumValueNamesRule, _rules_UniqueFieldDefinitionNamesRule_mjs__WEBPACK_IMPORTED_MODULE_30__.UniqueFieldDefinitionNamesRule, _rules_UniqueDirectiveNamesRule_mjs__WEBPACK_IMPORTED_MODULE_31__.UniqueDirectiveNamesRule, _rules_KnownTypeNamesRule_mjs__WEBPACK_IMPORTED_MODULE_4__.KnownTypeNamesRule, _rules_KnownDirectivesRule_mjs__WEBPACK_IMPORTED_MODULE_17__.KnownDirectivesRule, _rules_UniqueDirectivesPerLocationRule_mjs__WEBPACK_IMPORTED_MODULE_18__.UniqueDirectivesPerLocationRule, _rules_PossibleTypeExtensionsRule_mjs__WEBPACK_IMPORTED_MODULE_32__.PossibleTypeExtensionsRule, _rules_KnownArgumentNamesRule_mjs__WEBPACK_IMPORTED_MODULE_19__.KnownArgumentNamesOnDirectivesRule, _rules_UniqueArgumentNamesRule_mjs__WEBPACK_IMPORTED_MODULE_20__.UniqueArgumentNamesRule, _rules_UniqueInputFieldNamesRule_mjs__WEBPACK_IMPORTED_MODULE_25__.UniqueInputFieldNamesRule, _rules_ProvidedRequiredArgumentsRule_mjs__WEBPACK_IMPORTED_MODULE_22__.ProvidedRequiredArgumentsOnDirectivesRule]);
 
 /***/ }),
 
@@ -28793,37 +28551,24 @@ __webpack_require__.r(__webpack_exports__);
  * (see the language/visitor API). Visitor methods are expected to return
  * GraphQLErrors, or Arrays of GraphQLErrors when invalid.
  *
- * Validate will stop validation after a `maxErrors` limit has been reached.
- * Attackers can send pathologically invalid queries to induce a DoS attack,
- * so by default `maxErrors` set to 100 errors.
- *
  * Optionally a custom TypeInfo instance may be provided. If not provided, one
  * will be created from the provided schema.
  */
 
-function validate(schema, documentAST, rules, options,
-/** @deprecated will be removed in 17.0.0 */
-typeInfo) {
-  if (rules === void 0) {
-    rules = _specifiedRules_mjs__WEBPACK_IMPORTED_MODULE_0__.specifiedRules;
-  }
-
-  if (typeInfo === void 0) {
-    typeInfo = new _utilities_TypeInfo_mjs__WEBPACK_IMPORTED_MODULE_1__.TypeInfo(schema);
-  }
-
-  var _options$maxErrors;
-
-  var maxErrors = (_options$maxErrors = options === null || options === void 0 ? void 0 : options.maxErrors) !== null && _options$maxErrors !== void 0 ? _options$maxErrors : 100;
-  documentAST || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__.devAssert)(false, 'Must provide document.'); // If the schema used for validation is invalid, throw an error.
+function validate(schema, documentAST) {
+  var rules = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _specifiedRules_mjs__WEBPACK_IMPORTED_MODULE_0__.specifiedRules;
+  var typeInfo = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _utilities_TypeInfo_mjs__WEBPACK_IMPORTED_MODULE_1__.TypeInfo(schema);
+  var options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {
+    maxErrors: undefined
+  };
+  documentAST || (0,_jsutils_devAssert_mjs__WEBPACK_IMPORTED_MODULE_2__["default"])(0, 'Must provide document.'); // If the schema used for validation is invalid, throw an error.
 
   (0,_type_validate_mjs__WEBPACK_IMPORTED_MODULE_3__.assertValidSchema)(schema);
   var abortObj = Object.freeze({});
   var errors = [];
   var context = new _ValidationContext_mjs__WEBPACK_IMPORTED_MODULE_4__.ValidationContext(schema, documentAST, typeInfo, function (error) {
-    if (errors.length >= maxErrors) {
-      errors.push(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError('Too many validation errors, error limit reached. Validation aborted.')); // eslint-disable-next-line @typescript-eslint/no-throw-literal
-
+    if (options.maxErrors != null && errors.length >= options.maxErrors) {
+      errors.push(new _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_5__.GraphQLError('Too many validation errors, error limit reached. Validation aborted.'));
       throw abortObj;
     }
 
@@ -28849,11 +28594,8 @@ typeInfo) {
  * @internal
  */
 
-function validateSDL(documentAST, schemaToExtend, rules) {
-  if (rules === void 0) {
-    rules = _specifiedRules_mjs__WEBPACK_IMPORTED_MODULE_0__.specifiedSDLRules;
-  }
-
+function validateSDL(documentAST, schemaToExtend) {
+  var rules = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _specifiedRules_mjs__WEBPACK_IMPORTED_MODULE_0__.specifiedSDLRules;
   var errors = [];
   var context = new _ValidationContext_mjs__WEBPACK_IMPORTED_MODULE_4__.SDLValidationContext(documentAST, schemaToExtend, function (error) {
     errors.push(error);
@@ -28911,21 +28653,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "version": function() { return /* binding */ version; },
 /* harmony export */   "versionInfo": function() { return /* binding */ versionInfo; }
 /* harmony export */ });
-// Note: This file is autogenerated using "resources/gen-version.js" script and
-// automatically updated by "npm version" command.
+/**
+ * Note: This file is autogenerated using "resources/gen-version.js" script and
+ * automatically updated by "npm version" command.
+ */
 
 /**
  * A string containing the version of the GraphQL.js library
  */
-var version = '16.2.0';
+var version = '15.7.2';
 /**
  * An object containing the components of the GraphQL.js version string
  */
 
 var versionInfo = Object.freeze({
-  major: 16,
-  minor: 2,
-  patch: 0,
+  major: 15,
+  minor: 7,
+  patch: 2,
   preReleaseTag: null
 });
 
