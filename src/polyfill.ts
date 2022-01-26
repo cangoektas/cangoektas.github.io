@@ -11,3 +11,4 @@ import "core-js/stable/map";
 import "core-js/es/array/fill";
 import "core-js/es/array/includes";
 import "core-js/es/array/flat-map";
+import "core-js/internals/global";
